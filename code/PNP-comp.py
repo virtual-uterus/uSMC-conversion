@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
             sim_output[key] = states_R[0, :]  # Membrane potential for plot
             comp_points[i] = functions.computeComparison(
-                states_M, states_R, args.metric
+                states_M[0, :], states_R[0, :], args.metric
             )
 
             # Reset the model
@@ -97,7 +97,9 @@ if __name__ == "__main__":
             # Compute just the metric
             for i, key in enumerate(functions.ESTRUS.keys()):
                 comp_points[i] = functions.computeComparison(
-                    sim_output["means"], sim_output[key], args.metric
+                    sim_output["means"][0, :],
+                    sim_output[key][0, :],
+                    args.metric,
                 )
 
             with open(comp_file, "wb") as handler:
