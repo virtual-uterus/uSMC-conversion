@@ -20,23 +20,15 @@ ESTRUS = {
 
 # Hard coded values of the P4 dependent constants
 # Could probably be optimised
-P4_MAP = {
-    "P4": 4,
-    "P4_max": 6,
-    "mod_P4": 25
-}
+P4_MAP = {"P4": 4, "P4_max": 6, "mod_P4": 25}
 
 # Hard coded values of the E2 dependent constants
 # Could probably be optimised
-E2_MAP = {
-    "E2": 5,
-    "E2_max": 7,
-    "mod_E2": 24
-}
+E2_MAP = {"E2": 5, "E2_max": 7, "mod_E2": 24}
 
 
 def setParams(constants, legend_constants, param, value):
-    """ Sets the new value for the specified parameter
+    """Sets the new value for the specified parameter
 
     Raises an IndexError if the parameter was not found in the list.
 
@@ -59,18 +51,20 @@ def setParams(constants, legend_constants, param, value):
         # Make sure the E2 modulator is updated
         constants[E2_MAP[param]] = value
         constants[E2_MAP["mod_E2"]] = (
-            constants[E2_MAP["E2"]] / constants[E2_MAP["E2_max"]])
+            constants[E2_MAP["E2"]] / constants[E2_MAP["E2_max"]]
+        )
         return constants, E2_MAP[param]
 
     if param in P4_MAP.keys():
         # Make sure the P4 modulator is updated
         constants[P4_MAP[param]] = value
         constants[P4_MAP["mod_P4"]] = (
-            constants[P4_MAP["P4"]] / constants[P4_MAP["P4_max"]])
+            constants[P4_MAP["P4"]] / constants[P4_MAP["P4_max"]]
+        )
         return constants, P4_MAP[param]
 
     for i, legend in enumerate(legend_constants):
-        words = legend.split(' ')
+        words = legend.split(" ")
 
         if words[0] == param:
             found = True
@@ -82,15 +76,16 @@ def setParams(constants, legend_constants, param, value):
             break
 
     if not found:
-        sys.stderr.write("Warning: {} was not found in parameter list\n".format(
-            param))
+        sys.stderr.write(
+            "Warning: {} was not found in parameter list\n".format(param),
+        )
         raise IndexError
 
     return constants, idx
 
 
 def setEstrusParams(constants, legend_constants, estrus):
-    """ Sets the specific values of the constants for the estrus stage
+    """Sets the specific values of the constants for the estrus stage
 
     Arguments:
     constants -- list[int], list of constant values.
@@ -103,27 +98,28 @@ def setEstrusParams(constants, legend_constants, estrus):
 
     """
     try:
-        assert (estrus in ESTRUS.keys())
+        assert estrus in ESTRUS.keys()
 
     except AssertionError:
-        sys.stderr.write("Error: the key {} is not valid\n".format(
-            estrus))
+        sys.stderr.write("Error: the key {} is not valid\n".format(estrus))
         exit(1)
 
     for key in ESTRUS[estrus].keys():
         try:
-            constants, _ = setParams(constants, legend_constants,
-                                     key, ESTRUS[estrus][key])
+            constants, _ = setParams(
+                constants, legend_constants, key, ESTRUS[estrus][key]
+            )
 
         except IndexError:
-            sys.stderr.write("Warning: {} estrus parameter not set\n".format(
-                key))
+            sys.stderr.write(
+                "Warning: {} estrus parameter not set\n".format(key),
+            )
 
     return constants
 
 
 def computeL2Norm(y_true, y_pred):
-    """ Computes the Euclidean distance between y_true and y_pred
+    """Computes the Euclidean distance between y_true and y_pred
 
     Arguments:
     y_true -- np.array, ground truth values.
@@ -133,11 +129,11 @@ def computeL2Norm(y_true, y_pred):
     l2 -- float, Euclidean distance.
 
     """
-    return np.linalg.norm(y_true-y_pred)
+    return np.linalg.norm(y_true - y_pred)
 
 
 def computeMAE(y_true, y_pred):
-    """ Computes the Mean Absolute Error between y_true and y_pred
+    """Computes the Mean Absolute Error between y_true and y_pred
 
     Arguments:
     y_true -- np.array, ground truth values.
@@ -151,7 +147,7 @@ def computeMAE(y_true, y_pred):
 
 
 def computeRMSE(y_true, y_pred):
-    """ Computes the Root Mean Squared Error between y_true and y_pred
+    """Computes the Root Mean Squared Error between y_true and y_pred
 
     Arguments:
     y_true -- np.array, ground truth values.
@@ -165,7 +161,7 @@ def computeRMSE(y_true, y_pred):
 
 
 def computeComparison(y_true, y_pred, metric):
-    """ Computes the comparison between y_true and y_pred based on the metric
+    """Computes the comparison between y_true and y_pred based on the metric
 
     Arguments:
     y_true -- np.array, ground truth values.
