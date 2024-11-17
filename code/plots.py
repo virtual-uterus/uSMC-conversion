@@ -88,8 +88,12 @@ def plotParamSweep(param, metric):
         plt.plot(values, comp_points[i], COLOURS[stage], linestyle="-")
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
-    plt.xlabel(PARAM[param] + r" values (pA.pF$^{-1}$)")
-    plt.ylabel("Normalized {}".format(LABELS[metric]))
+
+    if param == "stim_current":
+        plt.xlabel(PARAM[param] + r" values (uA.cm$^{-2}$)")
+    else:
+        plt.xlabel(PARAM[param] + r" values (pA.pF$^{-1}$)")
+    plt.ylabel("Normalised {}".format(LABELS[metric]))
     plt.show()
 
 
