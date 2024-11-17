@@ -25,7 +25,12 @@ PARAM = {
     "stim_current": r"I$_{stim}$",
 }
 
-LABELS = {"l2": "L2-norm", "mae": "MAE", "rmse": "RMSE"}
+LABELS = {
+    "l2": "L2-norm",
+    "mae": "MAE",
+    "rmse": "RMSE",
+    "correl": "Pearson correlation",
+}
 
 ESTRUS = ["estrus", "proestrus", "metestrus", "diestrus"]
 
@@ -65,7 +70,7 @@ def plotParamSweep(param, metric):
 
     Arguments:
     param -- str, name of the parameter to use.
-    metric -- str, name of the used metric, {l2, rmse, mae}.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
 
     Return:
 
@@ -98,7 +103,7 @@ def plotSensitivity(metric):
     """Plots the results of the sensitivity analysis for a certain metric
 
     Arguments:
-    metric -- str, name of the used metric, {l2, rmse, mae}.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
 
     Return:
 
@@ -111,7 +116,11 @@ def plotSensitivity(metric):
         comp_points = []  # Store the results for each stage
 
         for j, param in enumerate(PARAM):
-            input_file = "../res/{}_{}_{}_sweep.pkl".format(param, stage, metric)
+            input_file = "../res/{}_{}_{}_sweep.pkl".format(
+                param,
+                stage,
+                metric,
+            )
 
             with open(input_file, "rb") as handler:
                 # Unpack pickled data
@@ -150,7 +159,7 @@ def plotSimulationOutput(sim_output, metric):
     Arguments:
     sim_output -- dict{str: np.array}, dict containing the simulation
             outputs for each stage in mV and the time stamps in s.
-    metric -- str, name of the used metric, {l2, rmse, mae}.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
 
     Return:
 
@@ -171,7 +180,7 @@ def plotSimulationOutput(sim_output, metric):
             ax[i, j].text(
                 6.6,
                 1,
-                LABELS[metric] + " " + "{:.2f}".format(comp_points[cpt]) + " mV",
+                LABELS[metric] + " {:.2f} mV".format(comp_points[cpt]),
                 fontsize="small",
             )
             ax[i, j].set_xlim([0, 10])

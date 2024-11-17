@@ -22,7 +22,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "metric",
         type=str,
-        choices={"l2", "rmse", "mae"},
+        choices={"l2", "rmse", "mae", "correl"},
         help="comparison metric",
     )
     parser.add_argument(

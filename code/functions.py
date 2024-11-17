@@ -3,11 +3,12 @@
 #
 # functions.py: Miscellaneous functions for model comparison
 # Author: Mathias Roesler
-# Last modified: 12/23
+# Last modified: 11/24
 
 import sys
 import numpy as np
 import sklearn.metrics as skm
+import scipy.stats as stat
 
 
 # Specific values for different estrus stages
@@ -160,13 +161,28 @@ def computeRMSE(y_true, y_pred):
     return skm.mean_squared_error(y_true, y_pred, squared=False)
 
 
+def computeCorrelation(y_true, y_pred):
+    """Computes the Pearson correlation between y_true and y_pred
+
+    Arguments:
+    y_true -- np.array, ground truth values.
+    y_pred -- np.array, estimated values.
+
+    Return:
+    correl -- float, Pearson correlation
+
+    """
+    correl, _ = stat.pearsonr(y_true, y_pred)
+    return correl
+
+
 def computeComparison(y_true, y_pred, metric):
     """Computes the comparison between y_true and y_pred based on the metric
 
     Arguments:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
-    metric -- str, comparison metric, {l2, rmse, mae}
+    metric -- str, comparison metric, {l2, rmse, mae, correl}
 
     Return:
     comp_point -- float, comparison point.
@@ -181,3 +197,6 @@ def computeComparison(y_true, y_pred, metric):
 
         case "mae":
             return computeMAE(y_true, y_pred)
+
+        case "correl":
+            return computeCorrelation(y_true, y_pred)
