@@ -89,7 +89,6 @@ if __name__ == "__main__":
 
         # Error check and index retrival
         try:
-            breakpoint()
             _, idx = functions.setParams(
                 constants,
                 legend_constants,
