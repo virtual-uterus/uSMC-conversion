@@ -3,7 +3,7 @@
 #
 # param-sweep.py: Computes a parameters sweep for a cellML export model
 # Author: Mathias Roesler
-# Last modified: 12/23
+# Last modified: 11/24
 
 import sys
 import argparse
