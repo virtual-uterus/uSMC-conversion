@@ -10,6 +10,7 @@ import argparse
 import pickle
 import numpy as np
 import Roesler2024
+import Means2023
 import functions
 import plots
 
@@ -24,6 +25,12 @@ if __name__ == "__main__":
         type=str,
         choices={"l2", "rmse", "mae"},
         help="comparison metric",
+    )
+    parser.add_argument(
+        "model",
+        type=str,
+        choices={"Means", "Roesler"},
+        help="model to compare with",
     )
 
     # Create subparser for the sweep and plot commands
@@ -84,14 +91,15 @@ if __name__ == "__main__":
         plot_only = True
 
     if not plot_only:
-        init_states, constants = Roesler2024.initConsts()
-        _, _, _, legend_constants = Roesler2024.createLegends()
+        init_states_R, constants_R = Roesler2024.initConsts()
+        init_states_M, constants_M = Means2023.initConsts()
+        _, _, _, legend_constants_R = Roesler2024.createLegends()
 
         # Error check and index retrival
         try:
             _, idx = functions.setParams(
-                constants,
-                legend_constants,
+                constants_R,
+                legend_constants_R,
                 args.param,
                 None,
             )
@@ -122,9 +130,9 @@ if __name__ == "__main__":
             estrus_stage = [args.estrus]
 
         for estrus in estrus_stage:
-            constants = functions.setEstrusParams(
-                constants,
-                legend_constants,
+            constants_R = functions.setEstrusParams(
+                constants_R,
+                legend_constants_R,
                 estrus,
             )
 
@@ -132,7 +140,18 @@ if __name__ == "__main__":
 
             # Original model solution
             print("  Computing original simulation")
-            _, orig_states, _ = Roesler2024.solveModel(init_states, constants)
+            if args.model == "Means":
+                (
+                    _,
+                    orig_states,
+                    _,
+                ) = Means2023.solveModel(init_states_M, constants_M)
+            else:
+                (
+                    _,
+                    orig_states,
+                    _,
+                ) = Roesler2024.solveModel(init_states_R, constants_R)
 
             # Preset the size of the comparison points
             values = np.linspace(args.start_val, args.end_val, args.nb_points)
@@ -141,8 +160,8 @@ if __name__ == "__main__":
             for i, value in enumerate(values):
                 # Run the simulations with different values
                 print("    Computing simulation {}".format(i))
-                constants[idx] = value
-                _, states, _ = Roesler2024.solveModel(init_states, constants)
+                constants_R[idx] = value
+                _, states, _ = Roesler2024.solveModel(init_states_R, constants_R)
                 comp_points[i] = functions.computeComparison(
                     orig_states, states, args.metric
                 )
@@ -155,8 +174,8 @@ if __name__ == "__main__":
             with open(output_file, "wb") as handler:
                 pickle.dump([comp_points, values], handler)
 
-            # Reset constants
-            init_states, constants = Roesler2024.initConsts()
+            # Reset constants_R
+            init_states_R, constants_R = Roesler2024.initConsts()
 
     # Plot if estrus is all or plot subcommand is used
     if plot_only:
