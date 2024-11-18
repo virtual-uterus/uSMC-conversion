@@ -16,7 +16,7 @@ ESTRUS = {
     "estrus": {"gkv43": 2.5, "stim_current": -0.4, "P4": 14, "E2": 40},
     "proestrus": {"gkv43": 0.95, "stim_current": -0.4, "P4": 37, "E2": 100},
     "metestrus": {"gkv43": 2.04, "stim_current": -0.35, "P4": 25, "E2": 49},
-    "diestrus": {"gkv43": 1.155, "stim_current": -0.2, "P4": 10, "E2": 90},
+    "diestrus": {"gkv43": 1.155, "stim_current": -0.25, "P4": 10, "E2": 90},
 }
 
 # Hard coded values of the P4 dependent constants
