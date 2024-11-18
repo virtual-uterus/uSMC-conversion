@@ -161,7 +161,8 @@ if __name__ == "__main__":
 
         for i, value in enumerate(values):
             # Run the simulations with different values
-            print("    Computing simulation {}".format(i + 1))
+            sys.stdout.write("\r  Computing simulation {}".format(i + 1))
+            sys.stdout.flush()
             constants_R[idx] = value
             (
                 _,
@@ -174,7 +175,7 @@ if __name__ == "__main__":
                 args.metric,
             )
 
-        print("  Writing results\n")
+        print("\n  Writing results\n")
         output_file = "../res/{}_{}_{}_sweep.pkl".format(
             args.param, estrus, args.metric
         )
