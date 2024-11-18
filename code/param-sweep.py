@@ -169,7 +169,9 @@ if __name__ == "__main__":
                 _,
             ) = Roesler2024.solveModel(init_states_R, constants_R)
             comp_points[i] = functions.computeComparison(
-                orig_states[0, :], states[0, :], args.metric
+                orig_states[0, :] / max(abs(orig_states[0, :])),
+                states[0, :] / max(abs(states[0, :])),
+                args.metric,
             )
 
         print("  Writing results\n")
