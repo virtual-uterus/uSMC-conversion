@@ -149,7 +149,6 @@ if __name__ == "__main__":
         if args.model == "Roesler":
             # Recompute for each stage of the cycle
             print("  Computing original simulation")
-            init_states_R, constants_R = Roesler2024.initConsts()
             (
                 _,
                 orig_states,
@@ -162,7 +161,7 @@ if __name__ == "__main__":
 
         for i, value in enumerate(values):
             # Run the simulations with different values
-            print("    Computing simulation {}".format(i))
+            print("    Computing simulation {}".format(i + 1))
             constants_R[idx] = value
             (
                 _,
