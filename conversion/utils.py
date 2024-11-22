@@ -28,6 +28,9 @@ def setParams(constants, legend_constants, param, value):
     updated_constants -- list[int], list of updated constant values.
     idx -- int, index of the parameter.
 
+    Raises:
+    IndexError -- if the parameter is not in the list.
+
     """
     found = False
     idx = 0
@@ -61,10 +64,9 @@ def setParams(constants, legend_constants, param, value):
             break
 
     if not found:
-        sys.stderr.write(
+        raise IndexError(
             "Warning: {} was not found in parameter list\n".format(param),
         )
-        raise IndexError
 
     return constants, idx
 
@@ -81,13 +83,12 @@ def setEstrusParams(constants, legend_constants, estrus):
     Return:
     updated_constants -- list[int], list of updated constant values.
 
-    """
-    try:
-        assert estrus in ESTRUS_PARAMS.keys()
+    Raises:
+    KeyError -- if estrus is not in ESTRUS_PARAMS keys.
 
-    except AssertionError:
-        sys.stderr.write("Error: the key {} is not valid\n".format(estrus))
-        exit(1)
+    """
+    if estrus not in ESTRUS_PARAMS.keys():
+        raise KeyError("Error: the key {} is not valid\n".format(estrus))
 
     for key in ESTRUS_PARAMS[estrus].keys():
         try:

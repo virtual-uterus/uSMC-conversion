@@ -59,8 +59,13 @@ if __name__ == "__main__":
 
         for i, key in enumerate(constants.ESTRUS.keys()):
             # Set estrus dependant constants
-            constants_R = utils.setEstrusParams(
-                constants_R, legend_constants_R, key)
+            try:
+                constants_R = utils.setEstrusParams(
+                    constants_R, legend_constants_R, key
+                )
+            except KeyError as e:
+                print(e)
+                exit()
 
             print("Computing Roesler2024 {} simulation".format(key))
 
@@ -104,10 +109,8 @@ if __name__ == "__main__":
             for i, key in enumerate(constants.ESTRUS.keys()):
                 try:
                     comp_points[i] = metrics.computeComparison(
-                        sim_output["means"][0, :] /
-                        max(abs(sim_output["means"][0, :])),
-                        sim_output[key][0, :] /
-                        max(abs(sim_output[key][0, :])),
+                        sim_output["means"][0, :] / max(abs(sim_output["means"][0, :])),
+                        sim_output[key][0, :] / max(abs(sim_output[key][0, :])),
                         args.metric,
                     )
                 except ValueError as e:

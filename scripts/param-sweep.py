@@ -138,11 +138,15 @@ if __name__ == "__main__":
         ) = Means2023.solveModel(init_states_M, constants_M)
 
     for estrus in estrus_stage:
-        constants_R = utils.setEstrusParams(
-            constants_R,
-            legend_constants_R,
-            estrus,
-        )
+        try:
+            constants_R = utils.setEstrusParams(
+                constants_R,
+                legend_constants_R,
+                estrus,
+            )
+        except KeyError as e:
+            print(e)
+            exit()
 
         print("{} stage".format(estrus.capitalize()))
 
