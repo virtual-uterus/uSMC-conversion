@@ -207,7 +207,7 @@ def initConsts():
 	states[1] = 0.0001161881607214449
 	constants[8] = 1000
 	constants[9] = 0.0625
-	constants[10] = 0.4
+	constants[10] = 0.6
 	constants[11] = 0.058
 	constants[12] = 2.4
 	constants[13] = 0.004
