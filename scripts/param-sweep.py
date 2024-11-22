@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# param-sweep.py: Computes a parameters sweep for a cellML export model
-# Author: Mathias Roesler
-# Last modified: 11/24
+"""
+param-sweep.py
+
+Computes a parameters sweep for a cellML export model
+Author: Mathias Roesler
+Last modified: 11/24
+"""
 
 import sys
 import argparse
 import pickle
 import numpy as np
-import Roesler2024
-import Means2023
-import functions
-import plots
+
+from conversion import Roesler2024, Means2023, utils, plots, metrics
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -95,7 +96,7 @@ if __name__ == "__main__":
 
     # Error check and index retrival
     try:
-        _, idx = functions.setParams(
+        _, idx = utils.setParams(
             constants_R,
             legend_constants_R,
             args.param,
@@ -137,11 +138,15 @@ if __name__ == "__main__":
         ) = Means2023.solveModel(init_states_M, constants_M)
 
     for estrus in estrus_stage:
-        constants_R = functions.setEstrusParams(
-            constants_R,
-            legend_constants_R,
-            estrus,
-        )
+        try:
+            constants_R = utils.setEstrusParams(
+                constants_R,
+                legend_constants_R,
+                estrus,
+            )
+        except KeyError as e:
+            print(e)
+            exit()
 
         print("{} stage".format(estrus.capitalize()))
 
@@ -169,11 +174,15 @@ if __name__ == "__main__":
                 states,
                 _,
             ) = Roesler2024.solveModel(init_states_R, constants_R)
-            comp_points[i] = functions.computeComparison(
-                orig_states[0, :] / max(abs(orig_states[0, :])),
-                states[0, :] / max(abs(states[0, :])),
-                args.metric,
-            )
+            try:
+                comp_points[i] = metrics.computeComparison(
+                    orig_states[0, :] / max(abs(orig_states[0, :])),
+                    states[0, :] / max(abs(states[0, :])),
+                    args.metric,
+                )
+            except ValueError as e:
+                print(e)
+                exit()
 
         print("\n  Writing results\n")
         output_file = "../res/{}_{}_{}_sweep.pkl".format(

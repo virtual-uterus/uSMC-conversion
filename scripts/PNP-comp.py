@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# PNP-comp.py: Compares the results from pregnant and non-pregnant models
-# Author: Mathias Roesler
-# Last modified: 11/24
+"""
+PNP-comp.py
+
+Compares the results from pregnant and non-pregnant models
+Author: Mathias Roesler
+Last modified: 11/24
+"""
 
 import argparse
 import numpy as np
 import pickle
-import Roesler2024
-import Means2023
-import functions
-import plots
+
+from conversion import Roesler2024, Means2023, plots, metrics, constants, utils
 
 
 if __name__ == "__main__":
@@ -56,11 +57,15 @@ if __name__ == "__main__":
 
         sim_output["means"] = states_M[0, :]
 
-        for i, key in enumerate(functions.ESTRUS.keys()):
+        for i, key in enumerate(constants.ESTRUS.keys()):
             # Set estrus dependant constants
-            constants_R = functions.setEstrusParams(
-                constants_R, legend_constants_R, key
-            )
+            try:
+                constants_R = utils.setEstrusParams(
+                    constants_R, legend_constants_R, key
+                )
+            except KeyError as e:
+                print(e)
+                exit()
 
             print("Computing Roesler2024 {} simulation".format(key))
 
@@ -71,11 +76,15 @@ if __name__ == "__main__":
             ) = Roesler2024.solveModel(init_states_R, constants_R)
 
             sim_output[key] = states_R[0, :]  # Membrane potential for plot
-            comp_points[i] = functions.computeComparison(
-                states_M[0, :] / max(abs(states_M[0, :])),
-                states_R[0, :] / max(abs(states_R[0, :])),
-                args.metric,
-            )
+            try:
+                comp_points[i] = metrics.computeComparison(
+                    states_M[0, :] / max(abs(states_M[0, :])),
+                    states_R[0, :] / max(abs(states_R[0, :])),
+                    args.metric,
+                )
+            except ValueError as e:
+                print(e)
+                exit()
 
             # Reset the model
             init_states_R, constants_R = Roesler2024.initConsts()
@@ -97,13 +106,16 @@ if __name__ == "__main__":
 
         if args.metric_only:
             # Compute just the metric
-            for i, key in enumerate(functions.ESTRUS.keys()):
-                comp_points[i] = functions.computeComparison(
-                    sim_output["means"][0, :] /
-                    max(abs(sim_output["means"][0, :])),
-                    sim_output[key][0, :] / max(abs(sim_output[key][0, :])),
-                    args.metric,
-                )
+            for i, key in enumerate(constants.ESTRUS.keys()):
+                try:
+                    comp_points[i] = metrics.computeComparison(
+                        sim_output["means"][0, :] / max(abs(sim_output["means"][0, :])),
+                        sim_output[key][0, :] / max(abs(sim_output[key][0, :])),
+                        args.metric,
+                    )
+                except ValueError as e:
+                    print(e)
+                    exit()
 
             with open(comp_file, "wb") as handler:
                 # Pickle data
