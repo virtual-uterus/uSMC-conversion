@@ -1,38 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# PNP-comp.py: Compares the results from pregnant and non-pregnant models
-# Author: Mathias Roesler
-# Last modified: 11/24
+"""
+PNP-comp.py
+
+Compares the results from pregnant and non-pregnant models
+Author: Mathias Roesler
+Date: 11/24
+"""
 
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-COLOURS = {
-    "proestrus": ".r",
-    "estrus": ".b",
-    "metestrus": ".g",
-    "diestrus": ".k",
-}
-
-PARAM = {
-    "gkv43": r"g$_{Kv4.3}$",
-    "gcal": r"g$_{CaL}$",
-    "gkca": r"g$_{KCa}$",
-    "gna": r"g$_{Na}$",
-    "stim_current": r"I$_{stim}$",
-}
-
-LABELS = {
-    "l2": "L2-norm",
-    "mae": "MAE",
-    "rmse": "RMSE",
-    "correl": "Pearson correlation",
-}
-
-ESTRUS = ["estrus", "proestrus", "metestrus", "diestrus"]
+from .constants import ESTRUS, COLOURS, LABELS, PARAM
 
 
 def plotPNPComp(metric):

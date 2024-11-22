@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#
-# sensitivity.py: Plots the sensitivity analysis results
-# Author: Mathias Roesler
-# Last modified: 11/24
+"""
+sensitivity.py
+
+Plots the sensitivity analysis results
+Author: Mathias Roesler
+Last modified: 11/24
+"""
 
 import argparse
-import plots
+
+from conversion import plots
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
