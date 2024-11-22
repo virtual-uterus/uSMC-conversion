@@ -11,7 +11,7 @@ def read_requirements():
 
 setup(
     name="conversion",
-    version="0.1.0",
+    version="0.1.1",
     description="A Python package for visualising and comparing the results of"
     " numerical simulations from pregnant and non-pregnant"
     " uterine smooth muscle cells.",
