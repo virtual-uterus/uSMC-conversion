@@ -1,6 +1,6 @@
 # Ignore Python stuff
-code/__pycache__
-code/*.swp
+conversion/__pycache__
+conversion.egg-info
 
 # Ignore results
 res/
