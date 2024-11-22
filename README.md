@@ -54,10 +54,15 @@ $ python3 -m venv conversion-env
 $ source ~/venv/conversion-env/bin/activate
 ```
 
-Now navigate to the project directory and install the conversion module with the following commands:
+Now, navigate to the project directory and install the conversion module with the following commands:
 ```bash
 $ cd /path/to/uSMC-conversion/
 $ pip3 install -e .
+```
+
+Run the test to make sure that the code is working properly:
+```bash
+$ pytest
 ```
 
 Finally, create the *res/* directory in the uSMC-conversion directory to store the results in:
