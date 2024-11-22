@@ -20,7 +20,8 @@ The project is structure as follows:
 ```
 uSMC-conversion/ (top-level directory)
 |-- cells/ (contains the cellML implementations)
-|-- code/ (contains the Python code)
+|-- scripts/ (contains the Python scripts)
+|-- conversion/ (contains the conversion module)
 |-- res/ (contains simulation outputs)
 ```
 
@@ -42,10 +43,21 @@ $ git clone git@github.com/mathiasroesler/uSMC-conversion.git
 $ cd uSMC-conversion
 ```
 
-
-Next, install the required packages with the following command:
+It is recommended to create a virtual environment in which to run the code. Navigate into the directory where you want the virtual environment to reside, for example:
 ```bash
-$ pip3 install -r requirements.txt
+$ cd ~/venv
+```
+
+Next, create a virtual environment and activate it:
+```bash
+$ python3 -m venv conversion-env
+$ source ~/venv/conversion-env/bin/activate
+```
+
+Now navigate to the project directory and install the conversion module with the following commands:
+```bash
+$ cd /path/to/uSMC-conversion/
+$ pip3 install -e .
 ```
 
 Finally, create the *res/* directory in the uSMC-conversion directory to store the results in:
@@ -55,7 +67,7 @@ $ mkdir res
 
 <a id="code"></a>
 ### Running the code
-There are three scripts that can be run, contained in the *code/* directory: 
+There are three scripts that can be run, contained in the *scripts/* directory: 
 * ***PNP-comp.py***
 * ***param-sweep.py***
 * ***sensitivity.py***
@@ -81,7 +93,7 @@ The **sim_output.pkl** file is required to use the **-m** flag and generate a  *
 
 **Note:** the estrus stages are always in the same order: proestrus, estrus, metestrus, diestrus.
 
-Run the following command from inside the *code/* directory to view the help message:
+Run the following command from inside the *scripts/* directory to view the help message:
 ```bash
 $ python3 PNP-comp.py -h
 ```
@@ -89,9 +101,10 @@ $ python3 PNP-comp.py -h
 
 <a id="sweep"></a>
 #### ***param-sweep.py*** script
-The ***param-sweep.py*** performs a parameter sweep for a given parameter and uses the provided metric to compare the results with the default simulation of the non-pregnant model at the same estrus stage. The script has two positional arguments:
+The ***param-sweep.py*** performs a parameter sweep for a given parameter and uses the provided metric to compare the results with the default simulation of the non-pregnant or pregnant model at the same estrus stage. The script has three positional arguments:
 * **param**, the name of the parameter to change, if the specified parameter is not in the parameter list, an error is thrown
 * **metric**, the metric to use for comparison (the options can be found in the [***PNP-comp.py***](#pnp) description)
+* **model**, the name of the model to compare to either Means (pregnant) or Roesler (non-pregnant)
 
 The script has two sub-commands: **sweep** and **plot**.
 The **sweep** sub-command computes the results for different values of the given parameter **param**. It has three positional arguments:
@@ -105,19 +118,19 @@ The **sweep** sub-command will generate .pkl files in the *res/* directory with 
 
 The **plot** sub-command plots the results without running the parameter sweep again. It can only be called after the **sweep** command has been used and the .pkl files have been generated. 
 
-Run the following command from inside the *code/* directory to view the help message:
+Run the following command from inside the *scripts/* directory to view the help message:
 ```bash
 $ python3 param-sweep.py -h
 ```
 
-An example of the **sweep** command for 10 values of the gkv43 parameter with the RMSE metric for all stages of the estrus cycle:
+An example of the **sweep** command for 10 values of the gkv43 parameter with the RMSE metric for all stages of the estrus cycle compared with the pregnant model output:
 ```bash
-$ python3 param-sweep gkv43 rmse sweep 1.2 2.6 10
+$ python3 param-sweep gkv43 rmse Means sweep 1.2 2.6 10
 ```
 
 An example of the **plot** command for the gkv43 parameter with the RMSE metric:
 ```bash
-$ python3 param-sweep gkv43 rmse plot
+$ python3 param-sweep gkv43 rmse Means plot
 ```
 
 <a id="sense"></a>
@@ -130,9 +143,9 @@ The ***sensitivity.py*** can only be run once the parameter sweeps for every par
 ### Example workflow 
 The following set of instructions are an example of how to use the different scripts to generate the sensitivity analysis results. They assume that the [setup](#setup) has been completed.
 
-Navigate to the *code/* directory from the uSMC-conversion directory:
+Navigate to the *scripts/* directory from the uSMC-conversion directory:
 ```
-$ cd code
+$ cd script
 ```
 
 Run the [***PNP-comp.py***](#pnp) script to view the output of the pregnant and non-pregnant models using the RMSE metric:
@@ -141,12 +154,12 @@ $ python3 PNP-comp.py rmse
 ```
 **Note:** the **-p** and **-m** flags of the [***PNP-comp.py***](#pnp) script can now be used.
 
-Use the [***param-sweep.py***](#sweep) script to run the parameter sweeps for all four parameters. The ranges provided here compute 20 simulations for each parameter at each stage using the RMSE metric:
+Use the [***param-sweep.py***](#sweep) script to run the parameter sweeps for all four parameters. The ranges provided here compute 20 simulations for each parameter at each stage comparing to the default non-pregnant output using the RMSE metric:
 ```
-$ python3 param-sweep.py gcal rmse sweep 0.17 0.6 20
-$ python3 param-sweep.py gna rmse sweep 0.014 0.0625 20
-$ python3 param-sweep.py gkca rmse sweep 2.0 3.0 20
-$ python3 param-sweep.py gkv43 rmse sweep 1.2 2.6 20
+$ python3 param-sweep.py gcal rmse Roesler sweep 0.17 0.6 20
+$ python3 param-sweep.py gna rmse Roesler sweep 0.014 0.0625 20
+$ python3 param-sweep.py gkca rmse Roesler sweep 2.0 3.0 20
+$ python3 param-sweep.py gkv43 rmse Roesler sweep 1.2 2.6 20
 ```
 **Note:** the plot sub-command of the [***param-sweep.py***](#sweep) script can now be used.
 
