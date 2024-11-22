@@ -24,6 +24,11 @@ def computeL2Norm(y_true, y_pred):
     l2 -- float, Euclidean distance.
 
     """
+    if len(y_true) == 0:
+        raise ValueError("Error: empty array y_true\n")
+    if len(y_pred) == 0:
+        raise ValueError("Error: empty array y_pred\n")
+
     return np.linalg.norm(y_true - y_pred)
 
 
@@ -76,11 +81,14 @@ def computeComparison(y_true, y_pred, metric):
     Arguments:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
-    metric -- str, comparison metric, {l2, rmse, mae, correl}
+    metric -- str, comparison metric, {l2, rmse, mae, correl}.
 
     Return:
     comp_point -- float, comparison point.
 
+    Raises:
+    ValueError -- if the provided metric is not one of
+    {'l2', 'rmse', 'mae', 'correl'}.
     """
     match metric:
         case "l2":
@@ -94,3 +102,5 @@ def computeComparison(y_true, y_pred, metric):
 
         case "correl":
             return computeCorrelation(y_true, y_pred)
+        case _:
+            raise ValueError("Error: invalid metric {}\n".format(metric))

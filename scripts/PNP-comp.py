@@ -71,11 +71,15 @@ if __name__ == "__main__":
             ) = Roesler2024.solveModel(init_states_R, constants_R)
 
             sim_output[key] = states_R[0, :]  # Membrane potential for plot
-            comp_points[i] = metrics.computeComparison(
-                states_M[0, :] / max(abs(states_M[0, :])),
-                states_R[0, :] / max(abs(states_R[0, :])),
-                args.metric,
-            )
+            try:
+                comp_points[i] = metrics.computeComparison(
+                    states_M[0, :] / max(abs(states_M[0, :])),
+                    states_R[0, :] / max(abs(states_R[0, :])),
+                    args.metric,
+                )
+            except ValueError as e:
+                print(e)
+                exit()
 
             # Reset the model
             init_states_R, constants_R = Roesler2024.initConsts()
@@ -98,12 +102,17 @@ if __name__ == "__main__":
         if args.metric_only:
             # Compute just the metric
             for i, key in enumerate(constants.ESTRUS.keys()):
-                comp_points[i] = metrics.computeComparison(
-                    sim_output["means"][0, :] /
-                    max(abs(sim_output["means"][0, :])),
-                    sim_output[key][0, :] / max(abs(sim_output[key][0, :])),
-                    args.metric,
-                )
+                try:
+                    comp_points[i] = metrics.computeComparison(
+                        sim_output["means"][0, :] /
+                        max(abs(sim_output["means"][0, :])),
+                        sim_output[key][0, :] /
+                        max(abs(sim_output[key][0, :])),
+                        args.metric,
+                    )
+                except ValueError as e:
+                    print(e)
+                    exit()
 
             with open(comp_file, "wb") as handler:
                 # Pickle data

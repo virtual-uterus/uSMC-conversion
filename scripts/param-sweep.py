@@ -170,11 +170,15 @@ if __name__ == "__main__":
                 states,
                 _,
             ) = Roesler2024.solveModel(init_states_R, constants_R)
-            comp_points[i] = metrics.computeComparison(
-                orig_states[0, :] / max(abs(orig_states[0, :])),
-                states[0, :] / max(abs(states[0, :])),
-                args.metric,
-            )
+            try:
+                comp_points[i] = metrics.computeComparison(
+                    orig_states[0, :] / max(abs(orig_states[0, :])),
+                    states[0, :] / max(abs(states[0, :])),
+                    args.metric,
+                )
+            except ValueError as e:
+                print(e)
+                exit()
 
         print("\n  Writing results\n")
         output_file = "../res/{}_{}_{}_sweep.pkl".format(
