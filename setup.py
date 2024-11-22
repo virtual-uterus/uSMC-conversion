@@ -1,4 +1,13 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+
+
+# Function to read requirements.txt
+def read_requirements():
+    requirements_file = Path(__file__).parent / "requirements.txt"
+    with requirements_file.open(encoding="utf-8") as f:
+        return f.read().splitlines()
+
 
 setup(
     name="conversion",
@@ -14,11 +23,6 @@ setup(
     license="Apache License 2.0",  # License type
     packages=find_packages(),
     python_requires=">=3.8",  # Minimum Python version required
-    install_requires=[
-        "numpy",  # Dependencies
-        "matplotlib",
-        "scikit_learn",
-        "scipy",
-    ],
+    install_requires=read_requirements(),
     zip_safe=True,
 )
