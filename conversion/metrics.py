@@ -23,6 +23,9 @@ def computeL2Norm(y_true, y_pred):
     Return:
     l2 -- float, Euclidean distance.
 
+    Raises:
+    ValueError -- if one of the arrays is empty.
+
     """
     if len(y_true) == 0:
         raise ValueError("Error: empty array y_true\n")
