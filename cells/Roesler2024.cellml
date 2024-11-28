@@ -76,36 +76,52 @@
     <component name="environment">
         <variable name="time" public_interface="out" units="msec"/>
     </component>
+    <!--def comp{stimulus_protocol} stimulus_protocol as
+    var I_stim: pA_per_pF {pub: out};
+    var time: msec {pub: in};
+    var stim_start: msec {init: 1000};
+    var stim_duration: msec {init: 10000};
+    var stim_current: pA_per_pF {init: -0.41};
+
+    // P -0.41, E: -0.41, M: -0.35, D: -0.2;
+
+    I_stim ={stimulus_calculation} sel
+        case (time > stim_start) and (time < stim_start+stim_duration):
+            stim_current;
+        otherwise:
+            0.0{pA_per_pF};
+    endsel;
+enddef;-->
     <component cmeta:id="stimulus_protocol" name="stimulus_protocol">
         <variable name="I_stim" public_interface="out" units="pA_per_pF"/>
         <variable name="time" public_interface="in" units="msec"/>
-        <variable initial_value="2000" name="stim_start" units="msec"/>
-        <variable initial_value="4000" name="stim_duration" units="msec"/>
+        <variable initial_value="1000" name="stim_start" units="msec"/>
+        <variable initial_value="58000" name="stim_period" units="msec"/>
+        <variable initial_value="10000" name="stim_duration" units="msec"/>
         <variable initial_value="-0.41" name="stim_current" units="pA_per_pF"/>
-        <!-- P -0.41, E: -0.41, M: -0.35, D: -0.2;-->
         <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply id="stimulus_calculation">
                 <eq/>
                 <ci>I_stim</ci>
                 <piecewise>
                     <piece>
+                        <cn cellml:units="pA_per_pF">0.0</cn>
+                        <apply>
+                            <lt/>
+                            <ci>time</ci>
+                            <ci>stim_start</ci>
+                        </apply>
+                    </piece>
+                    <piece>
                         <ci>stim_current</ci>
                         <apply>
-                            <and/>
+                            <lt/>
                             <apply>
-                                <gt/>
+                                <rem/>
                                 <ci>time</ci>
-                                <ci>stim_start</ci>
+                                <ci>stim_period</ci>
                             </apply>
-                            <apply>
-                                <lt/>
-                                <ci>time</ci>
-                                <apply>
-                                    <plus/>
-                                    <ci>stim_start</ci>
-                                    <ci>stim_duration</ci>
-                                </apply>
-                            </apply>
+                            <ci>stim_duration</ci>
                         </apply>
                     </piece>
                     <otherwise>
@@ -115,23 +131,6 @@
             </apply>
         </math>
     </component>
-    <!--def comp{stimulus_protocol} stimulus_protocol as
-    var I_stim: pA_per_pF {pub: out};
-    var time: msec {pub: in};
-    var stim_start: msec {init: 2000};
-    var stim_period: msec {init: 10000};
-    var stim_duration: msec {init: 4000};
-    var stim_current: pA_per_pF {init: -0.25};
-
-    I_stim ={stimulus_calculation} sel
-        case time < stim_start:
-            0.0{pA_per_pF};
-        case rem(time, stim_period) < stim_duration:
-            stim_current;
-        otherwise:
-            0.0{pA_per_pF};
-    endsel;
-enddef;-->
     <connection>
         <map_components component_1="stimulus_protocol" component_2="environment"/>
         <map_variables variable_1="time" variable_2="time"/>
