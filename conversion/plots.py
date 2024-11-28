@@ -15,6 +15,33 @@ import matplotlib.pyplot as plt
 from .constants import ESTRUS, COLOURS, LABELS, PARAM
 
 
+def plot_simulation(data, time):
+    """Plots the output of a single simulation
+
+    Arguments:
+    data -- np.array, array containing the data to plot.
+    time -- np.array, array of timestamps in seconds.
+
+    Returns:
+
+    Raises:
+    ValueError -- if data and time do not have the same shape
+
+    """
+    if not data.shape == time.shape:
+        raise ValueError("data and time array should have the same shape\n")
+
+    fig, ax = plt.subplots(dpi=300)
+
+    plt.plot(time, data)
+    plt.xlabel("Time (s)")
+    plt.ylabel("Membrane potential (mV)")
+
+    plt.xlim((time[0], time[len(time) - 1]))
+
+    plt.show()
+
+
 def plot_PNP_comp(metric):
     """Plots the pregnant and non-pregnant comparison results
 
