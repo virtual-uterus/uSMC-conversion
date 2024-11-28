@@ -9,10 +9,10 @@ Date: 11/24
 """
 
 import sys
-from .constants import ESTRUS_PARAMS, E2_MAP, P4_MAP
+from conversion.constants import ESTRUS_PARAMS, E2_MAP, P4_MAP
 
 
-def setParams(constants, legend_constants, param, value):
+def set_params(constants, legend_constants, param, value):
     """Sets the new value for the specified parameter
 
     Raises an IndexError if the parameter was not found in the list.
@@ -71,7 +71,7 @@ def setParams(constants, legend_constants, param, value):
     return constants, idx
 
 
-def setEstrusParams(constants, legend_constants, estrus):
+def set_estrus_params(constants, legend_constants, estrus):
     """Sets the specific values of the constants for the estrus stage
 
     Arguments:
@@ -88,11 +88,11 @@ def setEstrusParams(constants, legend_constants, estrus):
 
     """
     if estrus not in ESTRUS_PARAMS.keys():
-        raise KeyError("Error: the key {} is not valid\n".format(estrus))
+        raise KeyError("the key {} is not valid\n".format(estrus))
 
     for key in ESTRUS_PARAMS[estrus].keys():
         try:
-            constants, _ = setParams(
+            constants, _ = set_params(
                 constants, legend_constants, key, ESTRUS_PARAMS[estrus][key]
             )
 
