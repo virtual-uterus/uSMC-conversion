@@ -471,7 +471,7 @@ def compute_rates(voi, states, constants):
     """
     rates = [0.0] * sizeStates
     algebraic = [0.0] * sizeAlgebraic
-    algebraic[6] = 1.00000 / (1.00000 + np.exp((states[0] + 38.0000) / 7.00000),)
+    algebraic[6] = 1.00000 / (1.00000 + np.exp((states[0] + 38.0000) / 7.00000))
     rates[6] = (algebraic[6] - states[6]) / constants[56]
     algebraic[13] = 0.340000 + 0.660000 / (
         1.00000 + np.exp((states[0] + 45.3000) / 12.3000)
@@ -1356,9 +1356,6 @@ def solve_model(init_states, constants, start=0, end=15000, nb_steps=100000):
     """
     # Set timespan to solve over
     voi = np.linspace(start, end, nb_steps)
-
-    # Set timespan to solve over
-    voi = np.linspace(0, 10, 500)
 
     # Construct ODE object to solve
     r = ode(compute_rates)
