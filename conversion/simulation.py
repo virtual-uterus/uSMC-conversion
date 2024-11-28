@@ -8,7 +8,12 @@ Author: Mathias Roesler
 Date: 11/24
 """
 
+import os
+import pickle
+
 from conversion import Tong2011, Tong2014, Means2023, Roesler2024, utils
+
+from conversion.constants import RES_DIR
 
 
 def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
@@ -104,3 +109,40 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
             raise ValueError(f"{model} incorrect model name\n")
 
     return voi, states
+
+
+def save_simulation(model_name, sim_data, t, estrus=""):
+    """Saves the results of a simulation as {model_name}_{duration}s.pkl with
+    duration the last timestep in t. If the model is Roesler2024 then the save
+    name includes the estrus stage between model_name and duration.
+
+    The data and time are stored in a dictionnary with respective keys being
+    data and time.
+
+    Arguments:
+    model_name -- str, name of the model to use {"Roesler2024", "Means2023",
+    "Tong2011", "Tong2014"}.
+    sim_data -- np.array, simulation data to save.
+    t -- np.array, simulation timestamps in ms.
+    estrus -- str, estrus stage for the Roesler2024 model, default value "".
+
+    Return:
+
+    Raises:
+
+    """
+    duration = int(t[len(t) - 1] * 1e-3)  # Duration converted in seconds
+
+    if model_name == "Roesler2024":
+        res_file = os.path.join(
+            RES_DIR,
+            f"{model_name}_{estrus}_{duration}s.pkl",
+        )
+    else:
+        res_file = os.path.join(RES_DIR, f"{model_name}_{duration}s.pkl")
+
+    save_dict = {"data": sim_data, "time": t}
+
+    with open(res_file, "wb") as handler:
+        # Pickle data
+        pickle.dump(save_dict, handler)
