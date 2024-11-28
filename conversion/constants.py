@@ -15,6 +15,8 @@ ATOL = 1e-07
 RTOL = 1e-07
 MAX_STEP = 0.1
 
+RES_DIR = "../res/"  # Directory to store results
+
 # Specific values for different estrus stages
 ESTRUS_PARAMS = {
     "estrus": {"gkv43": 2.5, "stim_current": -0.41, "P4": 14, "E2": 40},
