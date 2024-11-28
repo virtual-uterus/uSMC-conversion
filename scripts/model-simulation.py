@@ -62,6 +62,8 @@ if __name__ == "__main__":
             args.estrus,
         )
         plots.plot_simulation(data[0, :], time / 1e3)
+        simulation.save_simulation(args.model, data[0, :], time, args.estrus)
+
     except Exception as e:
         sys.stderr.write(f"Error: {e}")
         exit()
