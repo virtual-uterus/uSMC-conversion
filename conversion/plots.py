@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from .constants import ESTRUS, COLOURS, LABELS, PARAM
 
 
-def plotPNPComp(metric):
+def plot_PNP_comp(metric):
     """Plots the pregnant and non-pregnant comparison results
 
     Arguments:
@@ -44,7 +44,7 @@ def plotPNPComp(metric):
     plt.show()
 
 
-def plotParamSweep(param, metric):
+def plot_param_sweep(param, metric):
     """Plots the comparison data from different stages of the estrus for
     a given parameter and metric
 
@@ -79,7 +79,7 @@ def plotParamSweep(param, metric):
     plt.show()
 
 
-def plotSensitivity(metric):
+def plot_sensitivity(metric):
     """Plots the results of the sensitivity analysis for a certain metric
 
     Arguments:
@@ -132,7 +132,7 @@ def plotSensitivity(metric):
     plt.show()
 
 
-def plotSimulationOutput(sim_output, metric):
+def plot_simulation_output(sim_output, metric):
     """Plots the output of a non-pregnant simulation and the
     comparison metric
 

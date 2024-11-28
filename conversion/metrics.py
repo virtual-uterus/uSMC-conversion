@@ -13,7 +13,7 @@ import sklearn.metrics as skm
 import scipy.stats as stat
 
 
-def computeL2Norm(y_true, y_pred):
+def compute_L2_norm(y_true, y_pred):
     """Computes the Euclidean distance between y_true and y_pred
 
     Arguments:
@@ -35,7 +35,7 @@ def computeL2Norm(y_true, y_pred):
     return np.linalg.norm(y_true - y_pred)
 
 
-def computeMAE(y_true, y_pred):
+def compute_mae(y_true, y_pred):
     """Computes the Mean Absolute Error between y_true and y_pred
 
     Arguments:
@@ -49,7 +49,7 @@ def computeMAE(y_true, y_pred):
     return skm.mean_absolute_error(y_true, y_pred)
 
 
-def computeRMSE(y_true, y_pred):
+def compute_rmse(y_true, y_pred):
     """Computes the Root Mean Squared Error between y_true and y_pred
 
     Arguments:
@@ -63,7 +63,7 @@ def computeRMSE(y_true, y_pred):
     return skm.mean_squared_error(y_true, y_pred, squared=False)
 
 
-def computeCorrelation(y_true, y_pred):
+def compute_correlation(y_true, y_pred):
     """Computes the Pearson correlation between y_true and y_pred
 
     Arguments:
@@ -78,7 +78,7 @@ def computeCorrelation(y_true, y_pred):
     return correl
 
 
-def computeComparison(y_true, y_pred, metric):
+def compute_comparison(y_true, y_pred, metric):
     """Computes the comparison between y_true and y_pred based on the metric
 
     Arguments:
@@ -95,15 +95,15 @@ def computeComparison(y_true, y_pred, metric):
     """
     match metric:
         case "l2":
-            return computeL2Norm(y_true, y_pred)
+            return compute_L2_norm(y_true, y_pred)
 
         case "rmse":
-            return computeRMSE(y_true, y_pred)
+            return compute_rmse(y_true, y_pred)
 
         case "mae":
-            return computeMAE(y_true, y_pred)
+            return compute_mae(y_true, y_pred)
 
         case "correl":
-            return computeCorrelation(y_true, y_pred)
+            return compute_correlation(y_true, y_pred)
         case _:
             raise ValueError("Error: invalid metric {}\n".format(metric))

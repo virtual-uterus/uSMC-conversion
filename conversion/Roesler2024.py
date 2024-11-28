@@ -9,7 +9,7 @@ sizeStates = 9
 sizeConstants = 77
 
 
-def createLegends():
+def create_legends():
     """Creates the lists of legends
 
     Arguments:
@@ -184,7 +184,7 @@ def createLegends():
     return (legend_states, legend_algebraic, legend_voi, legend_constants)
 
 
-def initConsts():
+def init_consts():
     """Initialises the constants
 
     Arguments:
@@ -299,7 +299,7 @@ def initConsts():
     return (states, constants)
 
 
-def computeRates(voi, states, constants):
+def compute_rates(voi, states, constants):
     """Computes rates of the system
 
     Arguments:
@@ -372,7 +372,7 @@ def computeRates(voi, states, constants):
         )
     )
     rates[4] = (algebraic[21] - states[4]) / algebraic[23]
-    algebraic[0] = customPiecewise(
+    algebraic[0] = custom_piecewise(
         [
             np.greater(voi, constants[0]) & np.less(voi, constants[0] + constants[1]),
             constants[2],
@@ -557,7 +557,7 @@ def computeRates(voi, states, constants):
     return rates
 
 
-def computeAlgebraic(constants, states, voi):
+def compute_algebraic(constants, states, voi):
     """Computes algebraics of the system
 
     Arguments:
@@ -624,7 +624,7 @@ def computeAlgebraic(constants, states, voi):
             * (1.00000 + np.exp(-(states[0] + 9.49866) / 3.39450))
         )
     )
-    algebraic[0] = customPiecewise(
+    algebraic[0] = custom_piecewise(
         [
             np.greater(voi, constants[0]) & np.less(voi, constants[0] + constants[1]),
             constants[2],
@@ -811,7 +811,7 @@ def computeAlgebraic(constants, states, voi):
     return algebraic
 
 
-def customPiecewise(cases):
+def custom_piecewise(cases):
     """Compute result of a piecewise function
 
     Arguments:
@@ -823,7 +823,7 @@ def customPiecewise(cases):
     return np.select(cases[0::2], cases[1::2])
 
 
-def solveModel(init_states, constants, start=0, end=15000, nb_steps=100000):
+def solve_model(init_states, constants, start=0, end=15000, nb_steps=100000):
     """Solve model with ODE solver
 
     Arguments:
@@ -840,7 +840,7 @@ def solveModel(init_states, constants, start=0, end=15000, nb_steps=100000):
     voi = np.linspace(start, end, nb_steps)
 
     # Construct ODE object to solve
-    r = ode(computeRates)
+    r = ode(compute_rates)
     r.set_integrator(
         SOLVER,
         method=METHOD,
@@ -862,5 +862,5 @@ def solveModel(init_states, constants, start=0, end=15000, nb_steps=100000):
             break
 
     # Compute algebraic variables
-    algebraic = computeAlgebraic(constants, states, voi)
+    algebraic = compute_algebraic(constants, states, voi)
     return (voi, states, algebraic)

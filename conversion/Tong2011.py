@@ -9,7 +9,7 @@ sizeStates = 22
 sizeConstants = 83
 
 
-def createLegends():
+def create_legends():
     """Creates the lists of legends
 
     Arguments:
@@ -239,7 +239,7 @@ def createLegends():
     return (legend_states, legend_algebraic, legend_voi, legend_constants)
 
 
-def initConsts():
+def init_consts():
     """Initialises the constants
 
     Arguments:
@@ -380,7 +380,7 @@ def initConsts():
     return (states, constants)
 
 
-def computeRates(voi, states, constants):
+def compute_rates(voi, states, constants):
     """Computes rates of the system
 
     Arguments:
@@ -394,31 +394,37 @@ def computeRates(voi, states, constants):
     """
     rates = [0.0] * sizeStates
     algebraic = [0.0] * sizeAlgebraic
-    algebraic[6] = 1.00000 / (1.00000 + np.exp((states[0] + 38.0000) / 7.00000))
+    algebraic[6] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 38.0000) / 7.00000))
     rates[6] = (algebraic[6] - states[6]) / constants[52]
     algebraic[1] = 1.00000 / (
-        1.00000 + np.power((constants[50] * constants[5]) / states[1], constants[51])
+        1.00000 +
+        np.power((constants[50] * constants[5]) / states[1], constants[51])
     )
     algebraic[19] = 4000.00 * (
         0.234845
         + (1.00000 - 0.234845)
         / (
             1.00000
-            + np.power(states[1] / (constants[50] * constants[5]), constants[51])
+            + np.power(states[1] / (constants[50] *
+                       constants[5]), constants[51])
         )
     )
     rates[2] = (algebraic[1] - states[2]) / algebraic[19]
-    algebraic[3] = 1.00000 / (1.00000 + np.exp(-(states[0] + 35.9584) / 9.24013))
+    algebraic[3] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 35.9584) / 9.24013))
     algebraic[20] = 0.250000 + 7.00000 / (
         1.00000 + np.exp((states[0] + 38.0000) / 10.0000)
     )
     rates[3] = (algebraic[3] - states[3]) / algebraic[20]
-    algebraic[4] = 1.00000 / (1.00000 + np.exp((states[0] + 57.0000) / 8.00000))
+    algebraic[4] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 57.0000) / 8.00000))
     algebraic[21] = 0.900000 + 1002.85 / (
         1.00000 + np.power((states[0] + 47.5000) / 1.50000, 2.00000)
     )
     rates[4] = (algebraic[4] - states[4]) / algebraic[21]
-    algebraic[5] = 1.00000 / (1.00000 + np.exp(-(states[0] + 22.0000) / 7.00000))
+    algebraic[5] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 22.0000) / 7.00000))
     algebraic[22] = 2.29000 + 5.70000 / (
         1.00000 + np.power((states[0] + 29.9700) / 9.00000, 2.00000)
     )
@@ -432,7 +438,8 @@ def computeRates(voi, states, constants):
         )
     )
     rates[7] = (algebraic[6] - states[7]) / algebraic[23]
-    algebraic[7] = 1.00000 / (1.00000 + np.exp(-(states[0] + 54.2300) / 9.88000))
+    algebraic[7] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 54.2300) / 9.88000))
     algebraic[24] = 0.450000 + 3.90000 / (
         1.00000 + np.power((states[0] + 66.0000) / 26.0000, 2.00000)
     )
@@ -449,12 +456,14 @@ def computeRates(voi, states, constants):
         )
     )
     rates[9] = (algebraic[8] - states[9]) / algebraic[25]
-    algebraic[9] = 0.978613 / (1.00000 + np.exp(-(states[0] + 18.6736) / 26.6606))
+    algebraic[9] = 0.978613 / \
+        (1.00000 + np.exp(-(states[0] + 18.6736) / 26.6606))
     algebraic[26] = 500.000 / (
         1.00000 + np.power((states[0] + 60.7100) / 15.7900, 2.00000)
     )
     rates[10] = (algebraic[9] - states[10]) / algebraic[26]
-    algebraic[10] = 1.00000 / (1.00000 + np.exp((states[0] + 63.0000) / 6.30000))
+    algebraic[10] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 63.0000) / 6.30000))
     algebraic[27] = 5000.00 / (
         1.00000 + np.power((states[0] + 62.7133) / 35.8611, 2.00000)
     )
@@ -463,12 +472,14 @@ def computeRates(voi, states, constants):
         1.00000 + np.exp((states[0] + 22.0000) / 4.00000)
     )
     rates[12] = (algebraic[10] - states[12]) / algebraic[28]
-    algebraic[11] = 0.948000 / (1.00000 + np.exp(-(states[0] + 17.9100) / 18.4000))
+    algebraic[11] = 0.948000 / \
+        (1.00000 + np.exp(-(states[0] + 17.9100) / 18.4000))
     algebraic[29] = 100.000 / (
         1.00000 + np.power((states[0] + 64.1000) / 28.6700, 2.00000)
     )
     rates[13] = (algebraic[11] - states[13]) / algebraic[29]
-    algebraic[12] = 1.00000 / (1.00000 + np.exp((states[0] + 21.2000) / 5.70000))
+    algebraic[12] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 21.2000) / 5.70000))
     algebraic[30] = 1.00000e06 * (
         1.00000
         - 1.00000
@@ -487,7 +498,8 @@ def computeRates(voi, states, constants):
         )
     )
     rates[15] = (algebraic[12] - states[15]) / algebraic[31]
-    algebraic[13] = 1.00000 / (1.00000 + np.exp(-(states[0] + 27.7900) / 7.57000))
+    algebraic[13] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 27.7900) / 7.57000))
     algebraic[32] = 17.0000 / (
         1.00000 + np.power((states[0] + 20.5232) / 35.0000, 2.00000)
     )
@@ -500,15 +512,18 @@ def computeRates(voi, states, constants):
     )
     rates[17] = (algebraic[14] - states[17]) / algebraic[33]
     algebraic[15] = -0.749234 / (
-        1.00000 + np.power((states[1] * constants[6] - 0.0630535) / 0.161942, 2.00000)
+        1.00000 + np.power((states[1] * constants[6] -
+                           0.0630535) / 0.161942, 2.00000)
     ) + 8.38384 / (
-        1.00000 + np.power((states[1] * constants[6] + 1538.29) / 739.057, 2.00000)
+        1.00000 + np.power((states[1] * constants[6] +
+                           1538.29) / 739.057, 2.00000)
     )
     algebraic[34] = (
         5011.47
         / (
             1.00000
-            + np.power((states[1] * constants[6] + 0.237503) / 0.000239278, 0.422910)
+            + np.power((states[1] * constants[6] +
+                       0.237503) / 0.000239278, 0.422910)
         )
         - 37.5137
     )
@@ -524,15 +539,18 @@ def computeRates(voi, states, constants):
     )
     rates[18] = (algebraic[38] - states[18]) / algebraic[43]
     algebraic[16] = -0.681249 / (
-        1.00000 + np.power((states[1] * constants[7] - 0.218988) / 0.428335, 2.00000)
+        1.00000 + np.power((states[1] * constants[7] -
+                           0.218988) / 0.428335, 2.00000)
     ) + 1.40001 / (
-        1.00000 + np.power((states[1] * constants[7] + 228.710) / 684.946, 2.00000)
+        1.00000 + np.power((states[1] * constants[7] +
+                           228.710) / 684.946, 2.00000)
     )
     algebraic[35] = (
         8540.23
         / (
             1.00000
-            + np.power((states[1] * constants[7] + 0.401189) / 0.00399115, 0.668054)
+            + np.power((states[1] * constants[7] +
+                       0.401189) / 0.00399115, 0.668054)
         )
         - 109.275
     )
@@ -547,12 +565,14 @@ def computeRates(voi, states, constants):
         1.00000 + np.power((states[0] - 153.019) / 66.4952, 2.00000)
     )
     rates[19] = (algebraic[39] - states[19]) / algebraic[44]
-    algebraic[17] = 1.00000 / (1.00000 + np.exp((states[0] + 105.390) / 8.65530))
+    algebraic[17] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 105.390) / 8.65530))
     algebraic[36] = 3.50000e-06 * np.exp(-0.0497000 * states[0])
     algebraic[40] = 0.0400300 * np.exp(0.0521100 * states[0])
     algebraic[45] = 1.00000 / (algebraic[36] + algebraic[40])
     rates[20] = (algebraic[17] - states[20]) / algebraic[45]
-    algebraic[18] = (states[0] * constants[66]) / (constants[65] * constants[68])
+    algebraic[18] = (states[0] * constants[66]) / \
+        (constants[65] * constants[68])
     algebraic[41] = 0.000600000 * np.exp(2.53000 * algebraic[18])
     algebraic[46] = 0.100000 * np.exp(-5.00000 * algebraic[18])
     algebraic[48] = 1.00000 / (
@@ -588,7 +608,8 @@ def computeRates(voi, states, constants):
         * states[4]
         * (states[0] - constants[71])
     )
-    algebraic[47] = 1.00000 / (1.00000 + np.power(states[1] / constants[19], 4.00000))
+    algebraic[47] = 1.00000 / \
+        (1.00000 + np.power(states[1] / constants[19], 4.00000))
     algebraic[49] = (
         constants[17]
         * algebraic[47]
@@ -598,7 +619,8 @@ def computeRates(voi, states, constants):
         * (states[0] - constants[18])
     )
     algebraic[51] = (
-        constants[20] * states[8] * states[8] * states[9] * (states[0] - constants[21])
+        constants[20] * states[8] * states[8] *
+        states[9] * (states[0] - constants[21])
     )
     algebraic[52] = constants[23] * (states[0] - constants[72])
     algebraic[53] = (
@@ -619,10 +641,12 @@ def computeRates(voi, states, constants):
         constants[28] * states[16] * states[17] * (states[0] - constants[72])
     )
     algebraic[56] = (
-        constants[22] * constants[26] * states[18] * (states[0] - constants[72])
+        constants[22] * constants[26] *
+        states[18] * (states[0] - constants[72])
     )
     algebraic[57] = (
-        constants[22] * constants[27] * states[19] * (states[0] - constants[72])
+        constants[22] * constants[27] *
+        states[19] * (states[0] - constants[72])
     )
     algebraic[58] = constants[30] * states[20] * (states[0] - constants[77])
     algebraic[59] = constants[29] * states[21] * (states[0] - constants[73])
@@ -636,7 +660,8 @@ def computeRates(voi, states, constants):
         / (
             constants[32] * constants[11]
             + constants[33] * constants[53]
-            + (4.00000 * constants[34] * states[1]) / (1.00000 + np.exp(algebraic[18]))
+            + (4.00000 * constants[34] * states[1]) /
+            (1.00000 + np.exp(algebraic[18]))
         )
     )
     algebraic[63] = (
@@ -667,7 +692,8 @@ def computeRates(voi, states, constants):
         * np.exp(constants[58] / 49.7100)
         * np.exp(-1.90000 * algebraic[18])
     )
-    algebraic[67] = constants[69] * constants[81] * constants[82] * algebraic[66]
+    algebraic[67] = constants[69] * \
+        constants[81] * constants[82] * algebraic[66]
     algebraic[70] = 1.00000 / (
         1.00000 + np.power(constants[43] / states[1], constants[44])
     )
@@ -734,7 +760,7 @@ def computeRates(voi, states, constants):
     return rates
 
 
-def computeAlgebraic(constants, states, voi):
+def compute_algebraic(constants, states, voi):
     """Computes algebraics of the system
 
     Arguments:
@@ -749,27 +775,33 @@ def computeAlgebraic(constants, states, voi):
     algebraic = np.array([[0.0] * len(voi)] * sizeAlgebraic)
     states = np.array(states)
     voi = np.array(voi)
-    algebraic[6] = 1.00000 / (1.00000 + np.exp((states[0] + 38.0000) / 7.00000))
+    algebraic[6] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 38.0000) / 7.00000))
     algebraic[1] = 1.00000 / (
-        1.00000 + np.power((constants[50] * constants[5]) / states[1], constants[51])
+        1.00000 +
+        np.power((constants[50] * constants[5]) / states[1], constants[51])
     )
     algebraic[19] = 4000.00 * (
         0.234845
         + (1.00000 - 0.234845)
         / (
             1.00000
-            + np.power(states[1] / (constants[50] * constants[5]), constants[51])
+            + np.power(states[1] / (constants[50] *
+                       constants[5]), constants[51])
         )
     )
-    algebraic[3] = 1.00000 / (1.00000 + np.exp(-(states[0] + 35.9584) / 9.24013))
+    algebraic[3] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 35.9584) / 9.24013))
     algebraic[20] = 0.250000 + 7.00000 / (
         1.00000 + np.exp((states[0] + 38.0000) / 10.0000)
     )
-    algebraic[4] = 1.00000 / (1.00000 + np.exp((states[0] + 57.0000) / 8.00000))
+    algebraic[4] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 57.0000) / 8.00000))
     algebraic[21] = 0.900000 + 1002.85 / (
         1.00000 + np.power((states[0] + 47.5000) / 1.50000, 2.00000)
     )
-    algebraic[5] = 1.00000 / (1.00000 + np.exp(-(states[0] + 22.0000) / 7.00000))
+    algebraic[5] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 22.0000) / 7.00000))
     algebraic[22] = 2.29000 + 5.70000 / (
         1.00000 + np.power((states[0] + 29.9700) / 9.00000, 2.00000)
     )
@@ -781,7 +813,8 @@ def computeAlgebraic(constants, states, voi):
             * (1.00000 + np.exp(-(states[0] + 9.49866) / 3.39450))
         )
     )
-    algebraic[7] = 1.00000 / (1.00000 + np.exp(-(states[0] + 54.2300) / 9.88000))
+    algebraic[7] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 54.2300) / 9.88000))
     algebraic[24] = 0.450000 + 3.90000 / (
         1.00000 + np.power((states[0] + 66.0000) / 26.0000, 2.00000)
     )
@@ -796,22 +829,26 @@ def computeAlgebraic(constants, states, voi):
             * (1.00000 + np.exp(-(states[0] + 61.1100) / 8.07000))
         )
     )
-    algebraic[9] = 0.978613 / (1.00000 + np.exp(-(states[0] + 18.6736) / 26.6606))
+    algebraic[9] = 0.978613 / \
+        (1.00000 + np.exp(-(states[0] + 18.6736) / 26.6606))
     algebraic[26] = 500.000 / (
         1.00000 + np.power((states[0] + 60.7100) / 15.7900, 2.00000)
     )
-    algebraic[10] = 1.00000 / (1.00000 + np.exp((states[0] + 63.0000) / 6.30000))
+    algebraic[10] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 63.0000) / 6.30000))
     algebraic[27] = 5000.00 / (
         1.00000 + np.power((states[0] + 62.7133) / 35.8611, 2.00000)
     )
     algebraic[28] = 30000.0 + 220000.0 / (
         1.00000 + np.exp((states[0] + 22.0000) / 4.00000)
     )
-    algebraic[11] = 0.948000 / (1.00000 + np.exp(-(states[0] + 17.9100) / 18.4000))
+    algebraic[11] = 0.948000 / \
+        (1.00000 + np.exp(-(states[0] + 17.9100) / 18.4000))
     algebraic[29] = 100.000 / (
         1.00000 + np.power((states[0] + 64.1000) / 28.6700, 2.00000)
     )
-    algebraic[12] = 1.00000 / (1.00000 + np.exp((states[0] + 21.2000) / 5.70000))
+    algebraic[12] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 21.2000) / 5.70000))
     algebraic[30] = 1.00000e06 * (
         1.00000
         - 1.00000
@@ -828,7 +865,8 @@ def computeAlgebraic(constants, states, voi):
             * (1.00000 + np.exp(-(states[0] + 24.9203) / 2.67915))
         )
     )
-    algebraic[13] = 1.00000 / (1.00000 + np.exp(-(states[0] + 27.7900) / 7.57000))
+    algebraic[13] = 1.00000 / \
+        (1.00000 + np.exp(-(states[0] + 27.7900) / 7.57000))
     algebraic[32] = 17.0000 / (
         1.00000 + np.power((states[0] + 20.5232) / 35.0000, 2.00000)
     )
@@ -839,15 +877,18 @@ def computeAlgebraic(constants, states, voi):
         1.00000 + np.power((states[0] + 34.1765) / 120.000, 2.00000)
     )
     algebraic[15] = -0.749234 / (
-        1.00000 + np.power((states[1] * constants[6] - 0.0630535) / 0.161942, 2.00000)
+        1.00000 + np.power((states[1] * constants[6] -
+                           0.0630535) / 0.161942, 2.00000)
     ) + 8.38384 / (
-        1.00000 + np.power((states[1] * constants[6] + 1538.29) / 739.057, 2.00000)
+        1.00000 + np.power((states[1] * constants[6] +
+                           1538.29) / 739.057, 2.00000)
     )
     algebraic[34] = (
         5011.47
         / (
             1.00000
-            + np.power((states[1] * constants[6] + 0.237503) / 0.000239278, 0.422910)
+            + np.power((states[1] * constants[6] +
+                       0.237503) / 0.000239278, 0.422910)
         )
         - 37.5137
     )
@@ -862,15 +903,18 @@ def computeAlgebraic(constants, states, voi):
         1.00000 + np.power((states[0] - 158.779) / -52.1497, 2.00000)
     )
     algebraic[16] = -0.681249 / (
-        1.00000 + np.power((states[1] * constants[7] - 0.218988) / 0.428335, 2.00000)
+        1.00000 + np.power((states[1] * constants[7] -
+                           0.218988) / 0.428335, 2.00000)
     ) + 1.40001 / (
-        1.00000 + np.power((states[1] * constants[7] + 228.710) / 684.946, 2.00000)
+        1.00000 + np.power((states[1] * constants[7] +
+                           228.710) / 684.946, 2.00000)
     )
     algebraic[35] = (
         8540.23
         / (
             1.00000
-            + np.power((states[1] * constants[7] + 0.401189) / 0.00399115, 0.668054)
+            + np.power((states[1] * constants[7] +
+                       0.401189) / 0.00399115, 0.668054)
         )
         - 109.275
     )
@@ -884,11 +928,13 @@ def computeAlgebraic(constants, states, voi):
     algebraic[44] = 13.8049 / (
         1.00000 + np.power((states[0] - 153.019) / 66.4952, 2.00000)
     )
-    algebraic[17] = 1.00000 / (1.00000 + np.exp((states[0] + 105.390) / 8.65530))
+    algebraic[17] = 1.00000 / \
+        (1.00000 + np.exp((states[0] + 105.390) / 8.65530))
     algebraic[36] = 3.50000e-06 * np.exp(-0.0497000 * states[0])
     algebraic[40] = 0.0400300 * np.exp(0.0521100 * states[0])
     algebraic[45] = 1.00000 / (algebraic[36] + algebraic[40])
-    algebraic[18] = (states[0] * constants[66]) / (constants[65] * constants[68])
+    algebraic[18] = (states[0] * constants[66]) / \
+        (constants[65] * constants[68])
     algebraic[41] = 0.000600000 * np.exp(2.53000 * algebraic[18])
     algebraic[46] = 0.100000 * np.exp(-5.00000 * algebraic[18])
     algebraic[48] = 1.00000 / (
@@ -923,7 +969,8 @@ def computeAlgebraic(constants, states, voi):
         * states[4]
         * (states[0] - constants[71])
     )
-    algebraic[47] = 1.00000 / (1.00000 + np.power(states[1] / constants[19], 4.00000))
+    algebraic[47] = 1.00000 / \
+        (1.00000 + np.power(states[1] / constants[19], 4.00000))
     algebraic[49] = (
         constants[17]
         * algebraic[47]
@@ -933,7 +980,8 @@ def computeAlgebraic(constants, states, voi):
         * (states[0] - constants[18])
     )
     algebraic[51] = (
-        constants[20] * states[8] * states[8] * states[9] * (states[0] - constants[21])
+        constants[20] * states[8] * states[8] *
+        states[9] * (states[0] - constants[21])
     )
     algebraic[52] = constants[23] * (states[0] - constants[72])
     algebraic[53] = (
@@ -954,10 +1002,12 @@ def computeAlgebraic(constants, states, voi):
         constants[28] * states[16] * states[17] * (states[0] - constants[72])
     )
     algebraic[56] = (
-        constants[22] * constants[26] * states[18] * (states[0] - constants[72])
+        constants[22] * constants[26] *
+        states[18] * (states[0] - constants[72])
     )
     algebraic[57] = (
-        constants[22] * constants[27] * states[19] * (states[0] - constants[72])
+        constants[22] * constants[27] *
+        states[19] * (states[0] - constants[72])
     )
     algebraic[58] = constants[30] * states[20] * (states[0] - constants[77])
     algebraic[59] = constants[29] * states[21] * (states[0] - constants[73])
@@ -971,7 +1021,8 @@ def computeAlgebraic(constants, states, voi):
         / (
             constants[32] * constants[11]
             + constants[33] * constants[53]
-            + (4.00000 * constants[34] * states[1]) / (1.00000 + np.exp(algebraic[18]))
+            + (4.00000 * constants[34] * states[1]) /
+            (1.00000 + np.exp(algebraic[18]))
         )
     )
     algebraic[63] = (
@@ -1002,7 +1053,8 @@ def computeAlgebraic(constants, states, voi):
         * np.exp(constants[58] / 49.7100)
         * np.exp(-1.90000 * algebraic[18])
     )
-    algebraic[67] = constants[69] * constants[81] * constants[82] * algebraic[66]
+    algebraic[67] = constants[69] * \
+        constants[81] * constants[82] * algebraic[66]
     algebraic[70] = 1.00000 / (
         1.00000 + np.power(constants[43] / states[1], constants[44])
     )
@@ -1083,7 +1135,7 @@ def custom_piecewise(cases):
     return np.select(cases[0::2], cases[1::2])
 
 
-def solveModel(init_states, constants, start=0, end=15000, nb_steps=100000):
+def solve_model(init_states, constants, start=0, end=15000, nb_steps=100000):
     """Solve model with ODE solver
 
     Arguments:
@@ -1100,7 +1152,7 @@ def solveModel(init_states, constants, start=0, end=15000, nb_steps=100000):
     voi = np.linspace(start, end, nb_steps)
 
     # Construct ODE object to solve
-    r = ode(computeRates)
+    r = ode(compute_rates)
     r.set_integrator(
         SOLVER,
         method=METHOD,
@@ -1122,5 +1174,5 @@ def solveModel(init_states, constants, start=0, end=15000, nb_steps=100000):
             break
 
     # Compute algebraic variables
-    algebraic = computeAlgebraic(constants, states, voi)
+    algebraic = compute_algebraic(constants, states, voi)
     return (voi, states, algebraic)
