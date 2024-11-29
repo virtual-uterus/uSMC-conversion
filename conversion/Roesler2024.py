@@ -902,10 +902,6 @@ def solve_model(init_states, constants, start=0, end=15000, nb_steps=100000):
         rtol=RTOL,
         max_step=MAX_STEP,
     )
-
-    # Construct ODE object to solve
-    r = ode(compute_rates)
-    r.set_integrator("vode", method="bdf", atol=1e-06, rtol=1e-06, max_step=1)
     r.set_initial_value(init_states, voi[0])
     r.set_f_params(constants)
 
