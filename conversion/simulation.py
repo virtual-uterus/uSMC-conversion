@@ -11,8 +11,12 @@ Date: 11/24
 import os
 
 from conversion import Tong2011, Tong2014, Means2023, Roesler2024, utils
+import numpy as np
 
-from conversion.constants import RES_DIR
+from conversion import Tong2011, Tong2014, Means2023, Roesler2024
+from conversion import utils, metrics
+
+from conversion.constants import RES_DIR, ESTRUS
 
 
 def run_simulation(
@@ -166,6 +170,53 @@ def run_simulation(
 
     return voi, states
 
+
+def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
+    """Runs a parameter sweep and compares the results to a base simulation
+
+    Args:
+    sweep_model -- str, name of the model to use {"Roesler2024", "Means2023",
+    "Tong2011", "Tong2014"}.
+    param -- str, name of the parameter to sweep over.
+    values -- np.array, array of values to sweep over.
+    metric -- str, name of the metric to use from {l2, rmse, mae, correl}.
+    base_sim -- np.array, base simulation to compare to.
+    estrus -- str, estrus stage for the Roesler2024 model, default value "".
+
+    Returns:
+    comp_points -- np.array, array of comparison points between base simulation
+    and sweep using input metric.
+
+    Raises:
+    ValueError -- if the start number is less than 0.
+    ValueError -- if the end number is smaller than start value.
+    ValueError -- if nb_steps is not an integer.
+    ValueError -- if the model name is incorrect.
+    KeyError -- if the estrus stage is incorrect.
+    ValueError -- if the provided metric is not one of
+    {'l2', 'rmse', 'mae', 'correl'}.
+
+    """
+    comp_points = np.zeros(len(values))
+
+    try:
+        for i, value in enumerate(values):
+            print(f"  Computing simulation {i+1}")
+            _, sweep_data = run_simulation(
+                sweep_model,
+                estrus=estrus,
+                param=param,
+                value=value,
+            )
+            comp_points[i] = metrics.compute_comparison(
+                base_sim,
+                sweep_data[0, :],
+                metric,
+            )
+    except (ValueError, KeyError):
+        raise
+
+    return comp_points
 
 def save_simulation(model_name, sim_data, t, estrus=""):
     """Saves the results of a simulation as {model_name}_{duration}s.pkl with
