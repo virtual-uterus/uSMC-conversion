@@ -10,7 +10,7 @@ Last modified: 11/24
 
 import sys
 import argparse
-from conversion import plots, simulation
+from conversion import plots, simulation, utils
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -22,6 +22,12 @@ if __name__ == "__main__":
         type=str,
         choices={"Tong2011", "Tong2014", "Means2023", "Roesler2024"},
         help="model to use",
+    )
+    parser.add_argument(
+        "-p",
+        "--plot-only",
+        action="store_true",
+        help="flag used just to plot data",
     )
     parser.add_argument(
         "-s",
@@ -54,15 +60,29 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     try:
-        time, data = simulation.run_simulation(
-            args.model,
-            args.start,
-            args.end,
-            args.steps,
-            args.estrus,
-        )
-        plots.plot_simulation(data[0, :], time / 1e3)
-        simulation.save_simulation(args.model, data[0, :], time, args.estrus)
+        if not args.plot_only:
+            time, data = simulation.run_simulation(
+                args.model,
+                args.start,
+                args.end,
+                args.steps,
+                args.estrus,
+            )
+            sim_data = data[0, :]
+            simulation.save_simulation(args.model, sim_data, time, args.estrus)
+
+        else:
+            res_file = utils.results_path(
+                args.model,
+                int(args.end * 1e-3),
+                args.estrus,
+            )
+            data = utils.load_data(res_file)
+            sim_data = data["data"]
+            time = data["time"]
+
+        # Plot results
+        plots.plot_simulation(sim_data, time / 1e3)
 
     except Exception as e:
         sys.stderr.write(f"Error: {e}")
