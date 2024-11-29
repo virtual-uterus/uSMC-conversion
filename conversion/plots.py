@@ -159,23 +159,22 @@ def plot_sensitivity(metric):
     plt.show()
 
 
-def plot_simulation_output(sim_output, metric):
+def plot_comparison_output(sim_output, comp_points, metric):
     """Plots the output of a non-pregnant simulation and the
     comparison metric
 
-    Arguments:
+    Args:
     sim_output -- dict{str: np.array}, dict containing the simulation
-            outputs for each stage in mV and the time stamps in s.
+            outputs for each stage in mV and the timesteps in s.
+    comp_points -- list, list of comparison points.
     metric -- str, name of the used metric, {l2, rmse, mae, correl}.
 
-    Return:
+    Returns:
+
+    Raises:
+
 
     """
-    input_file = "../res/{}_comp.pkl".format(metric)
-
-    with open(input_file, "rb") as handler:
-        comp_points = pickle.load(handler)
-
     fig, ax = plt.subplots(2, 2, dpi=300, sharex=True, sharey=True)
 
     cpt = 0
@@ -190,14 +189,9 @@ def plot_simulation_output(sim_output, metric):
                 LABELS[metric] + " {:.2f} mV".format(comp_points[cpt]),
                 fontsize="small",
             )
-            ax[i, j].set_xlim([0, 10])
+            ax[i, j].set_xlim([0, int(max(t))])
             ax[i, j].set_title(ESTRUS[cpt])
             cpt += 1
 
     # Labels are added on Illustrator
-    plt.show()
-
-    fig, ax = plt.subplots(dpi=300)
-    plt.plot(t, sim_output["means"], color="black")
-    plt.xlim([0, 10])
     plt.show()
