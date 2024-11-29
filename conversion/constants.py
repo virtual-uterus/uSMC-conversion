@@ -32,11 +32,11 @@ ESTRUS_PARAMS = {
 
 # Hard coded values of the P4 dependent constants
 # Could probably be optimised
-P4_MAP = {"P4": 4, "P4_max": 6, "mod_P4": 25}
+P4_MAP = {"P4": 5, "P4_max": 7, "mod_P4": 26}
 
 # Hard coded values of the E2 dependent constants
 # Could probably be optimised
-E2_MAP = {"E2": 5, "E2_max": 7, "mod_E2": 24}
+E2_MAP = {"E2": 6, "E2_max": 8, "mod_E2": 25}
 
 # Plot constants
 COLOURS = {
