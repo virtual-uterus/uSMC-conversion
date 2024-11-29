@@ -20,7 +20,7 @@ def set_params(constants, legend_constants, param, value):
 
     Raises an IndexError if the parameter was not found in the list.
 
-    Arguments:
+    Args:
     constants -- list[int], list of constant values.
     legend_constants -- list[str], list of legends for constants.
     param -- str, name of the parameter to change.
@@ -77,13 +77,13 @@ def set_params(constants, legend_constants, param, value):
 def set_estrus_params(constants, legend_constants, estrus):
     """Sets the specific values of the constants for the estrus stage
 
-    Arguments:
+    Args:
     constants -- list[int], list of constant values.
     legend_constants -- list[str], list of legends for constants.
     estrus -- str, estrus stage,
             {all, proestrus, estrus, metestrus, diestrus}.
 
-    Return:
+    Returns:
     updated_constants -- list[int], list of updated constant values.
 
     Raises:
@@ -110,7 +110,7 @@ def set_estrus_params(constants, legend_constants, estrus):
 def save_data(save_file, data):
     """Saves data to the save file
 
-    Arguments:
+    Args:
     save_file -- str, path to the save file.
     data -- dict, dictionnary of data to save.
 
@@ -131,7 +131,7 @@ def save_data(save_file, data):
 def load_data(load_file):
     """Loads data to the load file
 
-    Arguments:
+    Args:
     load_file -- str, path to the load file.
 
     Returns:

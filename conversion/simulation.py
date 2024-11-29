@@ -18,7 +18,7 @@ from conversion.constants import RES_DIR
 def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
     """Runs a simulation for the given model
 
-    Arguments:
+    Args:
     model -- str, name of the model to use {"Roesler2024", "Means2023",
     "Tong2011", "Tong2014"}.
     start -- float, start time in ms for the simulation, default value 0.
@@ -26,7 +26,7 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
     nb_steps -- int, number of steps in the simulation, default value 100000.
     estrus -- str, estrus stage for the Roesler2024 model, default value "".
 
-    Return:
+    Returns:
     voi -- np.array, timesteps in ms.
     states -- np.array, simulation data.
 
@@ -118,14 +118,14 @@ def save_simulation(model_name, sim_data, t, estrus=""):
     The data and time are stored in a dictionnary with respective keys being
     data and time.
 
-    Arguments:
+    Args:
     model_name -- str, name of the model to use {"Roesler2024", "Means2023",
     "Tong2011", "Tong2014"}.
     sim_data -- np.array, simulation data to save.
     t -- np.array, simulation timestamps in ms.
     estrus -- str, estrus stage for the Roesler2024 model, default value "".
 
-    Return:
+    Returns:
 
     Raises:
 

@@ -18,7 +18,7 @@ from .constants import ESTRUS, COLOURS, LABELS, PARAM
 def plot_simulation(data, time):
     """Plots the output of a single simulation
 
-    Arguments:
+    Args:
     data -- np.array, array containing the data to plot.
     time -- np.array, array of timestamps in seconds.
 
@@ -45,10 +45,10 @@ def plot_simulation(data, time):
 def plot_PNP_comp(metric):
     """Plots the pregnant and non-pregnant comparison results
 
-    Arguments:
+    Args:
     metric -- str, metric use for comparison to load the correct data.
 
-    Return:
+    Returns:
 
     """
     fig, ax = plt.subplots(dpi=300)
@@ -75,11 +75,11 @@ def plot_param_sweep(param, metric):
     """Plots the comparison data from different stages of the estrus for
     a given parameter and metric
 
-    Arguments:
+    Args:
     param -- str, name of the parameter to use.
     metric -- str, name of the used metric, {l2, rmse, mae, correl}.
 
-    Return:
+    Returns:
 
     """
     fig, ax = plt.subplots(dpi=300)
@@ -109,10 +109,10 @@ def plot_param_sweep(param, metric):
 def plot_sensitivity(metric):
     """Plots the results of the sensitivity analysis for a certain metric
 
-    Arguments:
+    Args:
     metric -- str, name of the used metric, {l2, rmse, mae, correl}.
 
-    Return:
+    Returns:
 
     """
     fig, ax = plt.subplots(dpi=300)

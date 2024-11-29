@@ -16,11 +16,11 @@ import scipy.stats as stat
 def compute_L2_norm(y_true, y_pred):
     """Computes the Euclidean distance between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     l2 -- float, Euclidean distance.
 
     Raises:
@@ -38,11 +38,11 @@ def compute_L2_norm(y_true, y_pred):
 def compute_mae(y_true, y_pred):
     """Computes the Mean Absolute Error between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     mae -- float, mean absolute error.
 
     """
@@ -52,11 +52,11 @@ def compute_mae(y_true, y_pred):
 def compute_rmse(y_true, y_pred):
     """Computes the Root Mean Squared Error between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     rmse -- float, root mean square error
 
     """
@@ -66,11 +66,11 @@ def compute_rmse(y_true, y_pred):
 def compute_correlation(y_true, y_pred):
     """Computes the Pearson correlation between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     correl -- float, Pearson correlation
 
     """
@@ -81,12 +81,12 @@ def compute_correlation(y_true, y_pred):
 def compute_comparison(y_true, y_pred, metric):
     """Computes the comparison between y_true and y_pred based on the metric
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
     metric -- str, comparison metric, {l2, rmse, mae, correl}.
 
-    Return:
+    Returns:
     comp_point -- float, comparison point.
 
     Raises:
