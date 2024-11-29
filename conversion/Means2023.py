@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Means2023.py
+
+Means2023 cell model Python version
+Author: Mathias Roesler
+Date: 11/24
+"""
+
 import numpy as np
 
 from scipy.integrate import ode
@@ -170,13 +180,13 @@ def create_legends():
     legend_constants[21] = "jnaca_sign in component J_NaCa (dimensionless)"
     legend_rates[0] = "d/dt v in component membrane (mV)"
     legend_rates[1] = "d/dt cai in component Ca_Concentrations (mM)"
-    legend_rates[2] = "d/dt w in component Ca_dependent_Force (dimensionnp.less)"
-    legend_rates[3] = "d/dt h in component I_Na (dimensionnp.less)"
-    legend_rates[4] = "d/dt f2 in component I_CaL (dimensionnp.less)"
-    legend_rates[5] = "d/dt q in component I_Kv43 (dimensionnp.less)"
-    legend_rates[6] = "d/dt r1 in component I_Kv43 (dimensionnp.less)"
-    legend_rates[7] = "d/dt r2 in component I_Kv43 (dimensionnp.less)"
-    legend_rates[8] = "d/dt c in component I_Cl (dimensionnp.less)"
+    legend_rates[2] = "d/dt w in component Ca_dependent_Force (dimensionless)"
+    legend_rates[3] = "d/dt h in component I_Na (dimensionless)"
+    legend_rates[4] = "d/dt f2 in component I_CaL (dimensionless)"
+    legend_rates[5] = "d/dt q in component I_Kv43 (dimensionless)"
+    legend_rates[6] = "d/dt r1 in component I_Kv43 (dimensionless)"
+    legend_rates[7] = "d/dt r2 in component I_Kv43 (dimensionless)"
+    legend_rates[8] = "d/dt c in component I_Cl (dimensionless)"
     return (legend_states, legend_algebraic, legend_voi, legend_constants)
 
 
