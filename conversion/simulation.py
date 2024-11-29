@@ -15,8 +15,12 @@ from conversion import Tong2011, Tong2014, Means2023, Roesler2024, utils
 from conversion.constants import RES_DIR
 
 
-def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
+def run_simulation(
+    model, start=0, end=15000, nb_steps=100000, estrus="", param="", value=None
+):
     """Runs a simulation for the given model
+
+    If a parameter and its value are provided the parameter is updated.
 
     Args:
     model -- str, name of the model to use {"Roesler2024", "Means2023",
@@ -25,6 +29,9 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
     end -- float, end time in ms for the simulation, default value 15000.
     nb_steps -- int, number of steps in the simulation, default value 100000.
     estrus -- str, estrus stage for the Roesler2024 model, default value "".
+    param -- str, name of the parameter to update if running a parameter sweep.
+    value -- int, value of the parameter to update if running a
+    parameter sweep.
 
     Returns:
     voi -- np.array, timesteps in ms.
@@ -39,15 +46,27 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
 
     """
     if start < 0:
-        raise ValueError("start value must be greater than 0\n")
+        raise ValueError("start value must be greater than 0")
     if end < start:
-        raise ValueError("end value must be greater than start value\n")
+        raise ValueError("end value must be greater than start value")
     if not isinstance(nb_steps, int):
-        raise ValueError("step number must be an integer\n")
+        raise ValueError("step number must be an integer")
 
     match model:
         case "Tong2011":
             init_states, constants = Tong2011.init_consts()
+            if param != "":
+                try:
+                    # If running a sweep update the constants
+                    _, _, _, legend_constants = Tong2011.create_legends()
+                    constants, _ = utils.set_params(
+                        constants,
+                        legend_constants,
+                        param,
+                        value,
+                    )
+                except IndexError:
+                    raise
             (
                 voi,
                 states,
@@ -61,6 +80,18 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
             )
         case "Tong2014":
             init_states, constants = Tong2014.init_consts()
+            if param != "":
+                try:
+                    # If running a sweep update the constants
+                    _, _, _, legend_constants = Tong2014.create_legends()
+                    constants, _ = utils.set_params(
+                        constants,
+                        legend_constants,
+                        param,
+                        value,
+                    )
+                except IndexError:
+                    raise
             (
                 voi,
                 states,
@@ -74,6 +105,18 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
             )
         case "Means2023":
             init_states, constants = Means2023.init_consts()
+            if param != "":
+                try:
+                    # If running a sweep update the constants
+                    _, _, _, legend_constants = Means2023.create_legends()
+                    constants, _ = utils.set_params(
+                        constants,
+                        legend_constants,
+                        param,
+                        value,
+                    )
+                except IndexError:
+                    raise
             (
                 voi,
                 states,
@@ -89,9 +132,23 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
             init_states, constants = Roesler2024.init_consts()
             _, _, _, legend_constants = Roesler2024.create_legends()
             try:
+                # Set estrus specific parameters
                 constants = utils.set_estrus_params(
-                    constants, legend_constants, estrus)
-            except KeyError:
+                    constants,
+                    legend_constants,
+                    estrus,
+                )
+                if param != "":
+                    # If running a sweep update the constants
+                    _, _, _, legend_constants = Roesler2024.create_legends()
+                    constants, _ = utils.set_params(
+                        constants,
+                        legend_constants,
+                        param,
+                        value,
+                    )
+
+            except (IndexError, KeyError):
                 raise
             (
                 voi,
@@ -105,7 +162,7 @@ def run_simulation(model, start=0, end=15000, nb_steps=100000, estrus=""):
                 nb_steps,
             )
         case _:
-            raise ValueError(f"{model} incorrect model name\n")
+            raise ValueError(f"{model} incorrect model name")
 
     return voi, states
 
@@ -162,8 +219,8 @@ def check_sweep_parameters(start_val, end_val, nb_points):
 
     """
     if end_val < start_val:
-        raise ValueError("the end value is smaller than the start value\n")
+        raise ValueError("the end value is smaller than the start value")
     if nb_points < 0:
-        raise ValueError("the number of simulations must be positive\n")
+        raise ValueError("the number of simulations must be positive")
     if not isinstance(nb_points, int):
-        raise ValueError("the number of simulations must be an integer\n")
+        raise ValueError("the number of simulations must be an integer")
