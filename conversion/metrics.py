@@ -28,9 +28,9 @@ def compute_L2_norm(y_true, y_pred):
 
     """
     if len(y_true) == 0:
-        raise ValueError("Error: empty array y_true\n")
+        raise ValueError("empty array y_true")
     if len(y_pred) == 0:
-        raise ValueError("Error: empty array y_pred\n")
+        raise ValueError("empty array y_pred")
 
     return np.linalg.norm(y_true - y_pred)
 
@@ -92,6 +92,7 @@ def compute_comparison(y_true, y_pred, metric):
     Raises:
     ValueError -- if the provided metric is not one of
     {'l2', 'rmse', 'mae', 'correl'}.
+
     """
     match metric:
         case "l2":
@@ -106,4 +107,4 @@ def compute_comparison(y_true, y_pred, metric):
         case "correl":
             return compute_correlation(y_true, y_pred)
         case _:
-            raise ValueError("Error: invalid metric {}\n".format(metric))
+            raise ValueError("invalid metric {}".format(metric))

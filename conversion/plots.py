@@ -86,7 +86,7 @@ def plot_sweep_data(plot_data, param, metric):
 
     for comp_points, values, estrus in plot_data:
         comp_points /= np.max(comp_points)  # Normalise the data
-        breakpoint()
+
         plt.plot(values, comp_points, COLOURS[estrus], linestyle="-")
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
