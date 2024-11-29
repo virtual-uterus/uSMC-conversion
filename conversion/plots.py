@@ -71,7 +71,7 @@ def plot_PNP_comp(metric):
     plt.show()
 
 
-def plot_param_sweep(param, metric):
+def plot_sweep_data(plot_data, param, metric):
     """Plots the comparison data from different stages of the estrus for
     a given parameter and metric
 
@@ -83,21 +83,11 @@ def plot_param_sweep(param, metric):
 
     """
     fig, ax = plt.subplots(dpi=300)
-    comp_points = []  # Store the results for each stage
 
-    for i, estrus in enumerate(ESTRUS):
-        input_file = "../res/{}_{}_{}_sweep.pkl".format(param, estrus, metric)
-
-        with open(input_file, "rb") as handler:
-            # Unpack pickled data
-            pickled_data = pickle.load(handler)
-            comp_points.append(pickled_data[0])
-            values = pickled_data[1]  # Assume the values are always the same
-
-    comp_points /= np.max(comp_points)  # Normalise the data
-
-    for i, stage in enumerate(ESTRUS):
-        plt.plot(values, comp_points[i], COLOURS[stage], linestyle="-")
+    for comp_points, values, estrus in plot_data:
+        comp_points /= np.max(comp_points)  # Normalise the data
+        breakpoint()
+        plt.plot(values, comp_points, COLOURS[estrus], linestyle="-")
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
 
