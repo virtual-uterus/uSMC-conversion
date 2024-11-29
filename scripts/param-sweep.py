@@ -8,186 +8,126 @@ Author: Mathias Roesler
 Last modified: 11/24
 """
 
+import os
 import sys
 import argparse
-import pickle
+
 import numpy as np
 
-from conversion import Roesler2024, Means2023, utils, plots, metrics
+from conversion import utils, metrics, simulation, plots
+from conversion.constants import ESTRUS, RES_DIR
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Perform a parameter sweep for a given parameter"
     )
-
-    parser.add_argument("param", type=str, help="name of the parameter")
+    parser.add_argument(
+        "base_model",
+        metavar="base-model",
+        type=str,
+        choices={"Tong2011", "Tong2014", "Means2023", "Roesler2024"},
+        help="base model to compare results with",
+    )
+    parser.add_argument(
+        "sweep_model",
+        metavar="sweep-model",
+        type=str,
+        choices={"Tong2011", "Tong2014", "Means2023", "Roesler2024"},
+        help="model to perform the sweep on",
+    )
     parser.add_argument(
         "metric",
         type=str,
         choices={"l2", "rmse", "mae", "correl"},
         help="comparison metric",
     )
+    parser.add_argument("param", type=str, help="name of the parameter")
     parser.add_argument(
-        "model",
-        type=str,
-        choices={"Means", "Roesler"},
-        help="model to compare with",
-    )
-
-    # Create subparser for the sweep and plot commands
-    subparser = parser.add_subparsers(help="commands", dest="command")
-
-    # Sweep subcommand arguments
-    sweep_subparser = subparser.add_parser(
-        "sweep",
-        help="performs parameter sweep",
-    )
-    sweep_subparser.add_argument(
         "start_val",
         type=float,
         metavar="start-value",
         help="value to start the sweep at",
     )
-    sweep_subparser.add_argument(
+    parser.add_argument(
         "end_val",
         type=float,
         metavar="end-value",
         help="value to end the sweep at",
     )
-    sweep_subparser.add_argument(
+    parser.add_argument(
         "nb_points",
         metavar="nb-points",
         type=int,
         help="number of points for the parameter sweep",
     )
-    sweep_subparser.add_argument(
+    parser.add_argument(
         "--estrus",
         type=str,
-        default="all",
-        choices={"estrus", "metestrus", "proestrus", "diestrus", "all"},
+        default="",
+        choices={"", "estrus", "metestrus", "proestrus", "diestrus", "all"},
         help="estrus stage",
     )
-
-    # Plot subcommand arguments
-    plot_subparser = subparser.add_parser(
-        "plot",
-        help="plots results without doing a parameter sweep",
-    )
-
     # Parse input arguments
     args = parser.parse_args()
 
-    if args.command == "plot":
-        # Plot if estrus is all or plot subcommand is used
-        plots.plotParamSweep(args.param, args.metric)
-        exit()
-
-    # Error check
     try:
-        assert args.start_val < args.end_val
-
-    except AssertionError:
-        sys.stderr.write("Error: start value must be smaller than end value\n")
-        exit(1)
-
-    init_states_R, constants_R = Roesler2024.initConsts()
-    init_states_M, constants_M = Means2023.initConsts()
-    _, _, _, legend_constants_R = Roesler2024.createLegends()
-
-    # Error check and index retrival
-    try:
-        _, idx = utils.setParams(
-            constants_R,
-            legend_constants_R,
-            args.param,
-            None,
+        # Check that sweep parameters are valid
+        simulation.check_sweep_parameters(
+            args.start_val,
+            args.end_val,
+            args.nb_points,
         )
 
-    except IndexError:
-        sys.stderr.write(
-            "Error: parameter sweep for {} can't be done\n".format(
-                args.param,
-            )
-        )
-        exit(1)
+        # Compute base model
+        print(f"Computing {args.base_model} simulation with default times")
+        t, base_data = simulation.run_simulation(args.base_model)
 
-    # Error check
-    try:
-        assert args.nb_points > 0
-
-    except AssertionError:
-        sys.stderr.write(
-            "Error: the number of points must be greater than 0\n",
-        )
-        exit(1)
-
-    if args.estrus == "all":
-        plot_only = True
-        estrus_stage = ["proestrus", "estrus", "metestrus", "diestrus"]
-
-    else:
-        estrus_stage = [args.estrus]
-
-    if args.model == "Means":
-        # Compute Means model once
-        print("Computing original simulation")
-        (
-            _,
-            orig_states,
-            _,
-        ) = Means2023.solveModel(init_states_M, constants_M)
-
-    for estrus in estrus_stage:
-        try:
-            constants_R = utils.setEstrusParams(
-                constants_R,
-                legend_constants_R,
-                estrus,
-            )
-        except KeyError as e:
-            print(e)
-            exit()
-
-        print("{} stage".format(estrus.capitalize()))
-
-        # Original model solution
-        if args.model == "Roesler":
-            # Recompute for each stage of the cycle
-            print("  Computing original simulation")
-            (
-                _,
-                orig_states,
-                _,
-            ) = Roesler2024.solveModel(init_states_R, constants_R)
-
-        # Preset the size of the comparison points
+        # Create values to loop through
         values = np.linspace(args.start_val, args.end_val, args.nb_points)
-        comp_points = np.zeros(len(values))
 
-        for i, value in enumerate(values):
-            # Run the simulations with different values
-            sys.stdout.write("\r  Computing simulation {}".format(i + 1))
-            sys.stdout.flush()
-            constants_R[idx] = value
-            (
-                _,
-                states,
-                _,
-            ) = Roesler2024.solveModel(init_states_R, constants_R)
-            try:
-                comp_points[i] = metrics.computeComparison(
-                    orig_states[0, :] / max(abs(orig_states[0, :])),
-                    states[0, :] / max(abs(states[0, :])),
+        # Create arrays to store results
+        comp_points = np.zeros(len(values))
+        plot_data = []
+
+        if args.estrus == "all":
+            estrus = ESTRUS
+        else:
+            estrus = [args.estrus]
+
+        for stage in estrus:
+            # Loop over estrus cycle
+            if stage != "":
+                print(f"{stage.capitalize()} stage")
+
+            save_file = os.path.join(
+                RES_DIR,
+                utils.sweep_path(
+                    args.base_model,
+                    args.sweep_model,
+                    args.param,
+                    args.metric,
+                    stage,
+                ),
+            )
+
+            for i, value in enumerate(values):
+                print(f"  Computing simulation {i+1}")
+                _, sweep_data = simulation.run_simulation(
+                    args.sweep_model,
+                    estrus=stage,
+                    param=args.param,
+                    value=value,
+                )
+                comp_points[i] = metrics.compute_comparison(
+                    base_data[0, :],
+                    sweep_data[0, :],
                     args.metric,
                 )
-            except ValueError as e:
-                print(e)
-                exit()
 
-        print("\n  Writing results\n")
-        output_file = "../res/{}_{}_{}_sweep.pkl".format(
-            args.param, estrus, args.metric
-        )
+            plot_data.append((comp_points, value, stage))
+            utils.save_data(save_file, (comp_points, values, stage))
 
-        with open(output_file, "wb") as handler:
-            pickle.dump([comp_points, values], handler)
+        plots.plot_sweep_data(plot_data, args.param, args.metric)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}")
+        exit()
