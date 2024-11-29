@@ -143,6 +143,4 @@ def save_simulation(model_name, sim_data, t, estrus=""):
 
     save_dict = {"data": sim_data, "time": t}
 
-    with open(res_file, "wb") as handler:
-        # Pickle data
-        pickle.dump(save_dict, handler)
+    utils.save_data(res_file, save_dict)
