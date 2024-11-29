@@ -9,6 +9,7 @@ Date: 11/24
 """
 
 import sys
+import pickle
 from conversion.constants import ESTRUS_PARAMS, E2_MAP, P4_MAP
 
 
@@ -102,3 +103,44 @@ def set_estrus_params(constants, legend_constants, estrus):
             )
 
     return constants
+
+
+def save_data(save_file, data):
+    """Saves data to the save file
+
+    Arguments:
+    save_file -- str, path to the save file.
+    data -- dict, dictionnary of data to save.
+
+    Returns:
+
+    Raises:
+    FileNotFoundError -- if the save_file is not found.
+
+    """
+    try:
+        with open(save_file, "wb") as handler:
+            # Pickle data
+            pickle.dump(data, handler)
+    except FileNotFoundError:
+        raise
+
+
+def load_data(load_file):
+    """Loads data to the load file
+
+    Arguments:
+    load_file -- str, path to the load file.
+
+    Returns:
+    loaded_data -- dict, dictionnary containing loaded data.
+
+    Raises:
+    FileNotFoundError -- if the save_file is not found.
+
+    """
+    try:
+        with open(load_file, "rb") as handler:
+            return pickle.load(handler)
+    except FileNotFoundError:
+        raise
