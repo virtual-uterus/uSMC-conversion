@@ -8,9 +8,11 @@ Author: Mathias Roesler
 Date: 11/24
 """
 
+import os
 import sys
 import pickle
-from conversion.constants import ESTRUS_PARAMS, E2_MAP, P4_MAP
+
+from conversion.constants import ESTRUS_PARAMS, E2_MAP, P4_MAP, RES_DIR
 
 
 def set_params(constants, legend_constants, param, value):
@@ -25,7 +27,7 @@ def set_params(constants, legend_constants, param, value):
     value -- float, new value for the parameter, if None the value
             is not updated.
 
-    Return:
+    Returns:
     updated_constants -- list[int], list of updated constant values.
     idx -- int, index of the parameter.
 
@@ -144,3 +146,25 @@ def load_data(load_file):
             return pickle.load(handler)
     except FileNotFoundError:
         raise
+
+
+def results_path(model_name, duration, estrus=""):
+    """Gets the results path based on the model name and the simulation
+    duration
+
+    Args:
+    model_name -- str, name of the model to use {"Roesler2024", "Means2023",
+    "Tong2011", "Tong2014"}.
+    duration -- int, duration of the simulation to load in s.
+    estrus -- str, estrus stage for the Roesler2024 model, default value "".
+
+    Returns:
+    res_path -- str, path to the result file.
+
+    Raises:
+
+    """
+    if model_name == "Roesler2024":
+        return os.path.join(RES_DIR, f"{model_name}_{estrus}_{duration}s.pkl")
+    else:
+        return os.path.join(RES_DIR, f"{model_name}_{duration}s.pkl")
