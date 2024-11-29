@@ -8,14 +8,19 @@ Author: Mathias Roesler
 Date: 11/24
 """
 
+import os
+
+HOME = os.path.expanduser("~")
+BASE = "Documents/phd"
+# Directory to store results
+RES_DIR = os.path.join(HOME, BASE, "uSMC-conversion/res")
+
 # Model solving constants
 SOLVER = "vode"
 METHOD = "bdf"
 ATOL = 1e-07
 RTOL = 1e-07
 MAX_STEP = 0.1
-
-RES_DIR = "../res/"  # Directory to store results
 
 # Specific values for different estrus stages
 ESTRUS_PARAMS = {
