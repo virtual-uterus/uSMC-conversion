@@ -143,3 +143,27 @@ def save_simulation(model_name, sim_data, t, estrus=""):
     save_dict = {"data": sim_data, "time": t}
 
     utils.save_data(res_file, save_dict)
+
+
+def check_sweep_parameters(start_val, end_val, nb_points):
+    """Checks that the sweep parameters are valid.
+
+    Args:
+    start_val -- float, value to start the sweep at.
+    end_val -- float, value to end the sweep at.
+    nb_points -- int, number of simulation to run.
+
+    Returns:
+
+    Raises:
+    ValueError -- if the start value is smaller than the end value.
+    ValueError -- if the number of simulations is negative.
+    ValueError -- if the number of simulations is not an integer.
+
+    """
+    if end_val < start_val:
+        raise ValueError("the end value is smaller than the start value\n")
+    if nb_points < 0:
+        raise ValueError("the number of simulations must be positive\n")
+    if not isinstance(nb_points, int):
+        raise ValueError("the number of simulations must be an integer\n")
