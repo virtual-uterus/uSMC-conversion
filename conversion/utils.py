@@ -18,8 +18,6 @@ from conversion.constants import ESTRUS_PARAMS, E2_MAP, P4_MAP, RES_DIR
 def set_params(constants, legend_constants, param, value):
     """Sets the new value for the specified parameter
 
-    Raises an IndexError if the parameter was not found in the list.
-
     Args:
     constants -- list[int], list of constant values.
     legend_constants -- list[str], list of legends for constants.
@@ -67,9 +65,7 @@ def set_params(constants, legend_constants, param, value):
             break
 
     if not found:
-        raise IndexError(
-            "Warning: {} was not found in parameter list\n".format(param),
-        )
+        raise IndexError("{} was not found in parameter list".format(param))
 
     return constants, idx
 
@@ -91,7 +87,7 @@ def set_estrus_params(constants, legend_constants, estrus):
 
     """
     if estrus not in ESTRUS_PARAMS.keys():
-        raise KeyError("the key {} is not valid\n".format(estrus))
+        raise KeyError("the key {} is not valid".format(estrus))
 
     for key in ESTRUS_PARAMS[estrus].keys():
         try:
@@ -101,7 +97,7 @@ def set_estrus_params(constants, legend_constants, estrus):
 
         except IndexError:
             sys.stderr.write(
-                "Warning: {} estrus parameter not set\n".format(key),
+                "Warning: {} estrus parameter not set".format(key),
             )
 
     return constants
@@ -168,3 +164,37 @@ def results_path(model_name, duration, estrus=""):
         return os.path.join(RES_DIR, f"{model_name}_{estrus}_{duration}s.pkl")
     else:
         return os.path.join(RES_DIR, f"{model_name}_{duration}s.pkl")
+
+
+def sweep_path(base_model, sweep_model, param, metric, estrus=""):
+    """Gets the sweep path based on the base model, sweep model and the metric.
+
+    If the base model and sweep model are Roesler2024 the estrus is assume to
+    the same for both.
+
+    Args:
+    base_model -- str, name of the base model to use from
+    {"Roesler2024", "Means2023", "Tong2011", "Tong2014"}.
+    sweep_model -- str, name of the base model to use from
+    {"Roesler2024", "Means2023", "Tong2011", "Tong2014"}.
+    param -- str, name of the parameter to use.
+    metric -- str, name of the metric to use from {l2, rmse, mae, correl}.
+    estrus -- str, estrus stage for the Roesler2024 model, default value "".
+
+    Returns:
+    res_path -- str, path to the result file.
+
+    Raises:
+
+    """
+    if base_model == "Roesler2024":
+        b_model = f"{base_model}_{estrus}"
+    else:
+        b_model = f"{base_model}"
+
+    if sweep_model == "Roesler2024":
+        s_model = f"{sweep_model}_{estrus}"
+    else:
+        s_model = f"{sweep_model}"
+
+    return os.path.join(RES_DIR, f"{b_model}_{s_model}_{param}_{metric}.pkl")
