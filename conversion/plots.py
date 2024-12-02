@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PNP-comp.py
+plots.py
 
-Compares the results from pregnant and non-pregnant models
+Plot function for the conversion module
 Author: Mathias Roesler
-Date: 11/24
+Date: 12/24
 """
 
 import pickle
