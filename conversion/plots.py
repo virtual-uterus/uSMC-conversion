@@ -174,13 +174,13 @@ def plot_comparison_output(sim_output, comp_points, metric):
         for j in range(2):
             ax[i, j].plot(t, sim_output[ESTRUS[cpt]], color="black")
             ax[i, j].text(
-                6.6,
-                1,
+                9.8,
+                10,
                 LABELS[metric] + " {:.2f} mV".format(comp_points[cpt]),
-                fontsize="small",
+                fontsize="x-small",
             )
             ax[i, j].set_xlim([0, int(max(t))])
-            ax[i, j].set_title(ESTRUS[cpt])
+            # ax[i, j].set_title(ESTRUS[cpt])
             cpt += 1
 
     # Labels are added on Illustrator
