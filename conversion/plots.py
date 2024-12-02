@@ -33,7 +33,7 @@ def plot_simulation(data, time):
 
     fig, ax = plt.subplots(dpi=300)
 
-    plt.plot(time, data)
+    plt.plot(time, data, "-k")
     plt.xlabel("Time (s)")
     plt.ylabel("Membrane potential (mV)")
 
