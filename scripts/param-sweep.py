@@ -11,7 +11,7 @@ Last modified: 11/24
 import sys
 import argparse
 
-from conversion import simulation, plots
+from conversion import script_fct, plots
 
 
 def add_shared_arguments(parser):
@@ -50,7 +50,9 @@ if __name__ == "__main__":
         description="Tool for performing and plotting parameter sweeps"
     )
     subparsers = parser.add_subparsers(
-        title="subcommands", description="Available subcommands", dest="command"
+        title="subcommands",
+        description="Available subcommands",
+        dest="command",
     )
 
     # Sweep subparser
@@ -79,7 +81,7 @@ if __name__ == "__main__":
         type=int,
         help="number of points for the parameter sweep",
     )
-    sweep_parser.set_defaults(func=simulation.sweep_func)
+    sweep_parser.set_defaults(func=script_fct.sweep_func)
 
     # Plot subparser
     plot_parser = subparsers.add_parser(
@@ -89,7 +91,7 @@ if __name__ == "__main__":
 
     # Add common arguments
     add_shared_arguments(plot_parser)
-    plot_parser.set_defaults(func=simulation.plot_func)
+    plot_parser.set_defaults(func=script_fct.plot_func)
 
     # Parse input arguments
     args = parser.parse_args()
