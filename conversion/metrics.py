@@ -8,9 +8,13 @@ Author: Mathias Roesler
 Date: 11/24
 """
 
+import conversion.utils
+
 import numpy as np
 import sklearn.metrics as skm
 import scipy.stats as stat
+
+from elephant.spike_train_dissimilarity import van_rossum_distance
 
 
 def compute_L2_norm(y_true, y_pred):
@@ -78,20 +82,49 @@ def compute_correlation(y_true, y_pred):
     return correl
 
 
-def compute_comparison(y_true, y_pred, metric):
-    """Computes the comparison between y_true and y_pred based on the metric
+def compute_van_rossum_distance(y_true, y_pred, time, tau=1.0):
+    """Computes the Van Rossum distance between two spike trains.
 
     Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
-    metric -- str, comparison metric, {l2, rmse, mae, correl}.
+    time -- np.array, corresponding time points.
+    tau -- float, time constant for the exponential kernel, default: 1.
+
+    Returns:
+    distance -- float, Van Rossum distance.
+    """
+    st_true = conversion.utils.create_spike_train(
+        conversion.utils.extract_spike_times(y_true, time),
+        time[-1],
+    )
+    st_pred = conversion.utils.create_spike_train(
+        conversion.utils.extract_spike_times(y_pred, time),
+        time[-1],
+    )
+    return van_rossum_distance(
+        [st_true, st_pred],
+        tau * conversion.utils.quant.s,
+    )[0, 1]
+
+
+def compute_comparison(y_true, y_pred, metric, tau=1.0, time=np.array([])):
+    """Computes the comparison between y_true and y_pred based on the metric
+
+    Args:
+    y_true -- np.array or SpikeTrain object, ground truth values.
+    y_pred -- np.array or SpikeTrain object, estimated values.
+    metric -- str, comparison metric, {l2, rmse, mae, correl, vrd}.
+    tau -- float, time constant for the exponential kernel in the
+    Van Rossum distance, default: 1.
+    time -- np.array, corresponding time points, default: [].
 
     Returns:
     comp_point -- float, comparison point.
 
     Raises:
     ValueError -- if the provided metric is not one of
-    {'l2', 'rmse', 'mae', 'correl'}.
+    {'l2', 'rmse', 'mae', 'correl', 'vrd'}.
 
     """
     match metric:
@@ -106,5 +139,7 @@ def compute_comparison(y_true, y_pred, metric):
 
         case "correl":
             return compute_correlation(y_true, y_pred)
+        case "vrd":
+            return compute_van_rossum_distance(y_true, y_pred, time, tau)
         case _:
             raise ValueError("invalid metric {}".format(metric))
