@@ -74,6 +74,14 @@ PARAM = {
     "stim_current": r"I$_{stim}$",
 }
 
+UNITS = {
+    "gkv43": r"nS pF$^1$",
+    "gcal": r"nS pF$^1$",
+    "gkca": r"nS pF$^1$",
+    "gna": r"nS pF$^1$",
+    "stim_current": r"pA pF$^1$",
+}
+
 LABELS = {
     "l2": "L2-norm",
     "mae": "MAE",
