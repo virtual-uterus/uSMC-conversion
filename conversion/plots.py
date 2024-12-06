@@ -21,6 +21,7 @@ from .constants import (
     LEFT,
     RIGHT,
     BOTTOM,
+    Y_LIMS,
 )
 
 
@@ -46,7 +47,8 @@ def plot_single_simulation(data, time):
     plt.xlabel("Time (s)")
     plt.ylabel("Membrane potential (mV)")
 
-    plt.xlim((time[0], time[len(time) - 1]))
+    plt.xlim((time[0], time[-1]))
+    plt.ylim(Y_LIMS)
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
 
     plt.show()
@@ -86,6 +88,7 @@ def plot_multi_simulation(data, time, param, values):
     plt.ylabel("Membrane potential (mV)")
 
     plt.xlim((time[0], time[-1]))
+    plt.ylim(Y_LIMS)
 
     plt.legend(legend, fontsize="x-small")
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
