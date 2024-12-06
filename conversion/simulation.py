@@ -201,7 +201,7 @@ def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
     try:
         for i, value in enumerate(values):
             print(f"  Computing simulation {i+1}")
-            _, sweep_data = run_simulation(
+            t, sweep_data = run_simulation(
                 sweep_model,
                 estrus=estrus,
                 param=param,
@@ -211,6 +211,7 @@ def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
                 base_sim,
                 sweep_data[0, :],
                 metric,
+                time=t,
             )
     except (ValueError, KeyError):
         raise
