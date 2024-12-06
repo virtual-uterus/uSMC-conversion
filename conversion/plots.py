@@ -201,8 +201,8 @@ def plot_comparison_output(sim_output, comp_points, metric):
         for j in range(2):
             ax[i, j].plot(t, sim_output[ESTRUS[cpt]], color="black")
             ax[i, j].text(
-                9.8,
-                10,
+                10.7,
+                9,
                 LABELS[metric] + " {:.2f}".format(comp_points[cpt]),
                 fontsize="x-small",
             )
@@ -211,4 +211,5 @@ def plot_comparison_output(sim_output, comp_points, metric):
             cpt += 1
 
     # Labels are added on Illustrator
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
