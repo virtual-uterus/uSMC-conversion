@@ -10,24 +10,18 @@ Last modified: 11/24
 
 import sys
 import argparse
-from conversion import plots, simulation, utils
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Runs a simulation for a given model",
-    )
+import numpy as np
 
+from conversion import plots, script_fct
+
+
+def add_shared_arguments(parser):
     parser.add_argument(
         "model",
         type=str,
         choices={"Tong2011", "Tong2014", "Means2023", "Roesler2024"},
         help="model to use",
-    )
-    parser.add_argument(
-        "-p",
-        "--plot-only",
-        action="store_true",
-        help="flag used just to plot data",
     )
     parser.add_argument(
         "-s",
@@ -57,32 +51,64 @@ if __name__ == "__main__":
         help="estrus stage for the Roesler2024 model",
     )
 
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Tool for performing model simulations"
+    )
+    subparsers = parser.add_subparsers(
+        title="subcommands",
+        description="Available subcommands",
+        dest="command",
+    )
+
+    # Single subparser
+    single_parser = subparsers.add_parser(
+        "single",
+        help="Perform a single simulation and plots results",
+    )
+    # Add common arguments
+    add_shared_arguments(single_parser)
+
+    single_parser.add_argument(
+        "-p",
+        "--plot-only",
+        action="store_true",
+        help="flag used just to plot data",
+    )
+
+    single_parser.set_defaults(func=script_fct.single_func)
+
+    # Multi subparser
+    multi_parser = subparsers.add_parser(
+        "multi",
+        help="Perform multiple simulations changing a parameter",
+    )
+
+    # Add common arguments
+    add_shared_arguments(multi_parser)
+
+    multi_parser.add_argument("param", type=str, help="name of the parameter")
+    multi_parser.add_argument(
+        "values",
+        type=float,
+        nargs="+",
+        help="values of the parameter to use",
+    )
+    multi_parser.set_defaults(func=script_fct.multi_func)
+
     args = parser.parse_args()
 
     try:
-        if not args.plot_only:
-            time, data = simulation.run_simulation(
-                args.model,
-                args.start,
-                args.end,
-                args.steps,
-                args.estrus,
-            )
-            sim_data = data[0, :]
-            simulation.save_simulation(args.model, sim_data, time, args.estrus)
+        sim_data, time = args.func(args)
+
+        if args.command == "single":
+            plots.plot_single_simulation(sim_data, time / 1e3)
 
         else:
-            res_file = utils.results_path(
-                args.model,
-                int(args.end * 1e-3),
-                args.estrus,
+            plots.plot_multi_simulation(
+                sim_data, time / 1e3, args.param, np.array(args.values)
             )
-            data = utils.load_data(res_file)
-            sim_data = data["data"]
-            time = data["time"]
-
-        # Plot results
-        plots.plot_simulation(sim_data, time / 1e3)
 
     except Exception as e:
         sys.stderr.write(f"Error: {e}")
