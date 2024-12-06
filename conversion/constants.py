@@ -24,10 +24,30 @@ MAX_STEP = 0.1
 
 # Specific values for different estrus stages
 ESTRUS_PARAMS = {
-    "proestrus": {"gkv43": 0.95, "stim_current": -0.29, "P4": 37, "E2": 100},
-    "estrus": {"gkv43": 2.5, "stim_current": -0.26, "P4": 14, "E2": 40},
-    "metestrus": {"gkv43": 2.04, "stim_current": -0.29, "P4": 25, "E2": 49},
-    "diestrus": {"gkv43": 1.155, "stim_current": -0.21, "P4": 10, "E2": 90},
+    "proestrus": {
+        "gkv43": 1.2,
+        "stim_current": -0.5,
+        "P4": 37,
+        "E2": 100,
+    },
+    "estrus": {
+        "gkv43": 2.65,
+        "stim_current": -0.25,
+        "P4": 14,
+        "E2": 40,
+    },
+    "metestrus": {
+        "gkv43": 2.16,
+        "stim_current": -0.25,
+        "P4": 25,
+        "E2": 49,
+    },
+    "diestrus": {
+        "gkv43": 1.3,
+        "stim_current": -0.21,
+        "P4": 10,
+        "E2": 90,
+    },
 }
 
 # Hard coded values of the P4 dependent constants
