@@ -47,6 +47,7 @@ def plot_single_simulation(data, time):
     plt.ylabel("Membrane potential (mV)")
 
     plt.xlim((time[0], time[len(time) - 1]))
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
 
     plt.show()
 
@@ -114,6 +115,8 @@ def plot_sweep_data(plot_data, param, metric):
 
     plt.xlabel(PARAM[param] + r" values (pA.pF$^{-1}$)")
     plt.ylabel("Normalised {}".format(LABELS[metric]))
+
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
 
 
