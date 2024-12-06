@@ -97,6 +97,7 @@ if __name__ == "__main__":
                     args.steps,
                     estrus_stage,
                 )
+
                 # Save model output
                 simulation.save_simulation(
                     np_model,
@@ -110,6 +111,7 @@ if __name__ == "__main__":
                     p_data[0, :],
                     np_data[0, :],
                     args.metric,
+                    time=t,
                 )
 
             utils.save_data(comp_file, comp_points)
