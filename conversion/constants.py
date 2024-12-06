@@ -59,6 +59,10 @@ P4_MAP = {"P4": 5, "P4_max": 7, "mod_P4": 26}
 E2_MAP = {"E2": 6, "E2_max": 8, "mod_E2": 25}
 
 # Plot constants
+LEFT = 0.22
+BOTTOM = 0.17
+RIGHT = 0.80
+
 COLOURS = {
     "proestrus": ".r",
     "estrus": ".b",
