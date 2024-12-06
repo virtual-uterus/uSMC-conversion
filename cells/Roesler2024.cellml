@@ -96,9 +96,9 @@ enddef;-->
         <variable name="I_stim" public_interface="out" units="pA_per_pF"/>
         <variable name="time" public_interface="in" units="msec"/>
         <variable initial_value="1000" name="stim_start" units="msec"/>
-        <variable initial_value="58000" name="stim_period" units="msec"/>
+        <variable initial_value="56500" name="stim_period" units="msec"/>
         <variable initial_value="10000" name="stim_duration" units="msec"/>
-        <variable initial_value="-0.41" name="stim_current" units="pA_per_pF"/>
+        <variable initial_value="-0.3" name="stim_current" units="pA_per_pF"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply id="stimulus_calculation">
                 <eq/>
@@ -368,8 +368,7 @@ enddef;-->
         <variable name="ecat" public_interface="out" units="mV"/>
         <variable cmeta:id="gkca" initial_value="2.4" name="gkca" public_interface="out" units="nS_per_pF"/>
         <variable cmeta:id="gb" initial_value="0.004" name="gb" public_interface="out" units="nS_per_pF"/>
-        <variable cmeta:id="gkv43" initial_value="2.5" name="gkv43" public_interface="out" units="nS_per_pF"/>
-        <!-- P: 0.95, E: 2.5, M: 2.04, D:1.155-->
+        <variable cmeta:id="gkv43" initial_value="2.65" name="gkv43" public_interface="out" units="nS_per_pF"/>
         <variable cmeta:id="gbka" initial_value="0.2" name="gbka" public_interface="out" units="dimensionless"/>
         <variable cmeta:id="gbkab" initial_value="0.1" name="gbkab" public_interface="out" units="dimensionless"/>
         <variable cmeta:id="gcl" initial_value="0.1875" name="gcl" public_interface="out" units="nS_per_pF"/>
