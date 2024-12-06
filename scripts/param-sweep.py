@@ -32,7 +32,7 @@ def add_shared_arguments(parser):
     parser.add_argument(
         "metric",
         type=str,
-        choices={"l2", "rmse", "mae", "correl"},
+        choices={"l2", "rmse", "mae", "correl", "vrd"},
         help="comparison metric",
     )
     parser.add_argument("param", type=str, help="name of the parameter")

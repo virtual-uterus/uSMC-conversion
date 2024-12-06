@@ -79,6 +79,7 @@ LABELS = {
     "mae": "MAE",
     "rmse": "RMSE",
     "correl": "Pearson correlation",
+    "vrd": "VRD",
 }
 
 ESTRUS = ["proestrus", "estrus", "metestrus", "diestrus"]
