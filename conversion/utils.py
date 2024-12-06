@@ -11,8 +11,12 @@ Date: 11/24
 import os
 import sys
 import pickle
+import quantities as quant
 
 from conversion.constants import ESTRUS_PARAMS, E2_MAP, P4_MAP, RES_DIR
+
+from scipy.signal import find_peaks
+from neo.core import SpikeTrain
 
 
 def set_params(constants, legend_constants, param, value):
@@ -198,3 +202,38 @@ def sweep_path(base_model, sweep_model, param, metric, estrus=""):
         s_model = f"{sweep_model}"
 
     return os.path.join(RES_DIR, f"{b_model}_{s_model}_{param}_{metric}.pkl")
+
+
+def extract_spike_times(signal, time, height=-30):
+    """Extract spike times from a signal using peak detection
+
+    Args:
+    signal -- np.array, signal amplitudes over time.
+    time -- np.array, corresponding time points.
+    height -- float, minimum height for peaks to be considered spikes.
+    distance -- int, minimum distance between peaks.
+
+    Returns:
+    spike_times -- np.array, times of detected spikes.
+
+    Raises:
+
+    """
+    peaks, _ = find_peaks(signal, height=height)
+    return time[peaks]
+
+
+def create_spike_train(spike_times, t_stop):
+    """Convert spike times to a SpikeTrain object
+
+    Args:
+    spike_times -- np.array, detected spike times.
+    t_stop -- float, total duration of the signal.
+
+    Returns:
+    spike_train -- SpikeTrain object, spike times of train.
+
+    Raises:
+
+    """
+    return SpikeTrain(spike_times * quant.ms, t_stop=t_stop * quant.ms)
