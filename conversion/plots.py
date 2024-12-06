@@ -63,7 +63,7 @@ def plot_sweep_data(plot_data, param, metric):
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
 
     plt.xlabel(PARAM[param] + r" values (pA.pF$^{-1}$)")
-    plt.ylabel("Normalised {} (mV)".format(LABELS[metric]))
+    plt.ylabel("Normalised {}".format(LABELS[metric]))
     plt.show()
 
 
@@ -116,7 +116,7 @@ def plot_sensitivity(metric):
     plt.xticks(ticks=values + 0.15, labels=PARAM.values())
 
     plt.xlabel("Parameters")
-    plt.ylabel("{} (mV)".format(LABELS[metric]))
+    plt.ylabel("{}".format(LABELS[metric]))
     plt.show()
 
 
@@ -147,7 +147,7 @@ def plot_comparison_output(sim_output, comp_points, metric):
             ax[i, j].text(
                 9.8,
                 10,
-                LABELS[metric] + " {:.2f} mV".format(comp_points[cpt]),
+                LABELS[metric] + " {:.2f}".format(comp_points[cpt]),
                 fontsize="x-small",
             )
             ax[i, j].set_xlim([0, int(max(t))])
