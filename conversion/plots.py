@@ -12,10 +12,19 @@ import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .constants import ESTRUS, COLOURS, LABELS, PARAM
+from .constants import (
+    ESTRUS,
+    COLOURS,
+    LABELS,
+    PARAM,
+    UNITS,
+    LEFT,
+    RIGHT,
+    BOTTOM,
+)
 
 
-def plot_simulation(data, time):
+def plot_single_simulation(data, time):
     """Plots the output of a single simulation
 
     Args:
@@ -38,6 +47,47 @@ def plot_simulation(data, time):
     plt.ylabel("Membrane potential (mV)")
 
     plt.xlim((time[0], time[len(time) - 1]))
+
+    plt.show()
+
+
+def plot_multi_simulation(data, time, param, values):
+    """Plots the output of multiple simulation with different
+    values of the parameter
+
+    Args:
+    data -- np.array, array containing the data to plot.
+    time -- np.array, array of timestamps in seconds.
+    param -- str, name of the parameter.
+    values -- np.array, values of the parameter.
+
+    Returns:
+
+    Raises:
+    ValueError -- if data and time do not have the same shape
+    ValueError -- if data and values do not have the same length
+
+    """
+    if not data.shape[1] == time.shape[0]:
+        raise ValueError("data and time array should have the same length\n")
+
+    if not data.shape[0] == values.shape[0]:
+        raise ValueError("data and values array should have the same length\n")
+
+    fig, ax = plt.subplots(dpi=300)
+    legend = []
+
+    for i, value in enumerate(values):
+        plt.plot(time, data[i, :])
+        legend.append(f"{PARAM[param]} = {value} {UNITS[param]}")
+
+    plt.xlabel("Time (s)")
+    plt.ylabel("Membrane potential (mV)")
+
+    plt.xlim((time[0], time[-1]))
+
+    plt.legend(legend, fontsize="x-small")
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
 
     plt.show()
 
