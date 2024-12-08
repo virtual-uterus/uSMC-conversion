@@ -39,8 +39,8 @@ def add_shared_arguments(parser):
     parser.add_argument(
         "--estrus",
         type=str,
-        default="",
-        choices={"", "estrus", "metestrus", "proestrus", "diestrus", "all"},
+        default="estrus",
+        choices={"estrus", "metestrus", "proestrus", "diestrus", "all"},
         help="estrus stage",
     )
 
