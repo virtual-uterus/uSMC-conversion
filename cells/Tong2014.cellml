@@ -77,9 +77,9 @@
         <variable name="Ist" public_interface="out" units="pA_per_pF"/>
         <variable name="time" public_interface="in" units="msec"/>
         <variable initial_value="1000" name="stim_start" units="msec"/>
-        <variable initial_value="58000" name="stim_period" units="msec"/>
+        <variable initial_value="46500" name="stim_interval" units="msec"/>
         <variable initial_value="10000" name="stim_duration" units="msec"/>
-        <variable initial_value="-0.25" name="stim_current" units="pA_per_pF"/>
+        <variable initial_value="-0.3" name="stim_current" units="pA_per_pF"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply id="stimulus_calculation">
                 <eq/>
@@ -98,9 +98,29 @@
                         <apply>
                             <lt/>
                             <apply>
+                                <minus/>
+                                <ci>time</ci>
+                                <apply>
+                                    <plus/>
+                                    <ci>stim_start</ci>
+                                    <ci>stim_duration</ci>
+                                </apply>
+                            </apply>
+                            <cn cellml:units="msec">0</cn>
+                        </apply>
+                    </piece>
+                    <piece>
+                        <ci>stim_current</ci>
+                        <apply>
+                            <lt/>
+                            <apply>
                                 <rem/>
                                 <ci>time</ci>
-                                <ci>stim_period</ci>
+                                <apply>
+                                    <plus/>
+                                    <ci>stim_interval</ci>
+                                    <ci>stim_duration</ci>
+                                </apply>
                             </apply>
                             <ci>stim_duration</ci>
                         </apply>
