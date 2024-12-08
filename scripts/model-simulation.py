@@ -27,14 +27,14 @@ def add_shared_arguments(parser):
     parser.add_argument(
         "-s",
         "--start",
-        type=float,
+        type=int,
         default=0,
         help="start time for the simulation",
     )
     parser.add_argument(
         "-e",
         "--end",
-        type=float,
+        type=int,
         default=15000,
         help="end time for the simulation",
     )
