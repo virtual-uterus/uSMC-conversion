@@ -13,7 +13,8 @@ import argparse
 
 import numpy as np
 
-from conversion import plots, script_fct
+from conversion import plots, script_fct, metrics
+from conversion.utils import ESTRUS_PARAMS
 
 
 def add_shared_arguments(parser):
@@ -46,8 +47,8 @@ def add_shared_arguments(parser):
     parser.add_argument(
         "--estrus",
         type=str,
-        choices={"", "proestrus", "estrus", "metestrus", "diestrus"},
-        default="",
+        choices={"proestrus", "estrus", "metestrus", "diestrus"},
+        default="estrus",
         help="estrus stage for the Roesler2024 model",
     )
 
@@ -104,6 +105,23 @@ if __name__ == "__main__":
 
         if args.command == "single":
             plots.plot_single_simulation(sim_data, time / 1e3)
+
+            # Hardcoded comparison between first and last event
+            if args.end == 210000 and args.start == 0:
+                stim_duration = 10000  # Hardcoded value of stim duration
+                duration = ESTRUS_PARAMS[args.estrus]["stim_interval"] + \
+                    stim_duration
+                nb_events = int(args.end // duration)
+
+                first_event = sim_data[0:12000]
+                last_event = sim_data[
+                    duration * nb_events - 1000: duration * nb_events
+                    + (stim_duration + 1000)
+                ]
+                vrd = metrics.compute_comparison(
+                    first_event, last_event, "vrd", time=time
+                )
+                print("First and last event VRD: {:.2f}".format(vrd))
 
         else:
             plots.plot_multi_simulation(
