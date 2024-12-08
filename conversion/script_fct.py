@@ -26,7 +26,7 @@ def sweep_func(args):
       sweep_model -- str, name of the model to use from
       {"Roesler2024", "Means2023", "Tong2011", "Tong2014"}.
       metric -- str, name of the metric to use from
-      {l2, rmse, mae, correl}.
+      {l2, rmse, mae, correl, vrd}.
       param -- str, name of the parameter to sweep over.
       start_val -- float, value to start the sweep at.
       end_val -- float, value to end the sweep at.
@@ -40,10 +40,9 @@ def sweep_func(args):
     Raises:
     ValueError -- if the start number is less than 0.
     ValueError -- if the end number is smaller than start value.
-    ValueError -- if nb_steps is not an integer.
     ValueError -- if the model name is incorrect.
     ValueError -- if the provided metric is not one of
-    {'l2', 'rmse', 'mae', 'correl'}.
+    {'l2', 'rmse', 'mae', 'correl', 'vrd'}.
     ValueError -- if the parameter is not valid.
     ValueError -- if the start value is smaller than the end value.
     ValueError -- if the number of simulations is negative.
@@ -133,7 +132,7 @@ def plot_func(args):
       sweep_model -- str, name of the model to use from
       {"Roesler2024", "Means2023", "Tong2011", "Tong2014"}.
       metric -- str, name of the metric to use from
-      {l2, rmse, mae, correl}.
+      {l2, rmse, mae, correl, vrd}.
       param -- str, name of the parameter to sweep over.
       estrus -- str, estrus stage for the Roesler2024 model, default value "".
 
@@ -145,7 +144,7 @@ def plot_func(args):
     FileNotFoundError -- if the results files are not found.
     ValueError -- if the model name is incorrect.
     ValueError -- if the provided metric is not one of
-    {'l2', 'rmse', 'mae', 'correl'}.
+    {'l2', 'rmse', 'mae', 'correl', 'vrd'}.
     KeyError -- if the estrus stage is incorrect.
 
 
@@ -253,7 +252,8 @@ def multi_func(args):
 
 
     """
-    sim_data = np.zeros((len(args.values), args.end - args.start))  # Pre-allocate space
+    # Pre-allocate space
+    sim_data = np.zeros((len(args.values), args.end - args.start))
 
     for i, value in enumerate(args.values):
         print(f"Running simulation with {args.param} at {value}")
