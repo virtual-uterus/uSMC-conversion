@@ -40,7 +40,7 @@ def create_legends():
     legend_algebraic[0] = "Ist in component interface (pA_per_pF)"
     legend_voi = "time in component environment (msec)"
     legend_constants[0] = "stim_start in component interface (msec)"
-    legend_constants[1] = "stim_period in component interface (msec)"
+    legend_constants[1] = "stim_interval in component interface (msec)"
     legend_constants[2] = "stim_duration in component interface (msec)"
     legend_constants[3] = "stim_current in component interface (pA_per_pF)"
     legend_algebraic[104] = "I_tot in component membrane_potential (pA_per_pF)"
@@ -320,7 +320,7 @@ def init_consts():
     constants = [0.0] * sizeConstants
     states = [0.0] * sizeStates
     constants[0] = 1000
-    constants[1] = 58000
+    constants[1] = 46500
     constants[2] = 10000
     constants[3] = -0.25
     states[0] = -50.80774403486136
