@@ -815,20 +815,20 @@ def custom_piecewise(cases):
     return np.select(cases[0::2], cases[1::2])
 
 
-def solve_model(init_states, constants, start=0, end=15000, nb_steps=100000):
+def solve_model(init_states, constants, start=0, end=15000):
     """Solve model with ODE solver
 
     Args:
     init_states -- list[float], list of initial states.
     constants -- list[int], list of constant values.
-    start -- float, start time in ms for the simulation, default value 0.
-    end -- float, end time in ms for the simulation, default value 15000.
-    nb_steps -- int, number of steps in the simulation, default value 100000.
+    start -- int, start time in ms for the simulation, default value 0.
+    end -- int, end time in ms for the simulation, default value 15000.
 
     Returns:
 
     """
     # Set timespan to solve over
+    nb_steps = end - start
     voi = np.linspace(start, end, nb_steps)
 
     # Construct ODE object to solve
