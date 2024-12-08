@@ -210,7 +210,7 @@ def init_consts():
     constants[0] = 1000
     constants[1] = 46500
     constants[2] = 10000
-    constants[3] = -0.41
+    constants[3] = -0.3
     states[0] = -53.90915441282156
     constants[4] = 1.0
     constants[5] = 14
@@ -224,7 +224,7 @@ def init_consts():
     constants[12] = 0.058
     constants[13] = 2.4
     constants[14] = 0.004
-    constants[15] = 2.5
+    constants[15] = 2.65
     constants[16] = 0.2
     constants[17] = 0.1
     constants[18] = 0.1875
