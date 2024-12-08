@@ -39,7 +39,7 @@ def create_legends():
     legend_voi = "time in component environment (msec)"
     legend_algebraic[0] = "I_stim in component stimulus_protocol (pA_per_pF)"
     legend_constants[0] = "stim_start in component stimulus_protocol (msec)"
-    legend_constants[1] = "stim_period in component stimulus_protocol (msec)"
+    legend_constants[1] = "stim_interval in component stimulus_protocol (msec)"
     legend_constants[2] = "stim_duration in component stimulus_protocol (msec)"
     legend_constants[3] = "stim_current in component stimulus_protocol (pA_per_pF)"
     legend_algebraic[45] = "I_tot in component membrane (pA_per_pF)"
@@ -208,7 +208,7 @@ def init_consts():
     constants = [0.0] * sizeConstants
     states = [0.0] * sizeStates
     constants[0] = 1000
-    constants[1] = 58000
+    constants[1] = 46500
     constants[2] = 10000
     constants[3] = -0.41
     states[0] = -53.90915441282156
@@ -395,7 +395,9 @@ def compute_rates(voi, states, constants):
         [
             np.less(voi, constants[0]),
             0.00000,
-            np.less(voi % constants[1], constants[2]),
+            np.less(voi - (constants[0] + constants[2]), 0.00000),
+            constants[3],
+            np.less(voi % constants[1] + constants[2], constants[2]),
             constants[3],
             True,
             0.00000,
@@ -668,7 +670,9 @@ def compute_algebraic(constants, states, voi):
         [
             np.less(voi, constants[0]),
             0.00000,
-            np.less(voi % constants[1], constants[2]),
+            np.less(voi - (constants[0] + constants[2]), 0.00000),
+            constants[3],
+            np.less(voi % constants[1] + constants[2], constants[2]),
             constants[3],
             True,
             0.00000,

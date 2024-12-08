@@ -40,7 +40,7 @@ def create_legends():
     legend_constants[0] = "I_hold in component membrane (pA_per_pF)"
     legend_constants[1] = "I_test in component membrane (pA_per_pF)"
     legend_constants[2] = "stim_start in component membrane (msec)"
-    legend_constants[3] = "stim_period in component membrane (msec)"
+    legend_constants[3] = "stim_interval in component membrane (msec)"
     legend_constants[4] = "stim_duration in component membrane (msec)"
     legend_algebraic[0] = "I_stim in component membrane (pA_per_pF)"
     legend_algebraic[45] = "I_tot in component membrane (pA_per_pF)"
@@ -385,7 +385,9 @@ def compute_rates(voi, states, constants):
         [
             np.less(voi, constants[2]),
             0.00000,
-            np.less(voi % constants[3], constants[4]),
+            np.less(voi - (constants[2] + constants[4]), 0.00000),
+            constants[1],
+            np.less(voi % constants[3] + constants[4], constants[4]),
             constants[1],
             True,
             0.00000,
@@ -651,7 +653,9 @@ def compute_algebraic(constants, states, voi):
         [
             np.less(voi, constants[2]),
             0.00000,
-            np.less(voi % constants[3], constants[4]),
+            np.less(voi - (constants[2] + constants[4]), 0.00000),
+            constants[1],
+            np.less(voi % constants[3] + constants[4], constants[4]),
             constants[1],
             True,
             0.00000,
