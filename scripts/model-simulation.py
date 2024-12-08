@@ -39,12 +39,6 @@ def add_shared_arguments(parser):
         help="end time for the simulation",
     )
     parser.add_argument(
-        "--steps",
-        type=int,
-        default=100000,
-        help="number of simulation steps",
-    )
-    parser.add_argument(
         "--estrus",
         type=str,
         choices={"proestrus", "estrus", "metestrus", "diestrus"},

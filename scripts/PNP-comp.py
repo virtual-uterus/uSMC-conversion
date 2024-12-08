@@ -55,13 +55,6 @@ if __name__ == "__main__":
         default=15000,
         help="end time for the simulation",
     )
-    parser.add_argument(
-        "--steps",
-        type=int,
-        default=100000,
-        help="number of simulation steps",
-    )
-
     args = parser.parse_args()
 
     np_model = "Roesler2024"
