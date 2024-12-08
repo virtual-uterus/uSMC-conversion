@@ -91,7 +91,7 @@ def set_estrus_params(constants, legend_constants, estrus):
 
     """
     if estrus not in ESTRUS_PARAMS.keys():
-        raise KeyError("the key {} is not valid".format(estrus))
+        raise KeyError(f"the key {estrus} is not a valid estrus stage")
 
     for key in ESTRUS_PARAMS[estrus].keys():
         try:
