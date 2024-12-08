@@ -18,9 +18,7 @@ from conversion import utils, metrics
 from conversion.constants import RES_DIR
 
 
-def run_simulation(
-    model, start=0, end=15000, nb_steps=100000, estrus="", param="", value=None
-):
+def run_simulation(model, start=0, end=15000, estrus="", param="", value=None):
     """Runs a simulation for the given model
 
     If a parameter and its value are provided the parameter is updated.
@@ -30,7 +28,6 @@ def run_simulation(
     "Tong2011", "Tong2014"}.
     start -- float, start time in ms for the simulation, default value 0.
     end -- float, end time in ms for the simulation, default value 15000.
-    nb_steps -- int, number of steps in the simulation, default value 100000.
     estrus -- str, estrus stage for the Roesler2024 model, default value "".
     param -- str, name of the parameter to update if running a parameter sweep.
     value -- int, value of the parameter to update if running a
@@ -43,7 +40,6 @@ def run_simulation(
     Raises:
     ValueError -- if the start number is less than 0.
     ValueError -- if the end number is smaller than start value.
-    ValueError -- if nb_steps is not an integer.
     ValueError -- if the model name is incorrect.
     KeyError -- if the estrus stage is incorrect.
 
@@ -52,8 +48,6 @@ def run_simulation(
         raise ValueError("start value must be greater than 0")
     if end < start:
         raise ValueError("end value must be greater than start value")
-    if not isinstance(nb_steps, int):
-        raise ValueError("step number must be an integer")
 
     match model:
         case "Tong2011":
@@ -79,7 +73,6 @@ def run_simulation(
                 constants,
                 start,
                 end,
-                nb_steps,
             )
         case "Tong2014":
             init_states, constants = Tong2014.init_consts()
@@ -104,7 +97,6 @@ def run_simulation(
                 constants,
                 start,
                 end,
-                nb_steps,
             )
         case "Means2023":
             init_states, constants = Means2023.init_consts()
@@ -129,7 +121,6 @@ def run_simulation(
                 constants,
                 start,
                 end,
-                nb_steps,
             )
         case "Roesler2024":
             init_states, constants = Roesler2024.init_consts()
@@ -162,7 +153,6 @@ def run_simulation(
                 constants,
                 start,
                 end,
-                nb_steps,
             )
         case _:
             raise ValueError(f"{model} incorrect model name")
@@ -189,7 +179,6 @@ def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
     Raises:
     ValueError -- if the start number is less than 0.
     ValueError -- if the end number is smaller than start value.
-    ValueError -- if nb_steps is not an integer.
     ValueError -- if the model name is incorrect.
     KeyError -- if the estrus stage is incorrect.
     ValueError -- if the provided metric is not one of

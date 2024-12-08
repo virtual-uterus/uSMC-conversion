@@ -189,7 +189,6 @@ def single_func(args):
       {"Roesler2024", "Means2023", "Tong2011", "Tong2014"}.
       start -- float, start time of the simulation.
       end -- float, end time of the simulation.
-      steps -- int, number of timesteps in the simulation.
       estrus -- str, estrus stage for the Roesler2024 model, default value "".
       plot_only -- bool, flag used to plot an already computed model.
 
@@ -210,7 +209,6 @@ def single_func(args):
             args.model,
             args.start,
             args.end,
-            args.steps,
             args.estrus,
         )
         sim_data = data[0, :]
@@ -241,7 +239,6 @@ def multi_func(args):
       values -- list(float), list of values for the parameter.
       start -- float, start time of the simulation.
       end -- float, end time of the simulation.
-      steps -- int, number of timesteps in the simulation.
       estrus -- str, estrus stage for the Roesler2024 model, default value "".
 
     Returns:
@@ -256,7 +253,7 @@ def multi_func(args):
 
 
     """
-    sim_data = np.zeros((len(args.values), args.steps))  # Pre-allocate space
+    sim_data = np.zeros((len(args.values), args.end - args.start))  # Pre-allocate space
 
     for i, value in enumerate(args.values):
         print(f"Running simulation with {args.param} at {value}")
@@ -264,7 +261,6 @@ def multi_func(args):
             args.model,
             args.start,
             args.end,
-            args.steps,
             args.estrus,
             args.param,
             value,
