@@ -208,6 +208,63 @@ def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
     return comp_points
 
 
+def run_sensitivity(sweep_model, param, values, metric, estrus=""):
+    """Runs a parameter sensitivity and compares the results to the previous
+    value of the parameter
+
+    Args:
+    sweep_model -- str, name of the model to use {"Roesler2024", "Means2023",
+    "Tong2011", "Tong2014"}.
+    param -- str, name of the parameter to sweep over.
+    values -- np.array, array of values to sweep over.
+    metric -- str, name of the metric to use from {l2, rmse, mae, correl, vrd}.
+    estrus -- str, estrus stage for the Roesler2024 model, default value "".
+
+    Returns:
+    comp_points -- np.array, array of comparison points between simulations
+    using input metric.
+
+    Raises:
+    ValueError -- if the start number is less than 0.
+    ValueError -- if the end number is smaller than start value.
+    ValueError -- if the model name is incorrect.
+    KeyError -- if the estrus stage is incorrect.
+    ValueError -- if the provided metric is not one of
+    {'l2', 'rmse', 'mae', 'correl', 'vrd'}.
+
+    """
+    comp_points = np.zeros(len(values))
+    _, base_sim = run_simulation(
+        sweep_model,
+        estrus=estrus,
+        param=param,
+        value=values[0],
+    )
+
+    try:
+        for i, value in enumerate(values[1:]):
+            print(f"  Computing simulation {i+1}")
+            t, sweep_data = run_simulation(
+                sweep_model,
+                estrus=estrus,
+                param=param,
+                value=value,
+            )
+            comp_points[i] = metrics.compute_comparison(
+                base_sim[0, :],
+                sweep_data[0, :],
+                metric,
+                time=t,
+            )
+
+            base_sim = sweep_data  # Reset base simulation
+
+    except (ValueError, KeyError):
+        raise
+
+    return comp_points
+
+
 def save_simulation(model_name, sim_data, t, estrus=""):
     """Saves the results of a simulation as {model_name}_{duration}s.pkl with
     duration the last timestep in t. If the model is Roesler2024 then the save
