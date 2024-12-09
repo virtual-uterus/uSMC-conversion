@@ -26,7 +26,7 @@ MAX_STEP = 0.1
 ESTRUS_PARAMS = {
     "proestrus": {
         "gkv43": 1.2,
-        "stim_current": -0.37,
+        "stim_current": -0.5,
         "stim_interval": 49300,
         "P4": 37,
         "E2": 100,
