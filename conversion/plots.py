@@ -101,7 +101,7 @@ def plot_sweep_data(plot_data, param, metric):
 
     Args:
     param -- str, name of the parameter to use.
-    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
 
     Returns:
 
@@ -183,7 +183,7 @@ def plot_comparison_output(sim_output, comp_points, metric):
     sim_output -- dict{str: np.array}, dict containing the simulation
             outputs for each stage in mV and the timesteps in s.
     comp_points -- list, list of comparison points.
-    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
 
     Returns:
 
