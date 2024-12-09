@@ -168,7 +168,7 @@ def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
     "Tong2011", "Tong2014"}.
     param -- str, name of the parameter to sweep over.
     values -- np.array, array of values to sweep over.
-    metric -- str, name of the metric to use from {l2, rmse, mae, correl}.
+    metric -- str, name of the metric to use from {l2, rmse, mae, correl, vrd}.
     base_sim -- np.array, base simulation to compare to.
     estrus -- str, estrus stage for the Roesler2024 model, default value "".
 
@@ -182,7 +182,7 @@ def run_sweep(sweep_model, param, values, metric, base_sim, estrus=""):
     ValueError -- if the model name is incorrect.
     KeyError -- if the estrus stage is incorrect.
     ValueError -- if the provided metric is not one of
-    {'l2', 'rmse', 'mae', 'correl'}.
+    {'l2', 'rmse', 'mae', 'correl', 'vrd'}.
 
     """
     comp_points = np.zeros(len(values))
