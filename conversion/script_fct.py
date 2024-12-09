@@ -10,7 +10,7 @@ Date: 11/24
 
 import numpy as np
 
-from conversion.constants import ESTRUS
+from conversion.constants import ESTRUS, PARAM
 from conversion import utils, simulation
 
 
@@ -133,12 +133,14 @@ def plot_func(args):
       {"Roesler2024", "Means2023", "Tong2011", "Tong2014"}.
       metric -- str, name of the metric to use from
       {l2, rmse, mae, correl, vrd}.
-      param -- str, name of the parameter to sweep over.
+      param -- str, name of the parameter to sweep over from
+      {"gcal", "stim_current", "gkv43", "gna", "all"}.
       estrus -- str, estrus stage for the Roesler2024 model, default value "".
 
     Returns:
-    plot_data -- list(tuple), list of comparison points, parameter values,
-    and the estrus stage for each sweep.
+    plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
+    and list of comparison points, parameter values, and the estrus stage for
+    each sweep as values.
 
     Raises:
     FileNotFoundError -- if the results files are not found.
@@ -150,25 +152,33 @@ def plot_func(args):
 
     """
     try:
-        plot_data = []
+        plot_data = {}
 
         if args.estrus == "all":
             estrus = ESTRUS
         else:
             estrus = [args.estrus]
 
-        for stage in estrus:
-            # Loop over estrus cycle
-            save_file = utils.sweep_path(
-                args.base_model,
-                args.sweep_model,
-                args.param,
-                args.metric,
-                stage,
-            )
+        if args.param == "all":
+            params = PARAM
+        else:
+            params = [args.param]
 
-            loaded_data = utils.load_data(save_file)
-            plot_data.append(loaded_data)
+        for param in params:
+            plot_data[param] = []  # Initialise empty list
+
+            for stage in estrus:
+                # Loop over estrus cycle
+                save_file = utils.sweep_path(
+                    args.base_model,
+                    args.sweep_model,
+                    param,
+                    args.metric,
+                    stage,
+                )
+
+                loaded_data = utils.load_data(save_file)
+                plot_data[param].append(loaded_data)
 
     except (FileNotFoundError, ValueError, KeyError):
         raise
