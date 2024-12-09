@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # Add common arguments
     add_shared_arguments(sweep_parser)
-    parser.add_argument("param", type=str, help="name of the parameter")
+    sweep_parser.add_argument("param", type=str, help="name of the parameter")
 
     sweep_parser.add_argument(
         "start_val",
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # Add common arguments
     add_shared_arguments(plot_parser)
 
-    parser.add_argument(
+    plot_parser.add_argument(
         "--param",
         type=str,
         choices={"gcal", "gkv43", "gna", "stim_current", "all"},
@@ -112,7 +112,7 @@ if __name__ == "__main__":
             plots.plot_sensitivity(plot_data, args.metric)
             exit()
 
-        else:
+        elif args.command == "plot":
             plot_data = plot_data[args.param]
 
         plots.plot_sweep_data(plot_data, args.param, args.metric)
