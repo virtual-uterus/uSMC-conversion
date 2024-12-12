@@ -170,7 +170,14 @@ def results_path(model_name, duration, estrus=""):
         return os.path.join(RES_DIR, f"{model_name}_{duration}s.pkl")
 
 
-def sweep_path(base_model, sweep_model, param, metric, estrus=""):
+def sweep_path(
+    base_model,
+    sweep_model,
+    param,
+    metric,
+    estrus="",
+    base_estrus="",
+):
     """Gets the sweep path based on the base model, sweep model and the metric.
 
     If the base model and sweep model are Roesler2024 the estrus is assume to
@@ -184,6 +191,8 @@ def sweep_path(base_model, sweep_model, param, metric, estrus=""):
     param -- str, name of the parameter to use.
     metric -- str, name of the metric to use from {l2, rmse, mae, correl}.
     estrus -- str, estrus stage for the Roesler2024 model, default value "".
+    base_estrus -- str, estrus stage for the Roesler2024 model,
+    default value "".
 
     Returns:
     res_path -- str, path to the result file.
@@ -192,7 +201,7 @@ def sweep_path(base_model, sweep_model, param, metric, estrus=""):
 
     """
     if base_model == "Roesler2024":
-        b_model = f"{base_model}_{estrus}"
+        b_model = f"{base_model}_{base_estrus}"
     else:
         b_model = f"{base_model}"
 

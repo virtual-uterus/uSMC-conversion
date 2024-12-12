@@ -31,7 +31,10 @@ def sweep_func(args):
       start_val -- float, value to start the sweep at.
       end_val -- float, value to end the sweep at.
       nb_points -- int, number of points for the parameter sweep
-      estrus -- str, estrus stage for the Roesler2024 model, default value "".
+      estrus -- str, estrus stage for the Roesler2024 model,
+      default value "estrus".
+      base_estrus -- str, estrus stage for the base model if Roesler2024,
+      default value "estrus".
 
     Returns:
     plot_data -- list(tuple), list of comparison points, parameter values,
@@ -64,6 +67,18 @@ def sweep_func(args):
             print(f"Computing {args.base_model} simulation with default times")
             t, base_data = simulation.run_simulation(args.base_model)
 
+        else:
+            print(
+                "Computing {} {} simulation with default times".format(
+                    args.base_model,
+                    args.base_estrus,
+                )
+            )
+            t, base_data = simulation.run_simulation(
+                args.base_model,
+                estrus=args.base_estrus,
+            )
+
         # Create values to loop through
         values = np.linspace(args.start_val, args.end_val, args.nb_points)
 
@@ -88,17 +103,6 @@ def sweep_func(args):
                 args.metric,
                 stage,
             )
-
-            if args.base_model == "Roesler2024":
-                print(
-                    "Computing {} simulation with default times".format(
-                        args.base_model,
-                    )
-                )
-                t, base_data = simulation.run_simulation(
-                    args.base_model,
-                    estrus=stage,
-                )
 
             # Main sweep
             comp_points = simulation.run_sweep(
@@ -135,7 +139,10 @@ def plot_func(args):
       {l2, rmse, mae, correl, vrd}.
       param -- str, name of the parameter to sweep over from
       {"gcal", "stim_current", "gkv43", "gna", "all"}.
-      estrus -- str, estrus stage for the Roesler2024 model, default value "".
+      estrus -- str, estrus stage for the Roesler2024 model,
+      default value "estrus".
+      base_estrus -- str, estrus stage for the base model if Roesler2024,
+      default value "estrus".
 
     Returns:
     plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
@@ -175,6 +182,7 @@ def plot_func(args):
                     param,
                     args.metric,
                     stage,
+                    args.base_estrus,
                 )
 
                 loaded_data = utils.load_data(save_file)

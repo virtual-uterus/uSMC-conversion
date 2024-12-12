@@ -36,12 +36,20 @@ def add_shared_arguments(parser):
         choices={"l2", "rmse", "mae", "correl", "vrd"},
         help="comparison metric",
     )
+    parser.add_argument("param", type=str, help="name of the parameter")
     parser.add_argument(
         "--estrus",
         type=str,
         default="estrus",
         choices={"estrus", "metestrus", "proestrus", "diestrus", "all"},
         help="estrus stage",
+    )
+    parser.add_argument(
+        "--base-estrus",
+        type=str,
+        default="estrus",
+        choices={"estrus", "metestrus", "proestrus", "diestrus"},
+        help="estrus stage for the base model",
     )
 
 
@@ -62,7 +70,6 @@ if __name__ == "__main__":
 
     # Add common arguments
     add_shared_arguments(sweep_parser)
-    sweep_parser.add_argument("param", type=str, help="name of the parameter")
 
     sweep_parser.add_argument(
         "start_val",
@@ -92,14 +99,6 @@ if __name__ == "__main__":
 
     # Add common arguments
     add_shared_arguments(plot_parser)
-
-    plot_parser.add_argument(
-        "--param",
-        type=str,
-        choices={"gcal", "gkv43", "gna", "stim_current", "all"},
-        default="all",
-        help="name of the parameter",
-    )
     plot_parser.set_defaults(func=script_fct.plot_func)
 
     # Parse input arguments
@@ -108,12 +107,7 @@ if __name__ == "__main__":
     try:
         plot_data = args.func(args)
 
-        if args.command == "plot" and args.param == "all":
-            # Plot the sensitivity instead of sweep
-            plots.plot_sensitivity(plot_data, args.metric)
-            exit()
-
-        elif args.command == "plot":
+        if args.command == "plot":
             plot_data = plot_data[args.param]
 
         plots.plot_sweep_data(plot_data, args.param, args.metric)
