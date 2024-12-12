@@ -69,10 +69,10 @@ RIGHT = 0.80
 Y_LIMS = [-75, 15]
 
 COLOURS = {
-    "proestrus": ".r",
-    "estrus": ".b",
-    "metestrus": ".g",
-    "diestrus": ".k",
+    "proestrus": "r",
+    "estrus": "b",
+    "metestrus": "g",
+    "diestrus": "k",
 }
 
 PARAM = {
