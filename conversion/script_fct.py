@@ -59,13 +59,8 @@ def sweep_func(args):
             args.nb_points,
         )
 
-        # Set sentitivity flag
-        sens = False
-        if args.base_model == args.sweep_model:
-            sens = True
-
         # Compute base model if pregnant model
-        if args.base_model != "Roesler2024" and not sens:
+        if args.base_model != "Roesler2024":
             print(f"Computing {args.base_model} simulation with default times")
             t, base_data = simulation.run_simulation(args.base_model)
 
@@ -73,6 +68,7 @@ def sweep_func(args):
         values = np.linspace(args.start_val, args.end_val, args.nb_points)
 
         # Create arrays to store results
+        comp_points = np.zeros(len(values))
         plot_data = []
 
         if args.estrus == "all":
@@ -93,7 +89,7 @@ def sweep_func(args):
                 stage,
             )
 
-            if args.base_model == "Roesler2024" and not sens:
+            if args.base_model == "Roesler2024":
                 print(
                     "Computing {} simulation with default times".format(
                         args.base_model,
@@ -104,26 +100,15 @@ def sweep_func(args):
                     estrus=stage,
                 )
 
-            if not sens:
-                # Run a parameter sweep comparing with another model
-                comp_points = simulation.run_sweep(
-                    args.sweep_model,
-                    args.param,
-                    values,
-                    args.metric,
-                    base_data[0, :],
-                    stage,
-                )
-
-            if sens:
-                # Run a sensitivity analysis comparing with each new value
-                comp_points = simulation.run_sensitivity(
-                    args.sweep_model,
-                    args.param,
-                    values,
-                    args.metric,
-                    stage,
-                )
+            # Main sweep
+            comp_points = simulation.run_sweep(
+                args.sweep_model,
+                args.param,
+                values,
+                args.metric,
+                base_data[0, :],
+                stage,
+            )
 
             # Save data and prepare for plotting
             plot_data.append((comp_points, values, stage))
