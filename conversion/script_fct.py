@@ -102,6 +102,7 @@ def sweep_func(args):
                 args.param,
                 args.metric,
                 stage,
+                base_estrus=args.base_estrus,
             )
 
             # Main sweep
