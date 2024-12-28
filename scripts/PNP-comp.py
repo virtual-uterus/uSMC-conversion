@@ -74,7 +74,6 @@ if __name__ == "__main__":
                 args.p_model,
                 args.start,
                 args.end,
-                args.steps,
             )
             simulation.save_simulation(args.p_model, p_data[0, :], t)
             sim_data[args.p_model] = p_data[0, :]
@@ -87,7 +86,6 @@ if __name__ == "__main__":
                     "Roesler2024",
                     args.start,
                     args.end,
-                    args.steps,
                     estrus_stage,
                 )
 
