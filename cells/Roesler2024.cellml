@@ -374,8 +374,6 @@ enddef;-->
         <variable cmeta:id="beta" name="buff" public_interface="out" units="dimensionless"/>
         <variable name="AV" public_interface="out" units="cm2_per_uL"/>
         <variable name="zca" public_interface="out" units="dimensionless"/>
-        <variable name="zna" public_interface="out" units="dimensionless"/>
-        <variable name="zk" public_interface="out" units="dimensionless"/>
         <variable name="R" public_interface="out" units="joule_per_kelvin_per_kilomole"/>
         <variable name="frdy" public_interface="out" units="coulomb_per_mole"/>
         <variable name="temp" public_interface="out" units="kelvin"/>
@@ -480,16 +478,6 @@ enddef;-->
                 <eq/>
                 <ci>zca</ci>
                 <cn cellml:units="dimensionless">2.0</cn>
-            </apply>
-            <apply>
-                <eq/>
-                <ci>zna</ci>
-                <cn cellml:units="dimensionless">1.0</cn>
-            </apply>
-            <apply>
-                <eq/>
-                <ci>zk</ci>
-                <cn cellml:units="dimensionless">1.0</cn>
             </apply>
             <apply>
                 <eq/>
