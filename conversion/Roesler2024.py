@@ -291,7 +291,7 @@ def init_consts():
         1.00000 + np.power(150.000 / (constants[62] + constants[23]), 2.00000)
     )
     constants[66] = 0.0169000
-    constants[67] = 4.00000
+    constants[67] = 7.42
     constants[68] = 2.00000
     constants[69] = 8314.00
     constants[70] = 96485.0

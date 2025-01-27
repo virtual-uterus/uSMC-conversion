@@ -472,7 +472,7 @@ enddef;-->
             <apply>
                 <eq/>
                 <ci>AV</ci>
-                <cn cellml:units="cm2_per_uL">4.0</cn>
+                <cn cellml:units="cm2_per_uL">7.42</cn>
             </apply>
             <apply>
                 <eq/>
