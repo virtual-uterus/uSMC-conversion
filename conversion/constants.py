@@ -83,11 +83,11 @@ PARAM = {
 }
 
 UNITS = {
-    "gkv43": r"nS pF$^1$",
-    "gcal": r"nS pF$^1$",
-    "gkca": r"nS pF$^1$",
-    "gna": r"nS pF$^1$",
-    "stim_current": r"pA pF$^1$",
+    "gkv43": r"nS pF$^{-1}$",
+    "gcal": r"nS pF$^{-1}$",
+    "gkca": r"nS pF$^{-1}$",
+    "gna": r"nS pF$^{-1}$",
+    "stim_current": r"pA pF$^{-1}$",
 }
 
 LABELS = {

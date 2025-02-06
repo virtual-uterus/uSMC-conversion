@@ -115,7 +115,7 @@ def plot_sweep_data(plot_data, param, metric):
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
 
-    plt.xlabel(PARAM[param] + r" values (pA.pF$^{-1}$)")
+    plt.xlabel(PARAM[param] + r" values (pA pF$^{-1}$)")
     plt.ylabel("Normalised {}".format(LABELS[metric]))
 
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
