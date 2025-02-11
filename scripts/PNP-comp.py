@@ -8,22 +8,31 @@ Author: Mathias Roesler
 Last modified: 11/24
 """
 
+import os
+import sys
 import argparse
-import numpy as np
-import pickle
 
-from conversion import Roesler2024, Means2023, plots, metrics, constants, utils
+import numpy as np
+
+from conversion import metrics, simulation, utils, plots
+from conversion.constants import ESTRUS, RES_DIR
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Compares the pregnant and non-pregnant models"
     )
-
+    parser.add_argument(
+        "p_model",
+        metavar="p-model",
+        type=str,
+        choices={"Tong2011", "Tong2014", "Means2023"},
+        help="pregnant model to compare with",
+    )
     parser.add_argument(
         "metric",
         type=str,
-        choices={"l2", "rmse", "mae", "correl"},
+        choices={"l2", "rmse", "mae", "correl", "vrd"},
         help="comparison metric",
     )
     parser.add_argument(
@@ -33,93 +42,95 @@ if __name__ == "__main__":
         help="flag used just to plot data",
     )
     parser.add_argument(
-        "-m",
-        "--metric-only",
-        action="store_true",
-        help="flag used just to compute metric",
+        "-s",
+        "--start",
+        type=int,
+        default=0,
+        help="start time for the simulation",
     )
-
+    parser.add_argument(
+        "-e",
+        "--end",
+        type=int,
+        default=15000,
+        help="end time for the simulation",
+    )
     args = parser.parse_args()
-    init_states_M, constants_M = Means2023.initConsts()
-    init_states_R, constants_R = Roesler2024.initConsts()
-    _, _, _, legend_constants_R = Roesler2024.createLegends()
 
-    sim_output = dict()  # Store simulation output results
+    np_model = "Roesler2024"
 
     # Output files
-    sim_file = "../res/sim_output.pkl"
-    comp_file = "../res/{}_comp.pkl".format(args.metric)
+    comp_file = os.path.join(
+        RES_DIR,
+        f"{args.p_model}_{np_model}_{args.metric}_comp.pkl",
+    )
     comp_points = np.zeros(4)  # Comparison points for each stage of estrus
+    sim_data = {}  # Dictionnary for simulation data
 
-    if not args.plot_only and not args.metric_only:
-        print("Computing Means2023 simulation")
-        _, states_M, _ = Means2023.solveModel(init_states_M, constants_M)
+    try:
+        if not args.plot_only:
+            print(f"Computing {args.p_model} simulation")
+            t, p_data = simulation.run_simulation(
+                args.p_model,
+                args.start,
+                args.end,
+            )
+            simulation.save_simulation(args.p_model, p_data[0, :], t)
+            sim_data[args.p_model] = p_data[0, :]
+            sim_data["time"] = t * 1e-3  # Conver to s
 
-        sim_output["means"] = states_M[0, :]
-
-        for i, key in enumerate(constants.ESTRUS.keys()):
-            # Set estrus dependant constants
-            try:
-                constants_R = utils.setEstrusParams(
-                    constants_R, legend_constants_R, key
+            for i, estrus_stage in enumerate(ESTRUS):
+                # Set estrus dependant constants
+                print(f"Computing {np_model} {estrus_stage} simulation")
+                _, np_data = simulation.run_simulation(
+                    "Roesler2024",
+                    args.start,
+                    args.end,
+                    estrus_stage,
                 )
-            except KeyError as e:
-                print(e)
-                exit()
 
-            print("Computing Roesler2024 {} simulation".format(key))
+                # Save model output
+                simulation.save_simulation(
+                    np_model,
+                    np_data[0, :],
+                    t,
+                    estrus_stage,
+                )
+                sim_data[estrus_stage] = np_data[0, :]
 
-            (
-                voi_R,
-                states_R,
-                _,
-            ) = Roesler2024.solveModel(init_states_R, constants_R)
-
-            sim_output[key] = states_R[0, :]  # Membrane potential for plot
-            try:
-                comp_points[i] = metrics.computeComparison(
-                    states_M[0, :] / max(abs(states_M[0, :])),
-                    states_R[0, :] / max(abs(states_R[0, :])),
+                comp_points[i] = metrics.compute_comparison(
+                    p_data[0, :],
+                    np_data[0, :],
                     args.metric,
+                    time=t,
                 )
-            except ValueError as e:
-                print(e)
+
+            utils.save_data(comp_file, comp_points)
+
+        else:
+            try:
+                comp_points = utils.load_data(comp_file)
+
+                for estrus_stage in ESTRUS:
+                    # Load non-pregnant data
+                    np_data = utils.load_data(
+                        utils.results_path(
+                            np_model,
+                            int(args.end * 1e-3),
+                            estrus_stage,
+                        )
+                    )
+                    sim_data[estrus_stage] = np_data["data"]
+                    sim_data["time"] = np_data["time"] * 1e-3  # Conver to s
+            except FileNotFoundError as e:
+                sys.stderr.write(f"Error: {e}")
+                exit()
+            except KeyError as e:
+                sys.stderr.write(f"Error: {e} invalid key")
                 exit()
 
-            # Reset the model
-            init_states_R, constants_R = Roesler2024.initConsts()
+        plots.plot_comparison_output(sim_data, comp_points, args.metric)
 
-        sim_output["time"] = voi_R / 1000  # Add timesteps in s
-
-        with open(comp_file, "wb") as handler:
-            # Pickle data
-            pickle.dump(comp_points, handler)
-
-        with open(sim_file, "wb") as handler:
-            # Pickle data
-            pickle.dump(sim_output, handler)
-
-    else:
-        with open(sim_file, "rb") as handler:
-            # Unpickle data
-            sim_output = pickle.load(handler)
-
-        if args.metric_only:
-            # Compute just the metric
-            for i, key in enumerate(constants.ESTRUS.keys()):
-                try:
-                    comp_points[i] = metrics.computeComparison(
-                        sim_output["means"][0, :] / max(abs(sim_output["means"][0, :])),
-                        sim_output[key][0, :] / max(abs(sim_output[key][0, :])),
-                        args.metric,
-                    )
-                except ValueError as e:
-                    print(e)
-                    exit()
-
-            with open(comp_file, "wb") as handler:
-                # Pickle data
-                pickle.dump(comp_points, handler)
-
-    # Plot normalized Euclidean distances
-    plots.plotSimulationOutput(sim_output, args.metric)
+    except Exception as e:
+        sys.stderr.write(f"Error: {e}\n")
+        exit()

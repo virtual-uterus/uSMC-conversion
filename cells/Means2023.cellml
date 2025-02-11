@@ -80,8 +80,9 @@
     <component name="membrane">
         <variable initial_value="0" name="I_hold" public_interface="none" units="pA_per_pF"/>
         <variable initial_value="-0.25" name="I_test" public_interface="none" units="pA_per_pF"/>
-        <variable initial_value="2000" name="test_start" public_interface="none" units="msec"/>
-        <variable initial_value="6000" name="test_end" public_interface="none" units="msec"/>
+        <variable initial_value="1000" name="stim_start" units="msec"/>
+        <variable initial_value="46500" name="stim_interval" units="msec"/>
+        <variable initial_value="10000" name="stim_duration" units="msec"/>
         <variable cmeta:id="membrane_stimulus_current" name="I_stim" units="pA_per_pF"/>
         <variable name="time" public_interface="in" units="msec"/>
         <variable name="I_tot" units="pA_per_pF"/>
@@ -94,28 +95,52 @@
         <variable name="ib" public_interface="in" units="pA_per_pF"/>
         <variable name="icl" public_interface="in" units="pA_per_pF"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
-            <apply>
+            <apply id="stimulus_calculation">
                 <eq/>
                 <ci>I_stim</ci>
                 <piecewise>
                     <piece>
+                        <cn cellml:units="pA_per_pF">0.0</cn>
+                        <apply>
+                            <lt/>
+                            <ci>time</ci>
+                            <ci>stim_start</ci>
+                        </apply>
+                    </piece>
+                    <piece>
                         <ci>I_test</ci>
                         <apply>
-                            <and/>
+                            <lt/>
                             <apply>
-                                <gt/>
+                                <minus/>
                                 <ci>time</ci>
-                                <ci>test_start</ci>
+                                <apply>
+                                    <plus/>
+                                    <ci>stim_start</ci>
+                                    <ci>stim_duration</ci>
+                                </apply>
                             </apply>
+                            <cn cellml:units="msec">0</cn>
+                        </apply>
+                    </piece>
+                    <piece>
+                        <ci>I_test</ci>
+                        <apply>
+                            <lt/>
                             <apply>
-                                <lt/>
+                                <rem/>
                                 <ci>time</ci>
-                                <ci>test_end</ci>
+                                <apply>
+                                    <plus/>
+                                    <ci>stim_interval</ci>
+                                    <ci>stim_duration</ci>
+                                </apply>
                             </apply>
+                            <ci>stim_duration</ci>
                         </apply>
                     </piece>
                     <otherwise>
-                        <ci>I_hold</ci>
+                        <cn cellml:units="pA_per_pF">0.0</cn>
                     </otherwise>
                 </piecewise>
             </apply>

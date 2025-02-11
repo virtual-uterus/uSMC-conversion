@@ -8,8 +8,8 @@ Author: Mathias Roesler
 Date: 11/24
 
 This file contains test cases for the functions:
-- setParams
-- setEstrusParams
+- set_params
+- set_estrus_params
 
 The tests cover various scenarios including valid inputs, invalid inputs.
 """
@@ -18,26 +18,26 @@ import pytest
 
 import conversion.Roesler2024 as Roesler2024
 
-from conversion.utils import setParams, setEstrusParams
+from conversion.utils import set_params, set_estrus_params
 from conversion.constants import E2_MAP, P4_MAP, ESTRUS_PARAMS
 
 # Data for testing
-init_states_R, constants_R = Roesler2024.initConsts()
-_, _, _, legend_constants_R = Roesler2024.createLegends()
+init_states_R, constants_R = Roesler2024.init_consts()
+_, _, _, legend_constants_R = Roesler2024.create_legends()
 
-# Tests for setParams
+# Tests for set_params
 
 
-def test_setParams_normal_case():
-    updated_constants, idx = setParams(
+def test_set_params_normal_case():
+    updated_constants, idx = set_params(
         constants_R.copy(), legend_constants_R, "gcal", 100
     )
     assert updated_constants[idx] == 100
 
 
-def test_setParams_modulators():
+def test_set_params_modulators():
     # Try E2 modulator
-    updated_constants, idx = setParams(
+    updated_constants, idx = set_params(
         constants_R.copy(),
         legend_constants_R,
         "E2",
@@ -49,7 +49,7 @@ def test_setParams_modulators():
     assert updated_constants[E2_MAP["mod_E2"]] == compare_value
 
     # Try P4 modulator
-    updated_constants, idx = setParams(
+    updated_constants, idx = set_params(
         constants_R.copy(),
         legend_constants_R,
         "P4",
@@ -61,24 +61,24 @@ def test_setParams_modulators():
     assert updated_constants[P4_MAP["mod_P4"]] == compare_value
 
 
-def test_setParams_not_found():
+def test_set_params_not_found():
     with pytest.raises(IndexError):
-        setParams(constants_R.copy(), legend_constants_R, "wrong", 100)
+        set_params(constants_R.copy(), legend_constants_R, "wrong", 100)
 
 
-def test_setParams_no_value():
-    updated_constants, idx = setParams(
+def test_set_params_no_value():
+    updated_constants, idx = set_params(
         constants_R.copy(), legend_constants_R, "gcal", None
     )
     # Original value remains unchanged
     assert updated_constants[idx] == constants_R[idx]
 
 
-# Tests for setEstrusParams
+# Tests for set_estrus_params
 
 
-def test_setEstrusParams_normal_case():
-    updated_constants = setEstrusParams(
+def test_set_estrus_params_normal_case():
+    updated_constants = set_estrus_params(
         constants_R.copy(), legend_constants_R, "estrus"
     )
     for key, value in ESTRUS_PARAMS["estrus"].items():
@@ -91,6 +91,6 @@ def test_setEstrusParams_normal_case():
             assert updated_constants[idx] == value
 
 
-def test_setEstrusParams_invalid_stage():
+def test_set_estrus_params_invalid_stage():
     with pytest.raises(KeyError):
-        setEstrusParams(constants_R.copy(), legend_constants_R, "invalid_stage")
+        set_estrus_params(constants_R.copy(), legend_constants_R, "invalid_stage")

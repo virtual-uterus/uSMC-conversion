@@ -10,8 +10,12 @@ Modules:
 - utils: General utilities for handling data and file operations.
 - constants: Constants used in the project.
 - plots: Plotting functions.
-- Means2023: Pregnant uterine cell model
-- Roesler2024: Non-pregnant uterine cell model
+- simulation: Functions for running simulations.
+- script_fct: Functions called by the main scripts.
+- Tong2011: Pregnant uterine cell model using Tong 2011 model.
+- Tong2014: Pregnant uterine cell model using Tong 2014 model.
+- Means2023: Pregnant uterine cell model using Means 2023 model.
+- Roesler2024: Non-pregnant uterine cell model.
 
 """
 

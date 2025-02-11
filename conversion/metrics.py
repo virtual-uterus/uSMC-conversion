@@ -8,19 +8,23 @@ Author: Mathias Roesler
 Date: 11/24
 """
 
+import conversion.utils
+
 import numpy as np
 import sklearn.metrics as skm
 import scipy.stats as stat
 
+from elephant.spike_train_dissimilarity import van_rossum_distance
 
-def computeL2Norm(y_true, y_pred):
+
+def compute_L2_norm(y_true, y_pred):
     """Computes the Euclidean distance between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     l2 -- float, Euclidean distance.
 
     Raises:
@@ -28,49 +32,49 @@ def computeL2Norm(y_true, y_pred):
 
     """
     if len(y_true) == 0:
-        raise ValueError("Error: empty array y_true\n")
+        raise ValueError("empty array y_true")
     if len(y_pred) == 0:
-        raise ValueError("Error: empty array y_pred\n")
+        raise ValueError("empty array y_pred")
 
     return np.linalg.norm(y_true - y_pred)
 
 
-def computeMAE(y_true, y_pred):
+def compute_mae(y_true, y_pred):
     """Computes the Mean Absolute Error between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     mae -- float, mean absolute error.
 
     """
     return skm.mean_absolute_error(y_true, y_pred)
 
 
-def computeRMSE(y_true, y_pred):
+def compute_rmse(y_true, y_pred):
     """Computes the Root Mean Squared Error between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     rmse -- float, root mean square error
 
     """
     return skm.mean_squared_error(y_true, y_pred, squared=False)
 
 
-def computeCorrelation(y_true, y_pred):
+def compute_correlation(y_true, y_pred):
     """Computes the Pearson correlation between y_true and y_pred
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
 
-    Return:
+    Returns:
     correl -- float, Pearson correlation
 
     """
@@ -78,32 +82,64 @@ def computeCorrelation(y_true, y_pred):
     return correl
 
 
-def computeComparison(y_true, y_pred, metric):
-    """Computes the comparison between y_true and y_pred based on the metric
+def compute_van_rossum_distance(y_true, y_pred, time, tau=1.0):
+    """Computes the Van Rossum distance between two spike trains.
 
-    Arguments:
+    Args:
     y_true -- np.array, ground truth values.
     y_pred -- np.array, estimated values.
-    metric -- str, comparison metric, {l2, rmse, mae, correl}.
+    time -- np.array, corresponding time points.
+    tau -- float, time constant for the exponential kernel, default: 1.
 
-    Return:
+    Returns:
+    distance -- float, Van Rossum distance.
+    """
+    st_true = conversion.utils.create_spike_train(
+        conversion.utils.extract_spike_times(y_true, time),
+        time[-1],
+    )
+    st_pred = conversion.utils.create_spike_train(
+        conversion.utils.extract_spike_times(y_pred, time),
+        time[-1],
+    )
+    return van_rossum_distance(
+        [st_true, st_pred],
+        tau * conversion.utils.quant.s,
+    )[0, 1]
+
+
+def compute_comparison(y_true, y_pred, metric, tau=1.0, time=np.array([])):
+    """Computes the comparison between y_true and y_pred based on the metric
+
+    Args:
+    y_true -- np.array or SpikeTrain object, ground truth values.
+    y_pred -- np.array or SpikeTrain object, estimated values.
+    metric -- str, comparison metric, {l2, rmse, mae, correl, vrd}.
+    tau -- float, time constant for the exponential kernel in the
+    Van Rossum distance, default: 1.
+    time -- np.array, corresponding time points, default: [].
+
+    Returns:
     comp_point -- float, comparison point.
 
     Raises:
     ValueError -- if the provided metric is not one of
-    {'l2', 'rmse', 'mae', 'correl'}.
+    {'l2', 'rmse', 'mae', 'correl', 'vrd'}.
+
     """
     match metric:
         case "l2":
-            return computeL2Norm(y_true, y_pred)
+            return compute_L2_norm(y_true, y_pred)
 
         case "rmse":
-            return computeRMSE(y_true, y_pred)
+            return compute_rmse(y_true, y_pred)
 
         case "mae":
-            return computeMAE(y_true, y_pred)
+            return compute_mae(y_true, y_pred)
 
         case "correl":
-            return computeCorrelation(y_true, y_pred)
+            return compute_correlation(y_true, y_pred)
+        case "vrd":
+            return compute_van_rossum_distance(y_true, y_pred, time, tau)
         case _:
-            raise ValueError("Error: invalid metric {}\n".format(metric))
+            raise ValueError("invalid metric {}".format(metric))

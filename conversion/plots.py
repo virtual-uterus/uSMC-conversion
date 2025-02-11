@@ -1,154 +1,196 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PNP-comp.py
+plots.py
 
-Compares the results from pregnant and non-pregnant models
+Plot function for the conversion module
 Author: Mathias Roesler
-Date: 11/24
+Date: 12/24
 """
 
-import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .constants import ESTRUS, COLOURS, LABELS, PARAM
+from .constants import (
+    ESTRUS,
+    COLOURS,
+    LABELS,
+    PARAM,
+    UNITS,
+    LEFT,
+    RIGHT,
+    BOTTOM,
+    Y_LIMS,
+)
 
 
-def plotPNPComp(metric):
-    """Plots the pregnant and non-pregnant comparison results
+def plot_single_simulation(data, time):
+    """Plots the output of a single simulation
 
-    Arguments:
-    metric -- str, metric use for comparison to load the correct data.
+    Args:
+    data -- np.array, array containing the data to plot.
+    time -- np.array, array of timestamps in seconds.
 
-    Return:
+    Returns:
+
+    Raises:
+    ValueError -- if data and time do not have the same shape
 
     """
+    if not data.shape == time.shape:
+        raise ValueError("data and time array should have the same shape\n")
+
     fig, ax = plt.subplots(dpi=300)
 
-    input_file = "../res/{}_comp.pkl".format(metric)
+    plt.plot(time, data, "-k")
+    plt.xlabel("Time (s)")
+    plt.ylabel("Membrane potential (mV)")
 
-    with open(input_file, "rb") as handler:
-        # Unpack pickled data
-        pickled_data = pickle.load(handler)
+    plt.xlim((time[0], time[-1]))
+    plt.ylim(Y_LIMS)
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
 
-    plt.plot(np.arange(1, 5), pickled_data, ".b")
-
-    # Reset x-axis ticks
-    plt.xticks(
-        ticks=[1, 2, 3, 4],
-        labels=[estrus.capitalize() for estrus in ESTRUS],
-    )
-
-    plt.ylabel("Normalised {} (mV)".format(LABELS[metric]))
     plt.show()
 
 
-def plotParamSweep(param, metric):
+def plot_multi_simulation(data, time, param, values):
+    """Plots the output of multiple simulation with different
+    values of the parameter
+
+    Args:
+    data -- np.array, array containing the data to plot.
+    time -- np.array, array of timestamps in seconds.
+    param -- str, name of the parameter.
+    values -- np.array, values of the parameter.
+
+    Returns:
+
+    Raises:
+    ValueError -- if data and time do not have the same shape
+    ValueError -- if data and values do not have the same length
+
+    """
+    if not data.shape[1] == time.shape[0]:
+        raise ValueError("data and time array should have the same length\n")
+
+    if not data.shape[0] == values.shape[0]:
+        raise ValueError("data and values array should have the same length\n")
+
+    fig, ax = plt.subplots(dpi=300)
+    legend = []
+
+    for i, value in enumerate(values):
+        plt.plot(time, data[i, :])
+        legend.append(f"{PARAM[param]} = {value} {UNITS[param]}")
+
+    plt.xlabel("Time (s)")
+    plt.ylabel("Membrane potential (mV)")
+
+    plt.xlim((time[0], time[-1]))
+    plt.ylim(Y_LIMS)
+
+    plt.legend(legend, fontsize="x-small")
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
+
+    plt.show()
+
+
+def plot_sweep_data(plot_data, param, metric):
     """Plots the comparison data from different stages of the estrus for
     a given parameter and metric
 
-    Arguments:
+    Args:
     param -- str, name of the parameter to use.
-    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
 
-    Return:
+    Returns:
 
     """
     fig, ax = plt.subplots(dpi=300)
-    comp_points = []  # Store the results for each stage
 
-    for i, estrus in enumerate(ESTRUS):
-        input_file = "../res/{}_{}_{}_sweep.pkl".format(param, estrus, metric)
+    for comp_points, values, estrus in plot_data:
+        comp_points /= np.max(comp_points)  # Normalise the data
 
-        with open(input_file, "rb") as handler:
-            # Unpack pickled data
-            pickled_data = pickle.load(handler)
-            comp_points.append(pickled_data[0])
-            values = pickled_data[1]  # Assume the values are always the same
-
-    comp_points /= np.max(comp_points)  # Normalise the data
-
-    for i, stage in enumerate(ESTRUS):
-        plt.plot(values, comp_points[i], COLOURS[stage], linestyle="-")
+        plt.plot(values, comp_points, COLOURS[estrus], linestyle="-")
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
 
-    plt.xlabel(PARAM[param] + r" values (pA.pF$^{-1}$)")
-    plt.ylabel("Normalised {} (mV)".format(LABELS[metric]))
+    plt.xlabel(PARAM[param] + r" values (pA pF$^{-1}$)")
+    plt.ylabel("Normalised {}".format(LABELS[metric]))
+
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
 
 
-def plotSensitivity(metric):
+def plot_sensitivity(plot_data, metric):
     """Plots the results of the sensitivity analysis for a certain metric
 
-    Arguments:
-    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
+    Args:
+    plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
+    and list of comparison points, parameter values, and the estrus stage for
+    each sweep as values.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
 
-    Return:
+    Returns:
 
     """
     fig, ax = plt.subplots(dpi=300)
 
-    values = np.arange(len(PARAM))  # x-values for plot
-
-    for i, stage in enumerate(ESTRUS):
+    for i, param in enumerate(plot_data.keys()):
+        data = plot_data[param]
         comp_points = []  # Store the results for each stage
 
-        for j, param in enumerate(PARAM):
-            input_file = "../res/{}_{}_{}_sweep.pkl".format(
-                param,
-                stage,
-                metric,
+        for j in range(len(data)):
+            comp_points = data[j][0]
+            stage = data[j][2]
+
+            mean = np.mean(comp_points)
+            std = np.std(comp_points)
+
+            _, caps, bars = ax.errorbar(
+                i + j * 0.1,
+                mean,
+                yerr=std,
+                fmt=COLOURS[stage],
+                linestyle="",
+                capsize=3,
             )
 
-            with open(input_file, "rb") as handler:
-                # Unpack pickled data
-                pickled_data = pickle.load(handler)
-                comp_points.append(pickled_data[0])
-
-        mean = np.mean(comp_points, axis=1)
-        std = np.std(comp_points, axis=1)
-        _, caps, bars = ax.errorbar(
-            values + i * 0.1,
-            mean,
-            yerr=std,
-            fmt=COLOURS[stage],
-            linestyle="",
-            capsize=3,
-        )
-
-        # Change cap marker
-        caps[0].set_marker("_")
-        caps[1].set_marker("_")
+            # Change cap marker
+            caps[0].set_marker("_")
+            caps[1].set_marker("_")
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
 
     # Reset x-axis ticks
-    plt.xticks(ticks=values + 0.15, labels=PARAM.values())
+    plt.xticks(
+        ticks=np.arange(len(plot_data.keys())) + 0.15,
+        labels=PARAM.values(),
+    )
 
     plt.xlabel("Parameters")
-    plt.ylabel("{} (mV)".format(LABELS[metric]))
+    plt.ylabel("{}".format(LABELS[metric]))
+
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
 
 
-def plotSimulationOutput(sim_output, metric):
+def plot_comparison_output(sim_output, comp_points, metric):
     """Plots the output of a non-pregnant simulation and the
     comparison metric
 
-    Arguments:
+    Args:
     sim_output -- dict{str: np.array}, dict containing the simulation
-            outputs for each stage in mV and the time stamps in s.
-    metric -- str, name of the used metric, {l2, rmse, mae, correl}.
+            outputs for each stage in mV and the timesteps in s.
+    comp_points -- list, list of comparison points.
+    metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
 
-    Return:
+    Returns:
+
+    Raises:
+
 
     """
-    input_file = "../res/{}_comp.pkl".format(metric)
-
-    with open(input_file, "rb") as handler:
-        comp_points = pickle.load(handler)
-
     fig, ax = plt.subplots(2, 2, dpi=300, sharex=True, sharey=True)
 
     cpt = 0
@@ -158,19 +200,15 @@ def plotSimulationOutput(sim_output, metric):
         for j in range(2):
             ax[i, j].plot(t, sim_output[ESTRUS[cpt]], color="black")
             ax[i, j].text(
-                6.6,
-                1,
-                LABELS[metric] + " {:.2f} mV".format(comp_points[cpt]),
-                fontsize="small",
+                10.7,
+                9,
+                LABELS[metric] + " {:.2f}".format(comp_points[cpt]),
+                fontsize="x-small",
             )
-            ax[i, j].set_xlim([0, 10])
-            ax[i, j].set_title(ESTRUS[cpt])
+            ax[i, j].set_xlim([0, int(max(t))])
+            # ax[i, j].set_title(ESTRUS[cpt])
             cpt += 1
 
     # Labels are added on Illustrator
-    plt.show()
-
-    fig, ax = plt.subplots(dpi=300)
-    plt.plot(t, sim_output["means"], color="black")
-    plt.xlim([0, 10])
+    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
