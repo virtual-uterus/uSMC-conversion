@@ -115,7 +115,7 @@ def plot_sweep_data(plot_data, param, metric):
 
     plt.legend([estrus.capitalize() for estrus in ESTRUS])
 
-    plt.xlabel(PARAM[param] + r" values (pA pF$^{-1}$)")
+    plt.xlabel(PARAM[param] + " " + UNITS[param])
     plt.ylabel("Normalised {}".format(LABELS[metric]))
 
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
@@ -191,24 +191,18 @@ def plot_comparison_output(sim_output, comp_points, metric):
 
 
     """
-    fig, ax = plt.subplots(2, 2, dpi=300, sharex=True, sharey=True)
-
-    cpt = 0
     t = sim_output["time"]
+    for i in range(len(comp_points)):
+        fig, ax = plt.subplots(dpi=300)
+        ax.plot(t, sim_output[ESTRUS[i]], color="black")
+        ax.text(
+            10.7,
+            9,
+            LABELS[metric] + " {:.2f} (mV)".format(comp_points[i]),
+        )
+        ax.set_xlim([0, int(max(t))])
+        ax.set_ylim(Y_LIMS)
+        ax.set_title(ESTRUS[i].capitalize())
 
-    for i in range(2):
-        for j in range(2):
-            ax[i, j].plot(t, sim_output[ESTRUS[cpt]], color="black")
-            ax[i, j].text(
-                10.7,
-                9,
-                LABELS[metric] + " {:.2f}".format(comp_points[cpt]),
-                fontsize="x-small",
-            )
-            ax[i, j].set_xlim([0, int(max(t))])
-            # ax[i, j].set_title(ESTRUS[cpt])
-            cpt += 1
-
-    # Labels are added on Illustrator
-    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
-    plt.show()
+        plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
+        plt.show()
