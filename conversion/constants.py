@@ -66,7 +66,7 @@ E2_MAP = {"E2": 6, "E2_max": 8, "mod_E2": 25}
 LEFT = 0.22
 BOTTOM = 0.17
 RIGHT = 0.80
-Y_LIMS = [-75, 15]
+Y_LIMS = [-70, 15]
 
 COLOURS = {
     "proestrus": "r",
