@@ -122,59 +122,6 @@ def plot_sweep_data(plot_data, param, metric):
     plt.show()
 
 
-def plot_sensitivity(plot_data, metric):
-    """Plots the results of the sensitivity analysis for a certain metric
-
-    Args:
-    plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
-    and list of comparison points, parameter values, and the estrus stage for
-    each sweep as values.
-    metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
-
-    Returns:
-
-    """
-    fig, ax = plt.subplots(dpi=300)
-
-    for i, param in enumerate(plot_data.keys()):
-        data = plot_data[param]
-        comp_points = []  # Store the results for each stage
-
-        for j in range(len(data)):
-            comp_points = data[j][0]
-            stage = data[j][2]
-
-            mean = np.mean(comp_points)
-            std = np.std(comp_points)
-
-            _, caps, bars = ax.errorbar(
-                i + j * 0.1,
-                mean,
-                yerr=std,
-                fmt=COLOURS[stage],
-                linestyle="",
-                capsize=3,
-            )
-
-            # Change cap marker
-            caps[0].set_marker("_")
-            caps[1].set_marker("_")
-
-    plt.legend([estrus.capitalize() for estrus in ESTRUS])
-
-    # Reset x-axis ticks
-    plt.xticks(
-        ticks=np.arange(len(plot_data.keys())) + 0.15,
-        labels=PARAM.values(),
-    )
-
-    plt.xlabel("Parameters")
-    plt.ylabel("{}".format(LABELS[metric]))
-
-    plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
-    plt.show()
-
-
 def plot_comparison_output(sim_output, comp_points, metric):
     """Plots the output of a non-pregnant simulation and the
     comparison metric
