@@ -171,6 +171,7 @@ def plot_func(args):
 
         if args.param == "all":
             params = PARAM
+            params.pop("stim_current")  # Remove stimulus current
         else:
             params = [args.param]
 
