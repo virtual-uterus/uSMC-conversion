@@ -132,12 +132,15 @@ def plot_sensitivity_index(plot_data, params, metric):
                 c=COLOURS[data_tuple[2]],
             )
 
+    # Reset x-axis labels
     ax.set_xticks(np.arange(len(params)))
     ax.set_xticklabels(param_labels)
+
     plt.ylabel("VRD sensitivity index (%)")
 
     plt.legend([e.capitalize() for e in ESTRUS])
 
+    # Adjust plot limits
     plt.ylim([0, 1])
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
