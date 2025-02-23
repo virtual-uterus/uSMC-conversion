@@ -39,6 +39,7 @@ def sweep_func(args):
     Returns:
     plot_data -- list(tuple), list of comparison points, parameter values,
     and the estrus stage for each sweep.
+    params -- list(str), list of parameters to plot.
 
     Raises:
     ValueError -- if the start number is less than 0.
@@ -122,7 +123,7 @@ def sweep_func(args):
     except (ValueError, KeyError):
         raise
 
-    return plot_data
+    return plot_data, [args.param]
 
 
 def plot_func(args):
@@ -149,6 +150,7 @@ def plot_func(args):
     plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
     and list of comparison points, parameter values, and the estrus stage for
     each sweep as values.
+    params -- list(str), list of parameters to plot.
 
     Raises:
     FileNotFoundError -- if the results files are not found.
@@ -192,7 +194,7 @@ def plot_func(args):
     except (FileNotFoundError, ValueError, KeyError):
         raise
 
-    return plot_data
+    return plot_data, params
 
 
 def single_func(args):
