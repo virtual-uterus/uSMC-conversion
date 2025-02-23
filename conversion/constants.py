@@ -27,6 +27,8 @@ ESTRUS_PARAMS = {
     "proestrus": {
         "gkv43": 1.2,
         "stim_current": -0.36,
+        "gcal": 0.6,
+        "gna": 0.0625,
         "stim_interval": 49300,
         "P4": 42,
         "E2": 92,
@@ -34,12 +36,16 @@ ESTRUS_PARAMS = {
     "estrus": {
         "gkv43": 2.65,
         "stim_current": -0.3,
+        "gcal": 0.6,
+        "gna": 0.0625,
         "stim_interval": 46500,
         "P4": 14,
         "E2": 40,
     },
     "metestrus": {
         "gkv43": 2.2,
+        "gcal": 0.6,
+        "gna": 0.0625,
         "stim_current": -0.33,
         "stim_interval": 60200,
         "P4": 25,
@@ -47,6 +53,8 @@ ESTRUS_PARAMS = {
     },
     "diestrus": {
         "gkv43": 1.2,
+        "gcal": 0.6,
+        "gna": 0.0625,
         "stim_current": -0.20,
         "stim_interval": 38300,
         "P4": 10,
