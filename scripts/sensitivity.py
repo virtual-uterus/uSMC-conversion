@@ -105,12 +105,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     try:
-        plot_data = args.func(args)
+        plot_data, params = args.func(args)
 
-        if args.command == "plot":
-            plot_data = plot_data[args.param]
-
-        plots.plot_sweep_data(plot_data, args.param, args.metric)
+        plots.plot_sensitivity_index(plot_data, params, args.metric)
     except Exception as e:
         sys.stderr.write(f"Error: {e}")
         exit()
