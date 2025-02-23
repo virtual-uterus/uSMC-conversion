@@ -89,7 +89,6 @@ def plot_multi_simulation(data, time, param, values):
     plt.xlim((time[0], time[-1]))
     plt.ylim(Y_LIMS)
 
-    plt.legend(legend, fontsize="x-small")
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
 
     plt.show()
@@ -135,7 +134,6 @@ def plot_comparison_output(sim_output, comp_points, metric):
     Returns:
 
     Raises:
-
 
     """
     t = sim_output["time"]
