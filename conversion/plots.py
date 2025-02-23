@@ -94,29 +94,48 @@ def plot_multi_simulation(data, time, param, values):
     plt.show()
 
 
-def plot_sweep_data(plot_data, param, metric):
-    """Plots the comparison data from different stages of the estrus for
-    a given parameter and metric
+def plot_sensitivity_index(plot_data, params, metric):
+    """Plots the sensitivity index from different stages of the estrus for
+    all parameters with a given metric
 
     Args:
-    param -- str, name of the parameter to use.
+    plot_data -- dict(list(tuple), param), dictionnary containing a list of
+    tuples with the comparison points, the value of the parameters, and
+    the estrus stage as values and the parameter name as the key.
+    params -- list(str), list of the keys to plot.
     metric -- str, name of the used metric, {l2, rmse, mae, correl, vrd}.
 
     Returns:
 
+    Raises:
+
     """
     fig, ax = plt.subplots(dpi=300)
 
-    for comp_points, values, estrus in plot_data:
-        comp_points /= np.max(comp_points)  # Normalise the data
+    np.random.seed(2048)  # Initialise random seed
+    param_labels = []  # Labels for the ticks
 
-        plt.plot(values, comp_points, COLOURS[estrus], linestyle="-")
+    for i, param in enumerate(params):
+        param_labels.append(PARAM[param])
+        for j in range(len(plot_data[param])):
+            data_tuple = plot_data[param][j]
+            jitter = np.random.uniform(-0.1, 0.1)  # Jitter for the scatter
 
-    plt.legend([estrus.capitalize() for estrus in ESTRUS])
+            # Calculate the sensitivity index for the current stage
+            d_max = np.max(data_tuple[0])
+            d_min = np.min(data_tuple[0])
+            SI = (d_max - d_min) / d_max
 
-    plt.xlabel(PARAM[param] + " " + UNITS[param])
-    plt.ylabel("Normalised {}".format(LABELS[metric]))
+            plt.scatter(
+                i + jitter,
+                SI,
+                c=COLOURS[data_tuple[2]],
+            )
 
+    ax.set_xticks(np.arange(len(params)))
+    ax.set_xticklabels(param_labels)
+    plt.ylabel("VRD sensitivity index (%)")
+    plt.ylim([0, 1])
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
     plt.show()
 
