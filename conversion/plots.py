@@ -174,5 +174,8 @@ def plot_comparison_output(sim_output, comp_points, metric):
         ax.set_ylim(Y_LIMS)
         ax.set_title(ESTRUS[i].capitalize())
 
+        plt.xlabel("Time (s)")
+        plt.ylabel("Membrane potential (mV)")
+
         plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
         plt.show()
