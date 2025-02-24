@@ -213,7 +213,7 @@ def sweep_path(
     return os.path.join(RES_DIR, f"{b_model}_{s_model}_{param}_{metric}.pkl")
 
 
-def extract_spike_times(signal, time, height=-50):
+def extract_spike_times(signal, time, height=-40):
     """Extract spike times from a signal using peak detection
 
     Args:
