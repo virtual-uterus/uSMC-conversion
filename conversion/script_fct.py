@@ -37,8 +37,9 @@ def sweep_func(args):
       default value "estrus".
 
     Returns:
-    plot_data -- list(tuple), list of comparison points, parameter values,
-    and the estrus stage for each sweep.
+    plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
+    and list of comparison points, parameter values, and the estrus stage for
+    each sweep as values.
     params -- list(str), list of parameters to plot.
 
     Raises:
@@ -123,7 +124,7 @@ def sweep_func(args):
     except (ValueError, KeyError):
         raise
 
-    return plot_data, [args.param]
+    return {args.param: plot_data}, [args.param]
 
 
 def plot_func(args):
