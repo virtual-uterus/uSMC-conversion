@@ -26,6 +26,7 @@ MAX_STEP = 0.1
 ESTRUS_PARAMS = {
     "proestrus": {
         "gkv43": 1.2,
+        "gkca": 2.4,
         "gcal": 0.6,
         "gna": 0.0625,
         "stim_current": -0.4,
@@ -35,6 +36,7 @@ ESTRUS_PARAMS = {
     },
     "estrus": {
         "gkv43": 2.65,
+        "gkca": 2.4,
         "gcal": 0.6,
         "gna": 0.0625,
         "stim_current": -0.30,
@@ -44,6 +46,7 @@ ESTRUS_PARAMS = {
     },
     "metestrus": {
         "gkv43": 2.2,
+        "gkca": 2.4,
         "gcal": 0.6,
         "gna": 0.0625,
         "stim_current": -0.33,
@@ -53,6 +56,7 @@ ESTRUS_PARAMS = {
     },
     "diestrus": {
         "gkv43": 1.2,
+        "gkca": 2.4,
         "gcal": 0.6,
         "gna": 0.0625,
         "stim_current": -0.20,
@@ -86,6 +90,7 @@ COLOURS = {
 PARAM = {
     "gkv43": r"g$_{Kv4.3}$",
     "gcal": r"g$_{CaL}$",
+    "gkca": r"nS pF$^{-1}$",
     "gna": r"g$_{Na}$",
     "stim_current": r"I$_{stim}$",
 }
