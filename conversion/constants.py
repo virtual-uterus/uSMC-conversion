@@ -90,7 +90,7 @@ COLOURS = {
 PARAM = {
     "gkv43": r"g$_{Kv4.3}$",
     "gcal": r"g$_{CaL}$",
-    "gkca": r"nS pF$^{-1}$",
+    "gkca": r"g$_{KCa}$",
     "gna": r"g$_{Na}$",
     "stim_current": r"I$_{stim}$",
 }
