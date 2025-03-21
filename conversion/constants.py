@@ -26,20 +26,29 @@ MAX_STEP = 0.1
 ESTRUS_PARAMS = {
     "proestrus": {
         "gkv43": 1.2,
-        "stim_current": -0.36,
+        "gkca": 2.4,
+        "gcal": 0.6,
+        "gna": 0.0625,
+        "stim_current": -0.4,
         "stim_interval": 49300,
         "P4": 42,
         "E2": 92,
     },
     "estrus": {
         "gkv43": 2.65,
-        "stim_current": -0.3,
+        "gkca": 2.4,
+        "gcal": 0.6,
+        "gna": 0.0625,
+        "stim_current": -0.30,
         "stim_interval": 46500,
         "P4": 14,
         "E2": 40,
     },
     "metestrus": {
         "gkv43": 2.2,
+        "gkca": 2.4,
+        "gcal": 0.6,
+        "gna": 0.0625,
         "stim_current": -0.33,
         "stim_interval": 60200,
         "P4": 25,
@@ -47,6 +56,9 @@ ESTRUS_PARAMS = {
     },
     "diestrus": {
         "gkv43": 1.2,
+        "gkca": 2.4,
+        "gcal": 0.6,
+        "gna": 0.0625,
         "stim_current": -0.20,
         "stim_interval": 38300,
         "P4": 10,
@@ -66,7 +78,7 @@ E2_MAP = {"E2": 6, "E2_max": 8, "mod_E2": 25}
 LEFT = 0.22
 BOTTOM = 0.17
 RIGHT = 0.80
-Y_LIMS = [-75, 15]
+Y_LIMS = [-70, 15]
 
 COLOURS = {
     "proestrus": "r",
@@ -78,6 +90,7 @@ COLOURS = {
 PARAM = {
     "gkv43": r"g$_{Kv4.3}$",
     "gcal": r"g$_{CaL}$",
+    "gkca": r"g$_{KCa}$",
     "gna": r"g$_{Na}$",
     "stim_current": r"I$_{stim}$",
 }

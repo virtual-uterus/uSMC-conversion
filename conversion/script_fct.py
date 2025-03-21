@@ -37,8 +37,10 @@ def sweep_func(args):
       default value "estrus".
 
     Returns:
-    plot_data -- list(tuple), list of comparison points, parameter values,
-    and the estrus stage for each sweep.
+    plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
+    and list of comparison points, parameter values, and the estrus stage for
+    each sweep as values.
+    params -- list(str), list of parameters to plot.
 
     Raises:
     ValueError -- if the start number is less than 0.
@@ -122,7 +124,7 @@ def sweep_func(args):
     except (ValueError, KeyError):
         raise
 
-    return plot_data
+    return {args.param: plot_data}, [args.param]
 
 
 def plot_func(args):
@@ -149,6 +151,7 @@ def plot_func(args):
     plot_data -- dict(list(tuple)), dictionnary with the parameter name as key
     and list of comparison points, parameter values, and the estrus stage for
     each sweep as values.
+    params -- list(str), list of parameters to plot.
 
     Raises:
     FileNotFoundError -- if the results files are not found.
@@ -169,6 +172,7 @@ def plot_func(args):
 
         if args.param == "all":
             params = PARAM
+            params.pop("stim_current")  # Remove stimulus current
         else:
             params = [args.param]
 
@@ -192,7 +196,7 @@ def plot_func(args):
     except (FileNotFoundError, ValueError, KeyError):
         raise
 
-    return plot_data
+    return plot_data, params
 
 
 def single_func(args):
@@ -222,25 +226,29 @@ def single_func(args):
 
 
     """
-    if not args.plot_only:
-        time, data = simulation.run_simulation(
-            args.model,
-            args.start,
-            args.end,
-            args.estrus,
-        )
-        sim_data = data[0, :]
-        simulation.save_simulation(args.model, sim_data, time, args.estrus)
+    try:
+        if not args.plot_only:
+            time, data = simulation.run_simulation(
+                args.model,
+                args.start,
+                args.end,
+                args.estrus,
+            )
+            sim_data = data[0, :]
+            simulation.save_simulation(args.model, sim_data, time, args.estrus)
 
-    else:
-        res_file = utils.results_path(
-            args.model,
-            int(args.end * 1e-3),
-            args.estrus,
-        )
-        data = utils.load_data(res_file)
-        sim_data = data["data"]
-        time = data["time"]
+        else:
+            res_file = utils.results_path(
+                args.model,
+                int(args.end * 1e-3),
+                args.estrus,
+            )
+            data = utils.load_data(res_file)
+            sim_data = data["data"]
+            time = data["time"]
+
+    except (ValueError, FileNotFoundError, KeyError):
+        raise
 
     return sim_data, time
 
@@ -271,19 +279,22 @@ def multi_func(args):
 
 
     """
-    # Pre-allocate space
-    sim_data = np.zeros((len(args.values), args.end - args.start))
+    try:
+        # Pre-allocate space
+        sim_data = np.zeros((len(args.values), args.end - args.start))
 
-    for i, value in enumerate(args.values):
-        print(f"Running simulation with {args.param} at {value}")
-        time, data = simulation.run_simulation(
-            args.model,
-            args.start,
-            args.end,
-            args.estrus,
-            args.param,
-            value,
-        )
-        sim_data[i, :] = data[0, :]
+        for i, value in enumerate(args.values):
+            print(f"Running simulation with {args.param} at {value}")
+            time, data = simulation.run_simulation(
+                args.model,
+                args.start,
+                args.end,
+                args.estrus,
+                args.param,
+                value,
+            )
+            sim_data[i, :] = data[0, :]
 
+    except (ValueError, KeyError):
+        raise
     return sim_data, time
