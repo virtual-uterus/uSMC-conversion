@@ -37,20 +37,20 @@ def create_legends():
     legend_voi = ""
     legend_constants = [""] * sizeConstants
     legend_voi = "time in component environment (msec)"
-    legend_algebraic[0] = "I_stim in component stimulus_protocol (pA_per_pF)"
+    legend_algebraic[0] = "I_stim in component stimulus_protocol (pA_per_cm2)"
     legend_constants[0] = "stim_start in component stimulus_protocol (msec)"
     legend_constants[1] = "stim_interval in component stimulus_protocol (msec)"
     legend_constants[2] = "stim_duration in component stimulus_protocol (msec)"
-    legend_constants[3] = "stim_current in component stimulus_protocol (pA_per_pF)"
-    legend_algebraic[45] = "I_tot in component membrane (pA_per_pF)"
-    legend_algebraic[27] = "I_Ca_tot in component Ca_currents (pA_per_pF)"
-    legend_algebraic[43] = "I_NS_tot in component NS_currents (pA_per_pF)"
-    legend_algebraic[38] = "I_K_tot in component K_currents (pA_per_pF)"
+    legend_constants[3] = "stim_current in component stimulus_protocol (pA_per_cm2)"
+    legend_algebraic[45] = "I_tot in component membrane (pA_per_cm2)"
+    legend_algebraic[27] = "I_Ca_tot in component Ca_currents (pA_per_cm2)"
+    legend_algebraic[43] = "I_NS_tot in component NS_currents (pA_per_cm2)"
+    legend_algebraic[38] = "I_K_tot in component K_currents (pA_per_cm2)"
     legend_states[0] = "v in component membrane (mV)"
     legend_constants[4] = "Cm in component parameters (uF_per_cm2)"
-    legend_algebraic[16] = "ina in component I_Na (pA_per_pF)"
-    legend_algebraic[28] = "ib in component I_b (pA_per_pF)"
-    legend_algebraic[39] = "icl in component I_Cl (pA_per_pF)"
+    legend_algebraic[16] = "ina in component I_Na (pA_per_cm2)"
+    legend_algebraic[28] = "ib in component I_b (pA_per_cm2)"
+    legend_algebraic[39] = "icl in component I_Cl (pA_per_cm2)"
     legend_constants[5] = "P4 in component membrane (nM_per_L)"
     legend_constants[6] = "E2 in component membrane (nM_per_L)"
     legend_constants[7] = "P4_max in component membrane (nM_per_L)"
@@ -62,7 +62,7 @@ def create_legends():
     legend_states[1] = "cai in component Ca_Concentrations (mM)"
     legend_algebraic[54] = "jnaca in component J_NaCa (mM_per_msec)"
     legend_algebraic[55] = "jpmca in component J_PMCA (mM_per_msec)"
-    legend_algebraic[42] = "insca in component I_NSCa (pA_per_pF)"
+    legend_algebraic[42] = "insca in component I_NSCa (pA_per_cm2)"
     legend_constants[66] = "buff in component parameters (dimensionless)"
     legend_constants[67] = "AV in component parameters (cm2_per_uL)"
     legend_constants[68] = "zca in component parameters (dimensionless)"
@@ -83,19 +83,19 @@ def create_legends():
     legend_constants[30] = "zk in component parameters (dimensionless)"
     legend_constants[69] = "R in component parameters (joule_per_kelvin_per_kilomole)"
     legend_constants[71] = "temp in component parameters (kelvin)"
-    legend_constants[10] = "gna in component parameters (nS_per_pF)"
-    legend_constants[11] = "gcal in component parameters (nS_per_pF)"
+    legend_constants[10] = "gna in component parameters (nS_per_cm2)"
+    legend_constants[11] = "gcal in component parameters (nS_per_cm2)"
     legend_constants[31] = "ecal in component parameters (mV)"
     legend_constants[32] = "kmca in component parameters (mM)"
-    legend_constants[12] = "gcat in component parameters (nS_per_pF)"
+    legend_constants[12] = "gcat in component parameters (nS_per_cm2)"
     legend_constants[33] = "ecat in component parameters (mV)"
-    legend_constants[13] = "gkca in component parameters (nS_per_pF)"
-    legend_constants[14] = "gb in component parameters (nS_per_pF)"
-    legend_constants[15] = "gkv43 in component parameters (nS_per_pF)"
+    legend_constants[13] = "gkca in component parameters (nS_per_cm2)"
+    legend_constants[14] = "gb in component parameters (nS_per_cm2)"
+    legend_constants[15] = "gkv43 in component parameters (nS_per_cm2)"
     legend_constants[16] = "gbka in component parameters (dimensionless)"
     legend_constants[17] = "gbkab in component parameters (dimensionless)"
-    legend_constants[18] = "gcl in component parameters (nS_per_pF)"
-    legend_constants[19] = "gns in component parameters (nS_per_pF)"
+    legend_constants[18] = "gcl in component parameters (nS_per_cm2)"
+    legend_constants[19] = "gns in component parameters (nS_per_cm2)"
     legend_constants[34] = "PnsK in component parameters (dimensionless)"
     legend_constants[35] = "PnsNa in component parameters (dimensionless)"
     legend_constants[36] = "PnsCa in component parameters (dimensionless)"
@@ -135,8 +135,8 @@ def create_legends():
     legend_algebraic[3] = "hss in component I_Na (dimensionless)"
     legend_algebraic[8] = "htc in component I_Na (msec)"
     legend_states[3] = "h in component I_Na (dimensionless)"
-    legend_algebraic[22] = "ical in component I_CaL (pA_per_pF)"
-    legend_algebraic[26] = "icat in component I_CaT (pA_per_pF)"
+    legend_algebraic[22] = "ical in component I_CaL (pA_per_cm2)"
+    legend_algebraic[26] = "icat in component I_CaT (pA_per_cm2)"
     legend_algebraic[20] = "dss in component I_CaL (dimensionless)"
     legend_algebraic[21] = "fss in component I_CaL (dimensionless)"
     legend_algebraic[18] = "fca in component I_CaL (dimensionless)"
@@ -144,9 +144,9 @@ def create_legends():
     legend_states[4] = "f2 in component I_CaL (dimensionless)"
     legend_algebraic[24] = "bss in component I_CaT (dimensionless)"
     legend_algebraic[25] = "gss in component I_CaT (dimensionless)"
-    legend_algebraic[37] = "iBKab in component I_BKab (pA_per_pF)"
-    legend_algebraic[33] = "iBKa in component I_BKa (pA_per_pF)"
-    legend_algebraic[29] = "ikv43 in component I_Kv43 (pA_per_pF)"
+    legend_algebraic[37] = "iBKab in component I_BKab (pA_per_cm2)"
+    legend_algebraic[33] = "iBKa in component I_BKa (pA_per_cm2)"
+    legend_algebraic[29] = "ikv43 in component I_Kv43 (pA_per_cm2)"
     legend_algebraic[4] = "qss in component I_Kv43 (dimensionless)"
     legend_algebraic[5] = "rss in component I_Kv43 (dimensionless)"
     legend_algebraic[9] = "qtc in component I_Kv43 (msec)"
@@ -170,8 +170,8 @@ def create_legends():
     legend_states[8] = "c in component I_Cl (dimensionless)"
     legend_constants[58] = "fmg in component NS_currents (dimensionless)"
     legend_constants[23] = "tinyamount in component NS_currents (mM)"
-    legend_algebraic[40] = "insna in component I_NSNa (pA_per_pF)"
-    legend_algebraic[41] = "insk in component I_NSK (pA_per_pF)"
+    legend_algebraic[40] = "insna in component I_NSNa (pA_per_cm2)"
+    legend_algebraic[41] = "insk in component I_NSK (pA_per_cm2)"
     legend_constants[65] = "gs_nao in component I_NSNa (dimensionless)"
     legend_constants[63] = "gs_ko in component I_NSK (dimensionless)"
     legend_constants[59] = "gs_cao in component I_NSCa (dimensionless)"
@@ -545,7 +545,7 @@ def compute_rates(voi, states, constants):
     )
     algebraic[28] = constants[14] * (states[0] - constants[75])
     algebraic[39] = constants[18] * states[8] * (states[0] - constants[76])
-    algebraic[45] = (
+    algebraic[45] = 1.3 * (
         algebraic[16]
         + algebraic[39]
         + algebraic[28]
@@ -553,7 +553,7 @@ def compute_rates(voi, states, constants):
         + algebraic[43]
         + algebraic[38]
     )
-    rates[0] = -(algebraic[45] + algebraic[0])
+    rates[0] = -(algebraic[45] + algebraic[0]) / constants[4]
     algebraic[44] = (
         (constants[67] * constants[4] * constants[66]) /
         (constants[68] * constants[70])
