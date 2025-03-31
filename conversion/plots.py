@@ -90,6 +90,7 @@ def plot_multi_simulation(data, time, param, values):
     plt.ylim(Y_LIMS)
 
     plt.subplots_adjust(left=LEFT, right=RIGHT, bottom=BOTTOM)
+    plt.legend(legend)
 
     plt.show()
 
