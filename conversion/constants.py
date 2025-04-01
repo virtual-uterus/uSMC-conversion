@@ -96,11 +96,11 @@ PARAM = {
 }
 
 UNITS = {
-    "gkv43": r"nS cm$^{-2}$",
-    "gcal": r"nS cm$^{-2}$",
-    "gkca": r"nS cm$^{-2}$",
-    "gna": r"nS cm$^{-2}$",
-    "stim_current": r"pA cm$^{-2}$",
+    "gkv43": r"mS cm$^{-2}$",
+    "gcal": r"mS cm$^{-2}$",
+    "gkca": r"mS cm$^{-2}$",
+    "gna": r"mS cm$^{-2}$",
+    "stim_current": r"uA cm$^{-2}$",
 }
 
 LABELS = {
