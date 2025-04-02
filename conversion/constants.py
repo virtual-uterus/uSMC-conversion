@@ -100,7 +100,7 @@ UNITS = {
     "gcal": r"mS cm$^{-2}$",
     "gkca": r"mS cm$^{-2}$",
     "gna": r"mS cm$^{-2}$",
-    "stim_current": r"uA cm$^{-2}$",
+    "stim_current": r"$\mu$A cm$^{-2}$",
 }
 
 LABELS = {
