@@ -120,17 +120,13 @@
                 <eq/>
                 <ci>I_tot</ci>
                 <apply>
-                    <times/>
-                    <cn cellml:units="dimensionless">1.3</cn>
-                    <apply>
-                        <plus/>
-                        <ci>ina</ci>
-                        <ci>icl</ci>
-                        <ci>ib</ci>
-                        <ci>I_Ca_tot</ci>
-                        <ci>I_NS_tot</ci>
-                        <ci>I_K_tot</ci>
-                    </apply>
+                    <plus/>
+                    <ci>ina</ci>
+                    <ci>icl</ci>
+                    <ci>ib</ci>
+                    <ci>I_Ca_tot</ci>
+                    <ci>I_NS_tot</ci>
+                    <ci>I_K_tot</ci>
                 </apply>
             </apply>
             <apply>
