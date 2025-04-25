@@ -82,7 +82,7 @@
         <variable initial_value="1000" name="stim_start" units="msec"/>
         <variable initial_value="46500" name="stim_interval" units="msec"/>
         <variable initial_value="10000" name="stim_duration" units="msec"/>
-        <variable initial_value="-0.39" name="stim_current" units="uA_per_cm2"/>
+        <variable initial_value="-0.30" name="stim_current" units="uA_per_cm2"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply id="stimulus_calculation">
                 <eq/>
