@@ -173,14 +173,8 @@
         <variable name="Cm" public_interface="in" units="uF_per_cm2"/>
         <variable initial_value="-58" name="v_p" public_interface="out" units="mV"/>
         <variable name="I_p" public_interface="out" units="uA_per_cm2"/>
-        <variable cmeta:id="g_p" initial_value="0.017" name="g_p" public_interface="out" units="mS_per_cm2">
-        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-            <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:about="#g_p">
-                <modifiable-parameter xmlns="https://chaste.comlab.ox.ac.uk/cellml/ns/pycml#">yes</modifiable-parameter>
-            </rdf:Description>
-        </rdf:RDF>
-        </variable>
-<variable initial_value="0.2" name="g_r" public_interface="out" units="mS_per_cm2"/>
+        <variable cmeta:id="g_p" initial_value="0.013" name="g_p" public_interface="out" units="mS_per_cm2"/>
+        <variable initial_value="0.1" name="g_r" public_interface="out" units="mS_per_cm2"/>
         <variable initial_value="-58" name="v_pr" public_interface="out" units="mV"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
@@ -2946,6 +2940,11 @@
             <component_ref component="I_BKab"/>
         </component_ref>
     </group>
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:about="#g_p">
+            <modifiable-parameter xmlns="https://chaste.comlab.ox.ac.uk/cellml/ns/pycml#">yes</modifiable-parameter>
+        </rdf:Description>
+    </rdf:RDF>
     <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
         <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:about="#membrane_stimulus_current">
             <bqbiol:is xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" rdf:resource="https://chaste.comlab.ox.ac.uk/cellml/ns/oxford-metadata#membrane_stimulus_current" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
