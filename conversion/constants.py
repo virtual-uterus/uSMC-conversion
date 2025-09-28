@@ -29,7 +29,7 @@ ESTRUS_PARAMS = {
         "gkca": 2.4,
         "gcal": 0.6,
         "gna": 0.0625,
-        "stim_current": -0.40,
+        "stim_current": -0.33,
         "stim_interval": 49300,
         "P4": 42,
         "E2": 92,
@@ -59,10 +59,10 @@ ESTRUS_PARAMS = {
         "gkca": 2.4,
         "gcal": 0.6,
         "gna": 0.0625,
-        "stim_current": -0.21,
+        "stim_current": -0.15,
         "stim_interval": 38300,
-        "P4": 10,
-        "E2": 90,
+        "P4": 9,
+        "E2": 88,
     },
 }
 
